@@ -14,13 +14,32 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "incremental": true,
+    "baseUrl": ".",
     "plugins": [
       {
         "name": "next"
       }
     ],
     "paths": {
-      "@/*": ["./*"]
+      "@/*": ["./*"],
+      "@Images": [
+        "public/images"
+      ],
+      "@Images/*": [
+        "public/images/*"
+      ],
+      "@Icons": [
+        "public/icons"
+      ],
+      "@Icons/*": [
+        "public/icons/*"
+      ],
+      "@Interfaces": [
+        "Interfaces/Utils"
+      ],
+      "@Interfaces/*": [
+        "Interfaces/Utils/*"
+      ],
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
