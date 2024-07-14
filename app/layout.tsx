@@ -4,8 +4,10 @@ import Header from "./components/Header"
 import SideBar from "./components/SideBar"
 import Signup from './components/Signup/Signup'
 import Login from './components/Login/Login'
+import { AuthProvider } from "./Providers";
 
 const inter = Inter({ subsets: ['latin'] })
+
 
 export const metadata = {
   title: 'Create Next App',
@@ -19,10 +21,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <Header />
+      {/* <Header /> */}
       {/* <SideBar /> */}
-      <Login />
-      <body className={inter.className}>{children}</body>
+      {/* <Login /> */}
+      <body className={inter.className}>
+        <AuthProvider>{children}</AuthProvider>
+        </body>
     </html>
   )
 }
