@@ -5,7 +5,7 @@ import { PiShoppingCartFill } from "react-icons/pi";
 import { MdOutlineNotificationsNone } from "react-icons/md";
 import { FaUserCircle } from "react-icons/fa";
 import { getServerSession } from "next-auth";
-import { authOptions } from "../api/auth/[...nextauth]/route";
+import { authOptions } from "@Conf/auth";
 const Header = async () => {
   const session: any = await getServerSession(authOptions);
   return (

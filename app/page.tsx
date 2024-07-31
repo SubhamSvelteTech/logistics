@@ -1,6 +1,6 @@
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
-import { authOptions } from "./api/auth/[...nextauth]/route";
+import { authOptions } from "@Conf/auth";
 import Login from "./pages/login";
 import Header from "./common/Header";
 
