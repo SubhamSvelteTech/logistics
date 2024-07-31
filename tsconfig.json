@@ -40,6 +40,9 @@
       "@Interfaces/*": [
         "Interfaces/Utils/*"
       ],
+      "@Conf/*":[
+        "app/conf/*"
+      ]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],

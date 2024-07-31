@@ -19,9 +19,9 @@ module.exports = {
         gray:"#D3D3D3"
       },
       screens:{
-        "mobile": { min: "360px", max: "768px" },
-        "mac":{min:"769px",max:"1441px"},
-        "laptops":{min:"1442px"}
+        // "mobile": { min: "360px", max: "768px" },
+        // "mac":{min:"769px",max:"1441px"},
+        // "laptops":{min:"1442px"}
       }
     },
   },

@@ -5,3 +5,115 @@
 body {
   background-color: #F4F3F3;
 }
+::-webkit-scrollbar {
+  width: 5px;
+  height: 8px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #ffffff;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: rgba(36, 52, 67, 0.37);
+  border-radius: 10px;
+}
+.selectedItem{
+  background: #E0E0E0;
+  color: teal;
+}
+
+/* .selectedItem ::after{
+  content: "";
+  width: 5px;
+  height: 42px;
+  background-color: black;
+  position: absolute;
+  left: 0%;
+  top: 4.5%;
+} */
+.shadowBox{
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25), 0 1px 3px rgba(0, 0, 0, 0.25);
+}
+.chart-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 90%;
+  width: 100%;          
+  padding: 20px;       
+  box-sizing: border-box;
+}
+
+.chart-container canvas {
+  max-width: 600px;   
+  width: 100%;
+  height: auto;      
+}
+
+/* calender */
+.date_calender .react_calandar .react_calandar__navigation {
+  display: flex !important;
+}
+.date_calender .react-calendar__tile:disabled {
+  background-color: white !important;
+  color: #7c7c7c !important;
+}
+.date_calender .react-calendar__tile--now {
+  background: white !important;
+  color: black;
+  position: relative;
+}
+
+.date_calender .react-calendar__tile--now ::after {
+  content: "•";
+  position: absolute;
+  color: #0e8080;
+  top: 65%;
+  left: 45%;
+}
+
+.date_calender .date_today .react-calendar__tile--now {
+  background: black !important;
+  color: white !important;
+  position: relative;
+  border-radius: 100%;
+  height: 50px;
+}
+
+.date_calender .react-calendar__tile--active {
+  background: black !important;
+  color: white !important;
+  position: relative;
+  border-radius: 100%;
+  height: 40px;
+}
+.react-calendar {
+  width: 100% !important;
+}
+
+.date_calender .react-calendar__navigation__prev-button {
+  order: 2 !important;
+}
+.date_calender .react-calendar__navigation__label {
+  order: 1 !important;
+  text-align: left;
+  padding-left: 8px;
+}
+.date_calender .react-calendar__navigation__next-button {
+  order: 3 !important;
+}
+.date_calender .react-calendar {
+  border: none !important;
+}
+.react-calendar__month-view__days__day--weekend {
+  color: #000 !important;
+}
+.react-calendar__navigation__next2-button{
+  display: none;
+}
+.react-calendar__navigation__prev2-button{
+  display: none;
+}
