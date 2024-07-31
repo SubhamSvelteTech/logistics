@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import emailIcon from "@Icons/email.svg";
 import passwordIcon from "@Icons/password.png";
 import Image from "next/image";
@@ -9,10 +9,11 @@ import { useSession, signIn, signOut } from "next-auth/react";
 
 const Login = () => {
   const { data: session, status } = useSession();
+  const [userCred, setUserCred] = useState({ email: "", password: "" });
   const router = useRouter();
   useEffect(() => {
     if (session) {
-      router.push('/dashboard'); // Redirect to the dashboard if authenticated
+      router.push("/dashboard"); // Redirect to the dashboard if authenticated
     }
   }, [session, router]);
 
@@ -20,8 +21,8 @@ const Login = () => {
     e.preventDefault();
     try {
       const res: any = await signIn("credentials", {
-        email: "john@gmail.com",
-        password: "1234",
+        email: userCred?.email,
+        password: userCred?.password,
         redirect: false,
       });
       console.log(res, "res");
@@ -33,6 +34,15 @@ const Login = () => {
     } catch (error) {
       console.log("error");
     }
+  };
+
+  const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    e.preventDefault();
+    const { value, name } = e.target;
+    setUserCred((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
   };
   return (
     <>
@@ -76,6 +86,9 @@ const Login = () => {
                     className="border-none text-xs bg-transparent w-[100%] p-2 outline-none appearance-none"
                     type="email"
                     placeholder="Email"
+                    name="email"
+                    required
+                    onChange={(e) => handleChangeInput(e)}
                   />
                 </div>
                 <div className="flex items-center border-b-[1px] px-2">
@@ -88,7 +101,10 @@ const Login = () => {
                   <input
                     className="border-none text-xs bg-transparent w-[100%] p-2 outline-none appearance-none"
                     type="password"
+                    required
                     placeholder="Password"
+                    name="password"
+                    onChange={(e) => handleChangeInput(e)}
                   />
                 </div>
 

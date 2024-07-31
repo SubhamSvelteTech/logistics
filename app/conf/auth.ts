@@ -1,44 +1,64 @@
+import axios from "axios";
 import { NextAuthOptions } from "next-auth";
-import CredentialsProvider from 'next-auth/providers/credentials';
+import CredentialsProvider from "next-auth/providers/credentials";
 
 export const authOptions: NextAuthOptions = {
-  // Configure one or more authentication providers
-  // TODO: Occasionally bug(https://github.com/nextauthjs/next-auth/discussions/3186)
   providers: [
     CredentialsProvider({
-      name: 'credentials',
-      credentials: {},
-      async authorize(credentials) {
-        const { email, password } = credentials as {
-          email: string;
-          password: string;
-        };
-        if (email !== 'john@gmail.com' || password !== '1234') {
-          throw new Error('Invalid credentials');
-        } else {
-          const user = {
-            id: '1234',
-            name: 'John Doe',
-            email: 'john@gmail.com',
-            role: 'admin',
-          };
-          return user;
+      name: "credentials",
+      credentials: {
+        email: { label: "Email", type: "text" },
+        password: { label: "Password", type: "password" },
+      },
+      async authorize(credentials: any) {
+        try {
+          const response = await axios.post(
+            "http://192.168.15.49:5000/api/v1/logisticUser/login",
+            {
+              email: credentials?.email,
+              password: credentials?.password,
+            },
+            {
+              headers: {
+                "Content-Type": "application/json",
+              },
+            }
+          );
+
+          const { statusCode, message, data } = response.data;
+
+          if (statusCode === 'SUC' && data) {
+            const user = {
+              id: credentials.email, // or any unique identifier from the response
+              name: credentials.email, // replace with user's name if available
+              email: credentials.email,
+              accessToken: data.accessToken,
+              refreshToken: data.refreshToken,
+            };
+            return user;
+          } else {
+            throw new Error("Invalid credentials");
+          }
+        } catch (error) {
+          return null;
         }
       },
     }),
   ],
   session: {
-    strategy: 'jwt',
+    strategy: "jwt",
   },
   pages: {
-    signIn: '/',
+    signIn: "/",
   },
   callbacks: {
-    async jwt({ token, user }:any) {
+    async jwt({ token, user }: any) {
       if (user) {
         token.id = user.id;
         token.name = user.name;
-        token.role = user.role;
+        token.email = user.email;
+        token.accessToken = user.accessToken;
+        token.refreshToken = user.refreshToken;
       }
       return token;
     },
@@ -48,10 +68,13 @@ export const authOptions: NextAuthOptions = {
         user: {
           ...session.user,
           id: token.id,
-          role: token.role,
+          name: token.name,
+          email: token.email,
+          accessToken: token.accessToken,
+          refreshToken: token.refreshToken,
         },
-      }
-    }
-},
+      };
+    },
+  },
   secret: process.env.NEXTAUTH_SECRET as string,
 };
