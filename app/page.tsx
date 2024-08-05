@@ -15,7 +15,7 @@ export default async function Home() {
       {session == null && (
         <div className="flex flex-col h-screen">
           <Header />
-          <Login />
+          <Login /> 
         </div>
       )}
     </>

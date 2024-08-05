@@ -1,0 +1,1 @@
+export const LOGISTIC_DASHBOARD_CHART = "/v1/logisticuser/logisticAdminDashboard?dateFilterDays=30"

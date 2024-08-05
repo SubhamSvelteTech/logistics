@@ -5,17 +5,12 @@ import passwordIcon from "@Icons/password.png";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { useSession, signIn, signOut } from "next-auth/react";
+import { useSession, signIn } from "next-auth/react";
+import Toaster from "@/services/utils/toaster/Toaster";
 
 const Login = () => {
-  const { data: session, status } = useSession();
   const [userCred, setUserCred] = useState({ email: "", password: "" });
   const router = useRouter();
-  useEffect(() => {
-    if (session) {
-      router.push("/dashboard"); // Redirect to the dashboard if authenticated
-    }
-  }, [session, router]);
 
   const handleClick = async (e: any) => {
     e.preventDefault();
@@ -25,14 +20,19 @@ const Login = () => {
         password: userCred?.password,
         redirect: false,
       });
-      console.log(res, "res");
-      if (res?.error) {
-        console.log(res?.error, "errro");
-        return;
+      if(res?.ok){
+        Toaster("success","LoggedIn Successfully")
+        router.replace("/dashboard")
+      }else{
+        Toaster("error","Invalid Credentials!")
       }
-      router.replace("/dashboard");
+      console.log(res, "res");
+      // if (res?.error) {
+      //   Toaster("error",res?.error); // Show the error message
+      // }
+      // router.replace("/dashboard");
     } catch (error) {
-      console.log("error");
+      console.log(error,'bvcvbvcbvbvbvbvbv');
     }
   };
 
@@ -116,7 +116,7 @@ const Login = () => {
                     </span>
                   </div>
                   <Link
-                    href="/forgotpassword"
+                    href="/forgot-password"
                     className="text-xs font-semibold text-teal cursor-pointer"
                   >
                     Forgot Password?

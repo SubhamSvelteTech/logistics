@@ -22,7 +22,7 @@ const layout = async ({ children }: { children: React.ReactNode }) => {
             <SideBar />
           </div>
           {/* Main Content Area */}
-          <main className="lg:ml-[14rem] md:ml-0 p-4 bg-gray-100 pt-24 w-full overflow-y-auto h-full">
+          <main className="lg:ml-[11rem] md:ml-0 p-3 bg-gray-100 pt-[5.5rem] w-full overflow-y-auto h-full">
             {children}
           </main>
         </div>

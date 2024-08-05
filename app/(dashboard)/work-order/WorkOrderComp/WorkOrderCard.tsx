@@ -20,7 +20,7 @@ const WorkOrderCard = ({
       <div className="relative rounded-lg shadowBox p-2 bg-white">
         <div className="flex justify-between items-start mb-4">
           <div>
-            <h3 className="text-sm font-semibold">{title}</h3>
+            <h3 className="text-[12px] font-semibold">{title}</h3>
           </div>
           <div
             className={`absolute right-0 top-0 px-4 rounded-tr rounded-bl ${status === "pending" && "p-1"} ${
@@ -39,8 +39,8 @@ const WorkOrderCard = ({
             alt={name}
           />
           <div>
-            <p className="text-gray-900 font-semibold">{name}</p>
-            <p className="text-gray-600 text-sm">{role}</p>
+            <p className="text-gray-900 font-semibold text-[12px]">{name}</p>
+            <p className="text-gray-600 text-[12px]">{role}</p>
             {assigned &&
             <div className="flex">
               {[...Array(5)].map((star, index) => (
@@ -58,7 +58,7 @@ const WorkOrderCard = ({
           </div>
         </div>
         <div className="flex justify-end">
-          <Link href="/work-order/configuration-panel" className={`${assigned ? "bg-teal" : "bg-black"} hover:bg-teal-700 text-white font-semibold py-2 px-4 rounded`}>
+          <Link href={`${!assigned ? "/work-order/configuration-panel" : ""}`} className={`${assigned ? "bg-teal" : "bg-black"} hover:bg-teal-700 text-[10px] text-white font-semibold py-2 px-4 rounded`}>
             {assigned ? "ASSIGNED" : "ASSIGN"}
           </Link>
         </div>
