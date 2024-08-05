@@ -12,49 +12,49 @@ export const sideBarItems = [
     icon: DashboardIcon,
     path: "/dashboard",
     styles:
-      "flex items-center text-[14px] gap-2.5 rounded-sm py-3 font-[700] dark:hover:bg-white",
+      "flex items-center text-[12px] gap-2.5 rounded-sm py-2 font-[700] dark:hover:bg-white",
   },
   {
     name: "Work Orders",
     icon: WorkOrderIcon,
     path: "/work-order",
     styles:
-      "flex items-center text-[14px] gap-2.5 rounded-sm py-3 font-[700] dark:hover:bg-white",
+      "flex items-center text-[12px] gap-2.5 rounded-sm py-2 font-[700] dark:hover:bg-white",
   },
   {
     name: "Inventory",
     icon: InventiryIcon,
     path: "/inventory",
     styles:
-      "flex items-center text-[14px] gap-2.5 rounded-sm py-3 font-[700] dark:hover:bg-white",
+      "flex items-center text-[12px] gap-2.5 rounded-sm py-2 font-[700] dark:hover:bg-white",
   },
   {
     name: "Health Care Workers",
     icon: HealthcareIcon,
     path: "/health-care",
     styles:
-      "flex items-center text-[14px] gap-2.5 rounded-sm py-3 font-[700] dark:hover:bg-white",
+      "flex items-center text-[12px] gap-2.5 rounded-sm py-2 font-[700] dark:hover:bg-white",
   },
   {
     name: "Task List",
     icon: TasklistIcon,
     path: "/task-list",
     styles:
-      "flex items-center text-[14px] gap-2.5 rounded-sm py-3 font-[700] dark:hover:bg-white",
+      "flex items-center text-[12px] gap-2.5 rounded-sm py-2 font-[700] dark:hover:bg-white",
   },
   {
     name: "Collections",
     icon: CollectionIcon,
     path: "/collections",
     styles:
-      "flex items-center text-[14px] gap-2.5 rounded-sm py-3 font-[700] dark:hover:bg-white",
+      "flex items-center text-[12px] gap-2.5 rounded-sm py-2 font-[700] dark:hover:bg-white",
   },
   {
     name: "My HR",
     icon: MyHrIcon,
     path: "/my-hr",
     styles:
-      "flex items-center text-[14px] gap-2.5 rounded-sm py-3 font-[700] dark:hover:bg-white",
+      "flex items-center text-[12px] gap-2.5 rounded-sm py-2 font-[700] dark:hover:bg-white",
   },
 ];
 

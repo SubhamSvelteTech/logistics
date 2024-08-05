@@ -34,10 +34,11 @@ export const authOptions: NextAuthOptions = {
               email: credentials.email,
               accessToken: data.accessToken,
               refreshToken: data.refreshToken,
+              statusCode:statusCode
             };
             return user;
           } else {
-            throw new Error("Invalid credentials");
+            return null
           }
         } catch (error) {
           return null;
@@ -50,6 +51,7 @@ export const authOptions: NextAuthOptions = {
   },
   pages: {
     signIn: "/",
+    signOut:"/"
   },
   callbacks: {
     async jwt({ token, user }: any) {
@@ -59,6 +61,7 @@ export const authOptions: NextAuthOptions = {
         token.email = user.email;
         token.accessToken = user.accessToken;
         token.refreshToken = user.refreshToken;
+        token.statusCode = user.statusCode
       }
       return token;
     },
@@ -72,6 +75,7 @@ export const authOptions: NextAuthOptions = {
           email: token.email,
           accessToken: token.accessToken,
           refreshToken: token.refreshToken,
+          statusCode: token.statusCode
         },
       };
     },

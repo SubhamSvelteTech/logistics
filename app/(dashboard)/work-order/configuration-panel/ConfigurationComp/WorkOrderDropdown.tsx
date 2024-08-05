@@ -17,11 +17,11 @@ const WorkOrderDropdown = () => {
   ];
   return (
     <>
-      <div className="mt-4">
+      <div className="mt-4 lg:w-1/3">
         {formFields?.map((item:any, index:any) => (
           <>
             <div className="flex items-center gap-4 mt-6">
-              <span className="w-1/3 font-bold text-end">{item?.ques}</span>
+              <span className="w-1/3 font-bold text-xs">{item?.ques}</span>
               <Dropdown options={item?.options} title={item?.title} />
             </div>
           </>

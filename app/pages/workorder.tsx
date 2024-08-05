@@ -26,30 +26,30 @@ const WorkOrder = () => {
                 <div className="mb-4">
                   <div className="flex gap-4 items-center">
                     <div>
-                      <span className="bg-yellow-300 py-[4px] px-2 rounded-t ml-1 text-black text-xs font-semibold">
+                      <span className="bg-yellow-300 py-[4px] px-2 rounded-t ml-1 text-black text-[10px] font-semibold">
                         HWC
                       </span>
-                      <Image src={JanetImg} alt="" />
+                      <Image src={JanetImg} alt="" className=" w-20" />
                     </div>
                     <div>
-                      <p className="text-gray-900 text-sm font-semibold">
+                      <p className="text-gray-900 text-xs font-semibold mt-6">
                         {item?.name}
                       </p>
-                      <p className="text-gray-600 text-sm">{item?.address}</p>
-                      <p className="text-teal font-bold text-sm">
+                      <p className="text-gray-600 text-xs">{item?.address}</p>
+                      <p className="text-teal font-bold text-xs">
                         {item?.treatment}
                       </p>
-                      <p className="font-semibold">
+                      <p className="font-semibold text-xs">
                         Priority:{" "}
                         <span className="text-teal">{item?.priority}</span>
                       </p>
+                      <div className="flex justify-center">
+                        <button className="bg-teal text-white text-[10px] py-2 px-2 font-semibold rounded mt-2">
+                          View Prescription
+                        </button>
+                      </div>
                     </div>
                   </div>
-                </div>
-                <div className="flex justify-center pl-12">
-                  <button className="bg-teal text-white text-xs py-2 px-2 font-semibold rounded">
-                    View Prescription
-                  </button>
                 </div>
               </div>
             </div>

@@ -33,13 +33,11 @@ const SideBar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
     };
   }, [sidebarOpen]);
 
-  console.log(pathname, "activeTab");
-
   return (
     <>
       <aside
         ref={sidebar}
-        className={`absolute z-[9999] flex w-[225px] h-full flex-col shadow-xl overflow-y-hidden duration-300 ease-linear dark:bg-boxdark lg:static lg:translate-x-0 ${
+        className={`absolute z-[9999] flex w-[180px] h-full flex-col shadow-xl overflow-y-hidden duration-300 ease-linear dark:bg-boxdark lg:static lg:translate-x-0 ${
           sidebarOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
@@ -82,13 +80,13 @@ const SideBar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                             pathname?.includes(item?.path)
                               ? "selectedItem text-teal"
                               : ""
-                          }  px-6`}
+                          }  px-3`}
                         >
                           <Image
                             src={item.icon}
                             alt=""
-                            width={20}
-                            height={20}
+                            width={13}
+                            height={13}
                           />
                           <p className="">{item.name}</p>
                         </Link>
@@ -97,7 +95,6 @@ const SideBar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                   );
                 })}
               </ul>
-              <SignOutButton />
             </div>
           </nav>
         </div>
