@@ -1,65 +1,49 @@
-import { useState } from "react";
-import { toast } from "react-toastify";
-import 'react-toastify/dist/ReactToastify.css';
-import Toaster from "../toaster/Toaster"
-import { signOut, useSession } from "next-auth/react";
+import axios, { InternalAxiosRequestConfig } from 'axios';
+import { getSession, signOut } from 'next-auth/react';
+import Toaster from '../toaster/Toaster';
 
-const useApiHandle = () => {
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const { data: session, status } = useSession();
+const axiosInstance = axios.create({
+  baseURL: process.env.NEXT_PUBLIC_API_URL,
+});
 
-  const apiRequest = async (
-    endPoint: string,
-    method: string,
-    // token?: string,
-    payload?: object,
-    isFormData?: boolean
-  ) => {
-    setLoading(true);
-    setError(null);
-
-    const myHeaders = new Headers();
-    myHeaders.append("X-ACCESS-TOKEN", `${session && session?.user?.accessToken}`);
-
-    if (!isFormData) {
-      myHeaders.append("Content-Type", "application/json");
+axiosInstance.interceptors.request.use(
+  async (config: InternalAxiosRequestConfig) => {
+    const session = await getSession();
+    if (session && config.headers) {
+      config.headers['X-ACCESS-TOKEN'] = `${session?.user?.accessToken}`;
     }
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
 
-
-    const fetchData: any = {
-      method,
-      headers: myHeaders,
-    };
-
-    if (method !== "GET" && payload) {
-      fetchData.body = isFormData ? payload : JSON.stringify(payload);
+axiosInstance.interceptors.response.use(
+  (response) => {
+    // Handle successful response
+    if(response?.status === 200){
+      Toaster("success",response.data.message)
     }
-
-    try {
-      const response = await fetch(process.env.NEXT_PUBLIC_API_URL+endPoint, fetchData);
-      if (response.ok) {
-        const jsonResponse = await response.json();
-        // toast.success("Request successful!");
-        Toaster("success",jsonResponse?.message)
-        return jsonResponse;
-      } else {
-        const errorResponse = await response.json();
-        if(errorResponse?.message === "Unauthorized! Access Token was expired!"){
-            signOut()
-        }
-        throw new Error(errorResponse.message || "Request failed");
-      }
-    } catch (error: any) {
-      setError(error.message || "An unexpected error occurred");
-      toast.error(error.message || "An unexpected error occurred");
-      throw error;
-    } finally {
-      setLoading(false);
+    return response;
+  },
+  (error) => {
+    // Handle error response
+    if (error.response.statusText === "Unauthorized") {
+      // Server responded with a status other than 2xx
+      signOut();
+      Toaster("error",error.response.data.message)
+    } else if (error.request) {
+      // No response was received from the server
+      Toaster("error",'No response received from the server.');
+    } else {
+      // Something happened while setting up the request
+      Toaster("error",`Request error: ${error.message}`);
     }
-  };
+    return Promise.reject(error);
+  }
+);
 
-  return { apiRequest, loading, error };
-};
+export default axiosInstance;
 
-export default useApiHandle;
+

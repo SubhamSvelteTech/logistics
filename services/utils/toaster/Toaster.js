@@ -10,6 +10,9 @@ const Toaster = (type, message) => {
     case "error":
       toast.error(message);
       break;
+      case "warning":
+      toast.error(message);
+      break;
     default:
       toast(message);
   }
