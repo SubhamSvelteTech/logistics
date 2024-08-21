@@ -37,7 +37,7 @@ const CalenderWithSlots = () => {
           <span className="font-semibold text-[10px]">Select Time</span>
           <div className="grid grid-cols-2 gap-2 w-full overflow-y-scroll h-[11rem]">
             {slots?.map((item,index)=>
-            <div>
+            <div key={`slots/${index+1}`}>
               <button className="shadow-md text-[12px] w-full px-2 mt-2 py-1 rounded focus:bg-teal focus:text-white focus:font-bold">{item?.time}</button>
             </div>
             )}

@@ -1,44 +1,21 @@
 "use client";
-import React, { useEffect, useRef, useState } from "react";
+import React from "react";
 import Filters from "./Filters";
 import WorkChart from "./WorkChart";
 import Rating from "./Rating";
-import { LOGISTIC_DASHBOARD_CHART } from "@/app/constants/apiEndpoints";
-import useApiHandle from "@/services/utils/hooks/useApi";
-import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import { useChartData } from "@/services/utils/hooks/useChartData";
 
 const Dashboard = () => {
-  const { apiRequest, loading, error } = useApiHandle();
-  const { data: session, status } = useSession();
-  const [dashboardData, setDashboardData] = useState<any>({})
-  const [isLoading, setIsLoading] = useState(false)
-  const dataFetchedRef = useRef(false);
-  const getChartData = async () => {
-    try {
-      const result = await apiRequest(`${LOGISTIC_DASHBOARD_CHART}`, "GET");
-      setDashboardData(result?.data?.data)
-    } catch (error) {
-      console.error("Failed to fetch chart data:", error);
-    }
-  };
-
-  useEffect(() => {
-    if (
-      status === "authenticated" &&
-      session?.user?.accessToken &&
-      !dataFetchedRef.current
-    ) {
-      dataFetchedRef.current = true;
-      getChartData();
-    }
-  }, [status, session]);
+  const { data: chartData } = useChartData();
+  const router = useRouter();
   return (
     <>
       <div className="bg-white rounded-lg p-4">
         <Filters />
         <div className="flex flex-col md:flex-row gap-4 mt-4">
           <div className="flex-1 bg-white rounded shadowBox">
-            <WorkChart dashboardData={dashboardData}/>
+            <WorkChart dashboardData={chartData} />
           </div>
           <div className="flex flex-col gap-2 w-full md:w-auto">
             <div className="shadowBox rounded-lg px-4 py-4">
@@ -85,12 +62,18 @@ const Dashboard = () => {
               <span className="text-lg font-semibold">minutes</span>
             </div>
           </div>
-          <div className="shadowBox py-4 px-8 rounded w-full md:flex-1">
+
+          <div
+            onClick={() => router.push("/work-order")}
+            className="shadowBox py-4 px-8 rounded w-full md:flex-1 hover:shadow-md hover:shadow-teal"
+          >
             {" "}
             {/* Added w-full and md:flex-1 */}
             <span className="font-bold text-lg">Total Work Orders</span>
             <div>
-              <span className="text-[50px] font-[700]">{dashboardData?.todayTotalTask}</span>
+              <span className="text-[50px] font-[700]">
+                {chartData?.todayTotalTask || 0}
+              </span>
               <span className="text-lg font-semibold">orders</span>
             </div>
           </div>

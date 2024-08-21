@@ -1,16 +1,20 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import emailIcon from "@Icons/email.svg";
 import passwordIcon from "@Icons/password.png";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { useSession, signIn } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 import Toaster from "@/services/utils/toaster/Toaster";
+import { Eye, EyeSlash } from "react-bootstrap-icons";
+import { setCookie } from "cookies-next";
 
 const Login = () => {
   const [userCred, setUserCred] = useState({ email: "", password: "" });
   const router = useRouter();
+  const [showPassword, setShowPassword] = useState(false);
+  const { data: session, status } = useSession();
 
   const handleClick = async (e: any) => {
     e.preventDefault();
@@ -20,11 +24,15 @@ const Login = () => {
         password: userCred?.password,
         redirect: false,
       });
-      if(res?.ok){
-        Toaster("success","LoggedIn Successfully")
-        router.replace("/dashboard")
-      }else{
-        Toaster("error","Invalid Credentials!")
+      if (res?.ok) {
+        Toaster("success", "LoggedIn Successfully");
+        if (session && status === "authenticated") {
+          setCookie("access_token", session?.user.accessToken);
+          setCookie("refresh_token", session?.user.refreshToken);
+        }
+        router.replace("/dashboard");
+      } else {
+        Toaster("error", "Invalid Credentials!");
       }
       console.log(res, "res");
       // if (res?.error) {
@@ -32,7 +40,7 @@ const Login = () => {
       // }
       // router.replace("/dashboard");
     } catch (error) {
-      console.log(error,'bvcvbvcbvbvbvbvbv');
+      console.log(error, "bvcvbvcbvbvbvbvbv");
     }
   };
 
@@ -91,21 +99,39 @@ const Login = () => {
                     onChange={(e) => handleChangeInput(e)}
                   />
                 </div>
-                <div className="flex items-center border-b-[1px] px-2">
-                  <Image
-                    src={passwordIcon}
-                    height={15}
-                    width={15}
-                    alt="password-icon"
-                  />
-                  <input
-                    className="border-none text-xs bg-transparent w-[100%] p-2 outline-none appearance-none"
-                    type="password"
-                    required
-                    placeholder="Password"
-                    name="password"
-                    onChange={(e) => handleChangeInput(e)}
-                  />
+                <div className="relative z-0 w-full mb-5 border-b-[1px]">
+                  <div className="absolute inset-y-0 flex items-center px-2 pointer-events-none">
+                    <Image
+                      height={14}
+                      width={14}
+                      src={passwordIcon}
+                      alt="key_icon"
+                    />
+                  </div>
+                  <div className="flex items-center">
+                    <input
+                      type={showPassword ? "text" : "password"}
+                      name="password"
+                      autoComplete="off"
+                      onChange={(e) => handleChangeInput(e)}
+                      id="floating_password"
+                      className="border-none text-xs bg-transparent w-[100%] p-2 px-8 outline-none appearance-none"
+                      placeholder="Password"
+                    />
+                  </div>
+                  <div className="absolute inset-y-0 right-0 flex items-center ">
+                    {!showPassword ? (
+                      <Eye
+                        onClick={() => setShowPassword(!showPassword)}
+                        className="cursor-pointer mr-2 text-[#8f8f8f] hover:text-[#000]"
+                      />
+                    ) : (
+                      <EyeSlash
+                        onClick={() => setShowPassword(!showPassword)}
+                        className="cursor-pointer mr-2 text-[#8f8f8f] hover:text-[#000]"
+                      />
+                    )}
+                  </div>
                 </div>
 
                 <div className="flex justify-between mb-16">

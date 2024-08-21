@@ -1,7 +1,13 @@
+"use client"
 import BreadCrumb from "@/app/components/breadcrumb/BreadCrumb";
+import BookingDoneModal from "@/modals/BookingDoneModal";
+import ConfirmBooking from "@/modals/ConfirmBooking";
+import { openModal } from "@/Redux/Slices/modalSlice";
 import React from "react";
+import { useDispatch } from "react-redux";
 
 const YourOrder = () => {
+  const dispatch = useDispatch();
   return (
     <>
       <div className="py-4">
@@ -32,7 +38,21 @@ const YourOrder = () => {
             </div>
           </div>
         </div>
+        <div className="flex justify-end gap-4 mt-4">
+          <button className="text-white bg-[#7C7C7C] px-4 py-1 rounded text-sm fonr-semibold">
+            Cancel
+          </button>
+          <button
+            className="text-white bg-black px-4 py-1 rounded text-sm fonr-semibold"
+            onClick={() => dispatch(openModal({ id: "confirm-booking" }))}
+          >
+            Proceed
+          </button>
+        </div>
       </div>
+
+      <ConfirmBooking />
+      <BookingDoneModal/>
     </>
   );
 };

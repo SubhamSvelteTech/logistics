@@ -65,33 +65,26 @@ const SideBar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               <ul className="flex flex-col gap-2 text-xs">
                 {sideBarItems?.map((item, index) => {
                   return (
-                    <>
-                      <li
-                        key={`sidebar/${index + 1}`}
-                        className={`mb-2 sidebar-list ${
-                          activeTab === item.name &&
-                          "bg-white rounded-lg shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px]"
-                        }`}
+                    <li
+                      key={`sidebarItem/${index + 1}`}
+                      className={`mb-2 sidebar-list ${
+                        activeTab === item.name &&
+                        "bg-white rounded-lg shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px]"
+                      }`}
+                    >
+                      <Link
+                        href={item?.path}
+                        className={`${item.styles}  ${
+                          pathname === item.path ||
+                          pathname?.includes(item?.path)
+                            ? "selectedItem text-teal"
+                            : ""
+                        }  px-3`}
                       >
-                        <Link
-                          href={item?.path}
-                          className={`${item.styles}  ${
-                            pathname === item.path ||
-                            pathname?.includes(item?.path)
-                              ? "selectedItem text-teal"
-                              : ""
-                          }  px-3`}
-                        >
-                          <Image
-                            src={item.icon}
-                            alt=""
-                            width={13}
-                            height={13}
-                          />
-                          <p className="">{item.name}</p>
-                        </Link>
-                      </li>
-                    </>
+                        <Image src={item.icon} alt="" width={13} height={13} />
+                        <p className="">{item.name}</p>
+                      </Link>
+                    </li>
                   );
                 })}
               </ul>

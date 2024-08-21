@@ -4,6 +4,7 @@ import { authOptions } from "@Conf/auth";
 import Header from "../common/Header";
 import { redirect } from "next/navigation";
 import SideBar from "../common/SideBar";
+import { setCookie } from "cookies-next";
 
 const layout = async ({ children }: { children: React.ReactNode }) => {
   const session: any = await getServerSession(authOptions);
