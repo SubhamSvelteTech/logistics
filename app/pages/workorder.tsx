@@ -12,9 +12,11 @@ import ErrorBoundary from "../components/ErrorBoundary";
 
 const WorkOrder = () => {
   const { data: patients } = usePatients();
+
+  console.log(patients, "bvbdfvfs");
   return (
     <>
-      <div className="bg-white rounded-lg py-6 px-8">
+      <div className="bg-white rounded-lg py-6 px-8 over">
         <BreadCrumb title="Work Order" />
         <div className="grid md:grid-cols-8 gap-2 xxs:pr-8 mt-4">
           {workOrderdropdwonData?.map((item, index) => (
@@ -24,8 +26,8 @@ const WorkOrder = () => {
         </div>
         {/* work order list */}
         {patients?.map((item: any, index) => (
-          <div className="flex border rounded-lg flex-wrap mb-4">
-            <div className="w-full md:w-1/2 lg:w-1/4">
+          <div className="flex border rounded-lg flex-nowrap mb-4 overflow-x-auto">
+            <div className="w-full md:w-1/2 lg:w-1/4 flex-shrink-0">
               <div className="rounded-lg p-4">
                 <div className="mb-4">
                   <div className="flex gap-4 items-center">
@@ -39,9 +41,7 @@ const WorkOrder = () => {
                       <p className="text-gray-900 text-xs font-semibold mt-6">
                         {item?.fullName}
                       </p>
-                      <p className="text-gray-600 text-xs">
-                        {item?.address}, {item?.country}
-                      </p>
+                      <p className="text-gray-600 text-xs">{item?.country}</p>
                       <p className="text-teal font-bold text-xs">
                         {item?.prescriptionType}
                       </p>
@@ -59,16 +59,16 @@ const WorkOrder = () => {
                 </div>
               </div>
             </div>
-            {item?.taskList?.map((order: any, i: number) => (
-              <WorkOrderCard
-                title={order?.type}
-                name={order?.name}
-                role={order?.role}
-                image={order?.image}
-                status="pending"
-                priority={order?.priority}
-                assigned={false}
-              />
+            {item?.tasklist?.map((order: any, i: number) => (
+              <div key={i} className="w-full md:w-1/2 lg:w-1/4 flex-shrink-0">
+                <WorkOrderCard
+                  data={order}
+                  item={item}
+                  image={order?.image}
+                  status="pending"
+                  assigned={false}
+                />
+              </div>
             ))}
           </div>
         ))}

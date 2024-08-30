@@ -150,3 +150,15 @@ body {
 .react-calendar__navigation__prev2-button{
   display: none;
 }
+
+.scrollbar-hide {
+  -ms-overflow-style: none;  /* Internet Explorer 10+ */
+  scrollbar-width: none;  /* Firefox */
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;  /* Safari and Chrome */
+}
+.no-scroll {
+  overflow: hidden;
+}

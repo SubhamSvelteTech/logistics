@@ -51,8 +51,8 @@ const Header = () => {
         </Link>
         {session && pathname.length > 1 && (
           <div className="flex items-center justify-center">
-            <PiShoppingCartFill className="p-1 w-[35px] h-[30px] text-white" />
-            <MdOutlineNotificationsNone className="p-1  w-[35px] h-[30px] text-white" />
+            {/* <PiShoppingCartFill className="p-1 w-[35px] h-[30px] text-white" /> */}
+            {/* <MdOutlineNotificationsNone className="p-1  w-[35px] h-[30px] text-white" /> */}
             <div>
               <button
                 id="dropdownUserAvatarButton"

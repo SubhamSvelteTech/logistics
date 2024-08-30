@@ -12,7 +12,7 @@ const Dashboard = () => {
   return (
     <>
       <div className="bg-white rounded-lg p-4">
-        <Filters />
+        {/* <Filters /> */}
         <div className="flex flex-col md:flex-row gap-4 mt-4">
           <div className="flex-1 bg-white rounded shadowBox">
             <WorkChart dashboardData={chartData} />

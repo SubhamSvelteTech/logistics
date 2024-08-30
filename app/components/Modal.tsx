@@ -1,5 +1,6 @@
 // components/Modal.tsx
 import { closeModal } from "@/Redux/Slices/modalSlice";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 interface ModalProps {
@@ -10,6 +11,17 @@ interface ModalProps {
 const Modal: React.FC<ModalProps> = ({ id, children }: any) => {
   const dispatch = useDispatch();
   const isOpen = useSelector((state: any) => state.modal.modals[id]);
+  useEffect(() => {
+    if (isOpen) {
+      document.body.classList.add("no-scroll");
+    } else {
+      document.body.classList.remove("no-scroll");
+    }
+
+    return () => {
+      document.body.classList.remove("no-scroll");
+    };
+  }, [isOpen]);
 
   if (!isOpen) return null;
 
@@ -32,12 +44,14 @@ const Modal: React.FC<ModalProps> = ({ id, children }: any) => {
           display: flex;
           align-items: center;
           justify-content: center;
+           z-index: 1000
         }
         .modal-content {
           background: white;
           border-radius: 4px;
           position: relative;
           width: 500px;
+          z-index: 1001;
         }
         .close {
           position: absolute;

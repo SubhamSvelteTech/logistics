@@ -13,7 +13,7 @@ const Dropdown = ({ options,title }: DropdownProps) => {
           >
             <option selected>{title}</option>
             {options?.map((item,index)=>
-            <option value={title}>{item}</option>
+            <option className="!hover:bg-teal" value={title}>{item}</option>
             )}
           </select>
         </form>

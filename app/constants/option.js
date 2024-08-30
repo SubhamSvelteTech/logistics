@@ -5,6 +5,8 @@ import HealthcareIcon from "@Icons/healthcare-icon.svg";
 import TasklistIcon from "@Icons/tasklist-icon.svg";
 import CollectionIcon from "@Icons/collection-icon.svg";
 import MyHrIcon from "@Icons/myhr-icon.svg";
+import HomeIcon from "@Icons/home-icon.svg";
+import OfficeIcon from "@Icons/office-icon.svg"
 
 export const sideBarItems = [
   {
@@ -145,3 +147,8 @@ export const workOrderList = [
     ],
   },
 ];
+
+export const addressTypeOption = [
+  {id:1, title:"Home", icon: HomeIcon},
+  {id:2, title:"Office", icon: OfficeIcon},
+]
