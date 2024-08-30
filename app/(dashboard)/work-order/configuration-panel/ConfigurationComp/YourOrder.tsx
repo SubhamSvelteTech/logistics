@@ -50,9 +50,6 @@ const YourOrder = () => {
           </button>
         </div>
       </div>
-
-      <ConfirmBooking />
-      <BookingDoneModal/>
     </>
   );
 };

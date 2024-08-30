@@ -11,6 +11,7 @@ import axiosInstance from "@/services/utils/hooks/useApi";
 import { FETCH_ASSIGNED_TO } from "../constants/apiEndpoints";
 import { fetchAssignedTo } from "../common/HelperFunctions";
 import { addFetchAssignTo } from "@/Redux/Slices/fetchAssignedToSlice";
+import { assignedUser } from "@/Redux/Slices/assignedUserSlice";
 
 const CustomSelect = ({ item, placeholder = "Select an option",id }: any) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -21,17 +22,23 @@ const CustomSelect = ({ item, placeholder = "Select an option",id }: any) => {
   const toggleDropdown = () => setIsOpen(!isOpen);
 
   const handleOptionClick = async(option: any,data:any) => {
-    console.log(data,'cvdvsv')
     if (option === "Add New Address") {
       dispatch(openModal({ id: "address" }));
     }
     setSelectedOption(option);
-    if(item?.identifier === "address"){
+    if(item?.identifier === "address" && option !== "Add New Address"){
       const res = await fetchAssignedTo(id,data)
       dispatch(addFetchAssignTo(res))
-      console.log(res,'bvcbcv')
       const payload = {
-        address: option
+        address: option,
+        addressId:data,
+        orderStatus:"OPEN"
+      }
+      dispatch(addAssignTo({...payload}))
+    }
+    if(item?.identifier === "assign"){
+      const payload = {
+        logisticId: data
       }
       dispatch(addAssignTo({...payload}))
     }
@@ -134,7 +141,7 @@ const CustomSelect = ({ item, placeholder = "Select an option",id }: any) => {
                     </span>
                   </div>
                 ) : (
-                  <div className="flex items-center px-2 gap-2 hover:bg-[#0e808040]">
+                  <div onClick={()=>dispatch(assignedUser({...option}))} className="flex items-center px-2 gap-2 hover:bg-[#0e808040]">
                     <div className="flex-shrink-0">
                       <Image src={DefaultImg} alt="" width={50} height={50} />
                     </div>

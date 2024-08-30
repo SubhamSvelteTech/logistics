@@ -5,9 +5,10 @@ import Map from "@/app/components/Map";
 import axiosInstance from "@/services/utils/hooks/useApi";
 import { ADD_ADDRESS, FETCH_ADDRESS } from "@/app/constants/apiEndpoints";
 import Toaster from "@/services/utils/toaster/Toaster";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { closeModal } from "@/Redux/Slices/modalSlice";
-import { useQueryClient } from "@tanstack/react-query";
+import { getPatientAddress } from "@/app/common/HelperFunctions";
+import { addPatientAddress } from "@/Redux/Slices/patientAddressesSlice";
 
 const addressType = [
   { name: "Home" },
@@ -16,9 +17,16 @@ const addressType = [
   { name: "Other" },
 ];
 const DeliveryAddress = ({ setAddressFormData, addressFormData, id }: any) => {
-  const queryClient: any = useQueryClient();
   const [formStep, setFormStep] = useState(1);
   const dispatch = useDispatch();
+  const [selectedAddress, setSelectedAddress] = useState<string | null>(null);
+  const { modals } = useSelector((state: any) => state.modal);
+
+  useEffect(() => {
+    if (Object.keys(modals)?.length === 0) {
+      setFormStep(1);
+    }
+  }, [modals]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
@@ -33,14 +41,13 @@ const DeliveryAddress = ({ setAddressFormData, addressFormData, id }: any) => {
     e.preventDefault();
     const res = await axiosInstance.post(ADD_ADDRESS, { ...addressFormData });
     if (res?.status === 200) {
-      dispatch(closeModal({ id: "address" }));
+      const response = await getPatientAddress(id);
       setFormStep(1);
-      Toaster("success", "Address Added Successfully!"); 
-      // Refetch or invalidate the query
-      queryClient.invalidateQueries(["address", id]);
+      dispatch(addPatientAddress(response));
+      dispatch(closeModal({ id: "address" }));
+      Toaster("success", "Address Added Successfully!");
     }
   };
-  
 
   return (
     <Modal id="address">
@@ -62,14 +69,20 @@ const DeliveryAddress = ({ setAddressFormData, addressFormData, id }: any) => {
                 <div className="flex gap-2">
                   {addressType?.map((item: any) => (
                     <button
+                      key={item.name}
                       type="button"
-                      onClick={() =>
+                      onClick={() => {
+                        setSelectedAddress(item.name);
                         setAddressFormData((prev: any) => ({
                           ...prev,
                           addressName: item?.name,
-                        }))
-                      }
-                      className="text-xs border rounded px-2 text-teal"
+                        }));
+                      }}
+                      className={`text-xs border rounded px-2 text-teal ${
+                        selectedAddress === item.name
+                          ? "bg-teal text-white"
+                          : ""
+                      }`}
                     >
                       {item.name}
                     </button>

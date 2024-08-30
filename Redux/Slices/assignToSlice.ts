@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import { assignToReducer } from "../Reducers/assignToReducer";
 
 const initialState:any = {
-    assignTo: {orderStatus:"open"},
+    assignTo: {},
 };
 
 const assignToSlice = createSlice({

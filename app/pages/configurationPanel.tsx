@@ -13,17 +13,23 @@ import { PATIENT_BY_ID } from "../constants/apiEndpoints";
 import { useParams } from "next/navigation";
 import { addWorkOrderTask } from "@/Redux/Slices/selectedWorkOrderSlice";
 import DeliveryAddress from "@/modals/DeliveryAddress";
-import { useFetchAddress } from "@/services/utils/hooks/useFetchAddress";
-import { useFetchAssignedTo } from "@/services/utils/hooks/useFetchAssignedTo";
 import { addAssignTo, resetAssignTo } from "@/Redux/Slices/assignToSlice";
+import ConfirmBooking from "@/modals/ConfirmBooking";
+import BookingDoneModal from "@/modals/BookingDoneModal";
+import { getPatientAddress } from "../common/HelperFunctions";
+import { addPatientAddress, resetPatientAddress } from "@/Redux/Slices/patientAddressesSlice";
+import { closeAllModals } from "@/Redux/Slices/modalSlice";
 
 const ConfigurationPanel = () => {
   const {selectedWorkOrder} = useSelector((state:any)=>state)
-  const {id} = useParams();
+  const {id}:any = useParams();
   const dispatch = useDispatch();
   const [addressFormData, setAddressFormData] = useState<any>({patientId:id});
-  const { data: address } = useFetchAddress(id);
-  // const {data:assignTo} = useFetchAssignedTo(id,"66d069064da9ea9a399b69b7")
+
+  const getAddress = async()=>{
+    const res = await getPatientAddress(id);
+    dispatch(addPatientAddress(res))
+  }
 
   const getPatientAndTaskDetails = async() => {
     const res = await axiosInstance.get(PATIENT_BY_ID+id)
@@ -39,14 +45,18 @@ const ConfigurationPanel = () => {
   },[id])
 
   useEffect(()=>{
+    getAddress();
     return () => {
       dispatch(resetAssignTo())
+      dispatch(resetPatientAddress())
+      dispatch(closeAllModals())
     }
   },[])
   return (
     <>
       <div className="flex flex-col md:flex-row gap-2">
-        <div className="bg-white rounded-lg py-6 px-4 md:w-3/4">
+        {/* <div className="bg-white rounded-lg py-6 px-4 md:w-3/4"> */}
+        <div className="bg-white rounded-lg py-6 px-4">
           <BreadCrumb title="Configuration Panel" />
 
           <div className="grid lg:grid-cols-4 grid-cols-1 mt-6 md:gap-4">
@@ -58,18 +68,20 @@ const ConfigurationPanel = () => {
           <div className="flex flex-col md:flex-col lg:flex-row mt-6 gap-4">
             {/* calender */}
             <CalenderWithSlots />
-            <WorkOrderDropdown selectedWorkOrder={selectedWorkOrder} address={address} id={id}/>
+            <WorkOrderDropdown selectedWorkOrder={selectedWorkOrder} id={id}/>
           </div>
-          <hr className="mt-4 border-[1px]" />
-          <YourOrder />
+          {/* <hr className="mt-4 border-[1px]" /> */}
+          {/* <YourOrder /> */}
         </div>
         {/* status */}
-        <Status selectedWorkOrder={selectedWorkOrder}/>
+        {/* on enable status add md:w-[3/4] tp parent div */}
+        {/* <Status selectedWorkOrder={selectedWorkOrder}/> */}
       </div>
 
       {/* modal */}
       <DeliveryAddress setAddressFormData={setAddressFormData} addressFormData={addressFormData} id={id}/>
-      {/* <Map/> */}
+      <ConfirmBooking />
+      <BookingDoneModal/>
     </>
   );
 };

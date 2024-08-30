@@ -1,32 +1,36 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import BreadCrumb from "../components/breadcrumb/BreadCrumb";
 import Dropdown from "../components/dropdown/Dropdown";
 import SearchBar from "../components/searchbar/SearchBar";
 import WorkOrderCard from "../(dashboard)/work-order/WorkOrderComp/WorkOrderCard";
 import Image from "next/image";
-import JanetImg from "@Images/workorder/janet.svg";
-import { workOrderdropdwonData } from "../constants/option";
-import { usePatients } from "@/services/utils/hooks/usePatients";
-import ErrorBoundary from "../components/ErrorBoundary";
+import { getPatientList } from "../common/HelperFunctions";
+import DefaultImg from "@Images/workorder/default-profile.png";
 
 const WorkOrder = () => {
-  const { data: patients } = usePatients();
+  const [patients, setPatients] = useState([]);
 
-  console.log(patients, "bvbdfvfs");
+  const getUserDetails = async () => {
+    const res = await getPatientList();
+    setPatients(res);
+  };
+  useEffect(() => {
+    getUserDetails();
+  }, []);
   return (
     <>
       <div className="bg-white rounded-lg py-6 px-8 over">
         <BreadCrumb title="Work Order" />
-        <div className="grid md:grid-cols-8 gap-2 xxs:pr-8 mt-4">
+        {/* <div className="grid md:grid-cols-8 gap-2 xxs:pr-8 mt-4">
           {workOrderdropdwonData?.map((item, index) => (
             <Dropdown title={item.title} options={item?.options} />
           ))}
           <SearchBar />
-        </div>
+        </div> */}
         {/* work order list */}
-        {patients?.map((item: any, index) => (
-          <div className="flex border rounded-lg flex-nowrap mb-4 overflow-x-auto">
+        {patients?.map((item: any, index: number) => (
+          <div className="flex border rounded-lg flex-nowrap mb-4 overflow-x-auto mt-4">
             <div className="w-full md:w-1/2 lg:w-1/4 flex-shrink-0">
               <div className="rounded-lg p-4">
                 <div className="mb-4">
@@ -35,7 +39,20 @@ const WorkOrder = () => {
                       <span className="bg-yellow-300 py-[4px] px-2 rounded-t ml-1 text-black text-[10px] font-semibold">
                         HWC
                       </span>
-                      <Image src={JanetImg} alt="" className=" w-20" />
+                      {/* <Image src={JanetImg} alt="" className=" w-20" /> */}
+                      {item?.profilePicture?.length > 0 ? (
+                        <img
+                          src={`http://192.168.15.49:5000/uploads/logistic/${item?.profilePicture}`}
+                          width={50}
+                          height={50}
+                        />
+                      ) : (
+                        <Image
+                          src={DefaultImg}
+                          alt="default-img"
+                          width={70}
+                        />
+                      )}
                     </div>
                     <div>
                       <p className="text-gray-900 text-xs font-semibold mt-6">
@@ -64,9 +81,9 @@ const WorkOrder = () => {
                 <WorkOrderCard
                   data={order}
                   item={item}
-                  image={order?.image}
+                  image={order?.profilePicture}
                   status="pending"
-                  assigned={false}
+                  assigned={order?.taskStatus}
                 />
               </div>
             ))}

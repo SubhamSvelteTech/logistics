@@ -26,7 +26,6 @@ const Map = ({setAddressFormData,addressFormData}:any) => {
 
   const onPlaceChanged = () => {
     const place = autocompleteRef.current?.getPlace();
-    console.log(place, "gdfgd");
     if (place) {
       place.address_components?.forEach((component) => {
         if (component.types.includes("locality")) {
@@ -91,6 +90,11 @@ const Map = ({setAddressFormData,addressFormData}:any) => {
             position: "relative",
             border: "none",
             zIndex: 1000,
+          }}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              e.preventDefault();
+            }
           }}
         />
       </Autocomplete>

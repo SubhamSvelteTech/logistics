@@ -1,14 +1,14 @@
 import CustomSelect from "@/app/components/CustomSelect";
 import ErrorBoundary from "@/app/components/ErrorBoundary";
 import { ASSIGN_TO } from "@/app/constants/apiEndpoints";
+import { openModal } from "@/Redux/Slices/modalSlice";
 import axiosInstance from "@/services/utils/hooks/useApi";
 import { getCookie } from "cookies-next";
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 const WorkOrderDropdown = ({
   selectedWorkOrder,
-  address,
   assignto,
   id,
 }: any) => {
@@ -19,8 +19,23 @@ const WorkOrderDropdown = ({
   const { fetchAssignedToData } = useSelector(
     (state: any) => state.fetchAssignedToData
   );
+  const dispatch = useDispatch();
+  const {patientAddress} = useSelector((state:any)=>state.patientAddress)
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false);
 
-  console.log(fetchAssignedToData,'fetchAssignedTo')
+  const requiredKeys = [
+    "orderStatus",
+    "taskId",
+    "workType",
+    "patientId",
+    "assignedDate",
+    "startTime",
+    "slotId",
+    "slotBookedId",
+    "address",
+    "addressId",
+    "logisticId"
+  ];
 
   useEffect(() => {
     if (workOrder?.tasklist && taskId) {
@@ -46,7 +61,7 @@ const WorkOrderDropdown = ({
           id: 3,
           ques: "Address",
           title: "",
-          options: [...(address || []), { name: "Add New Address" }],
+          options: [...(patientAddress || []), { name: "Add New Address" }],
           identifier: "address",
         },
         // {
@@ -64,14 +79,18 @@ const WorkOrderDropdown = ({
         },
       ]);
     }
-  }, [workOrder, taskId,fetchAssignedToData]);
+  }, [workOrder, taskId,fetchAssignedToData,patientAddress]);
+
+  useEffect(()=>{
+    const isAllKeysPresent = requiredKeys.every((key:any) => assignTo.hasOwnProperty(key));
+    setIsButtonDisabled(!isAllKeysPresent); 
+  },[assignTo])
 
   const handleSubmit = async (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     e.preventDefault();
-    const res = await axiosInstance.post(ASSIGN_TO, { ...assignTo });
-    console.log(res, "qwertyuiop");
+    dispatch(openModal({id:"confirm-booking"}))
   };
 
   return (
@@ -89,8 +108,9 @@ const WorkOrderDropdown = ({
           ))}
           <div className="flex text-center justify-end mt-8">
             <button
+            disabled={isButtonDisabled}
               onClick={(e) => handleSubmit(e)}
-              className="font-bold bg-black text-white px-12 py-2 rounded  text-[11px]"
+              className={`font-bold text-white px-12 py-2 rounded  text-[11px] ${isButtonDisabled ? 'bg-gray' : 'bg-black'}`}
             >
               Schedule
             </button>

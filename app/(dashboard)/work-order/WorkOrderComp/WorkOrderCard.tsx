@@ -1,5 +1,4 @@
 import React from "react";
-import JanetImg from "@Images/workorder/janet.svg";
 import Image from "next/image";
 import DefaultImg from "@Images/workorder/default-profile.png";
 import ClockIcon from "@Icons/clock-icon.svg";
@@ -14,8 +13,8 @@ const WorkOrderCard = ({ data, image, status, assigned, item }: any) => {
 
   const handleAssign = (id: string) => {
     dispatch(addWorkOrderTask(item));
-    console.log(item,'fdsfdsfsd')
-    setCookie("taskId",id);
+    console.log(item, "fdsfdsfsd");
+    setCookie("taskId", id);
     router.push(`/work-order/configuration-panel/${item?._id}`);
   };
   return (
@@ -29,17 +28,17 @@ const WorkOrderCard = ({ data, image, status, assigned, item }: any) => {
             className={`absolute right-0 top-0 px-4 rounded-tr rounded-bl ${
               status === "pending" && "p-1"
             } ${
-              status === "success"
+              assigned === "BOOKED"
                 ? "bg-[#72BE27]"
-                : status === "pending"
+                : assigned === "OPEN"
                 ? "bg-[#DBDBDB]"
                 : "bg-[#FF4B4B]"
             }`}
           >
             <span className={`text-xs text-white`}>
-              {status === "success" ? (
+              {assigned === "BOOKED" ? (
                 "✔"
-              ) : status === "pending" ? (
+              ) : assigned === "OPEN" ? (
                 <Image src={ClockIcon} alt="" />
               ) : (
                 "!"
@@ -47,18 +46,30 @@ const WorkOrderCard = ({ data, image, status, assigned, item }: any) => {
             </span>
           </div>
         </div>
-        <div className="flex items-center mb-4">
-          <Image
+        <div className="flex items-center mb-4 gap-4">
+          {/* <Image
             className="w-11 h-11 rounded-full mr-4"
-            src={image?.length > 0 ? JanetImg : DefaultImg}
+            src={image?.length > 0 ? image : DefaultImg}
             alt={data?.name}
+            width={10}
+            height={10}
+          /> */}
+          {image?.length > 0 ?
+          <img
+            src={`http://192.168.15.49:5000/uploads/logistic/${image}`}
+            className="rounded-full"
+            width={50}
+            height={50}
           />
+          :
+          <Image src={DefaultImg} alt="default-img" width={50} className="rounded-full"/>
+        }
           <div>
             <p className="text-gray-900 font-semibold text-[12px]">
-              {data?.name}
+              {data?.fullName}
             </p>
             <p className="text-gray-600 text-[12px]">{data?.role}</p>
-            {assigned && (
+            {assigned === "BOOKED" && (
               <div className="flex">
                 {[...Array(5)].map((star, index) => (
                   <svg
@@ -74,14 +85,15 @@ const WorkOrderCard = ({ data, image, status, assigned, item }: any) => {
             )}
           </div>
         </div>
-        <div className="flex justify-end">
+        <div className="flex justify-end gap-2">
           <button
             onClick={() => handleAssign(data?.taskId)}
+            disabled={assigned === "BOOKED"}
             className={`${
-              assigned ? "bg-teal" : "bg-black"
+              assigned === "BOOKED" ? "bg-teal cursor-not-allowed" : "bg-black"
             } hover:bg-teal-700 text-[10px] text-white font-semibold py-2 px-4 rounded`}
           >
-            {assigned ? "ASSIGNED" : "ASSIGN"}
+            {assigned === "BOOKED" ? "ASSIGNED" : "ASSIGN"}
           </button>
         </div>
       </div>
