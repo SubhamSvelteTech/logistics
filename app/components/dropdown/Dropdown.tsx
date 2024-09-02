@@ -1,7 +1,7 @@
 import { DropdownProps } from "@/Interfaces/Utils/Dropdown";
 import React from "react";
 
-const Dropdown = ({ options,title }: DropdownProps) => {
+const Dropdown = ({ options, title }: DropdownProps) => {
   return (
     <>
       <div className="relative inline-block text-left w-full">
