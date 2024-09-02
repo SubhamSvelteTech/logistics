@@ -5,9 +5,11 @@ import React from "react";
 import BookingDoneIcon from "@Images/booking-done.svg";
 import { closeAllModals } from "@/Redux/Slices/modalSlice";
 import { useDispatch } from "react-redux";
+import { useRouter } from "next/navigation";
 
 const BookingDoneModal = ({ title }: { title?: string }) => {
   const dispatch = useDispatch();
+  const router = useRouter();
   return (
     <Modal id="booking-done">
       <div className="flex justify-center">

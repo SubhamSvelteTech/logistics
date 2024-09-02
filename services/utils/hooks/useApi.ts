@@ -23,7 +23,7 @@ axiosInstance.interceptors.response.use(
   (response) => {
     // Handle successful response
     if(response?.status === 200){
-      Toaster("success",response.data.message)
+      // Toaster("success",response.data.message)
     }
     return response;
   },

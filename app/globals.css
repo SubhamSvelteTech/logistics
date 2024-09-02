@@ -65,9 +65,9 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 90%;
-  width: 100%;
-  padding: 20px;
+  height: 100%;
+  width: 100%;          
+  padding: 20px;       
   box-sizing: border-box;
 }
 
@@ -148,6 +148,18 @@ body {
 }
 .react-calendar__navigation__prev2-button {
   display: none;
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;  /* Internet Explorer 10+ */
+  scrollbar-width: none;  /* Firefox */
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;  /* Safari and Chrome */
+}
+.no-scroll {
+  overflow: hidden;
 }
 #upload-med-image {
   display: none;
