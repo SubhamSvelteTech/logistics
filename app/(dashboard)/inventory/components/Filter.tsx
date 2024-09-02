@@ -52,7 +52,7 @@ const Filter = ({ title }: { title: string }) => {
         </div>
       </div>
       <AddNewItem />
-      <BookingDoneModal />
+      <BookingDoneModal title="New Items added successfully!" path="/inventory"/>
     </>
   );
 };

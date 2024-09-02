@@ -10,7 +10,7 @@ import DefaultImg from "@Images/workorder/default-profile.png";
 
 const PatientDetailCard = ({ selectedWorkOrder }: any) => {
   const { workOrder } = selectedWorkOrder;
-  console.log(selectedWorkOrder, "selectedWorkOrder");
+  console.log(workOrder, "selectedWorkOrder");
   const dispatch = useDispatch();
   return (
     <div className="col-span-1 shadowBox p-2 rounded">
@@ -37,18 +37,19 @@ const PatientDetailCard = ({ selectedWorkOrder }: any) => {
         </div>
       </div>
       <div className="flex flex-wrap items-center mt-2 gap-2">
-        <button
-          onClick={() => dispatch(openModal({ id: "prescription" }))}
-          className="bg-teal text-white text-[10px] font-semibold px-2 py-1 rounded text-[9px]"
+        <a
+          target="_blank"
+          href={`${workOrder?.prescription_pdf}`}
+          className="bg-teal text-white text-[12px] font-semibold px-2 py-1 rounded"
         >
           View Prescription
-        </button>
-        <button className="bg-teal h-[22px] w-[22px] rounded-full flex justify-center items-center">
+        </a>
+        {/* <button className="bg-teal h-[22px] w-[22px] rounded-full flex justify-center items-center">
           <Image src={CallIcon} alt="" className="w-[10px]" />
         </button>
         <button className="bg-teal h-[22px] w-[22px] rounded-full flex justify-center items-center">
           <Image src={CalenderIcon} alt="" className="w-[10px]" />
-        </button>
+        </button> */}
       </div>
     </div>
   );

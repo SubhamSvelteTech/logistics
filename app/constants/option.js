@@ -30,20 +30,20 @@ export const sideBarItems = [
     styles:
       "flex items-center text-[12px] gap-2.5 rounded-sm py-2 font-[700] dark:hover:bg-white",
   },
-  // {
-  //   name: "Health Care Workers",
-  //   icon: HealthcareIcon,
-  //   path: "/health-care",
-  //   styles:
-  //     "flex items-center text-[12px] gap-2.5 rounded-sm py-2 font-[700] dark:hover:bg-white",
-  // },
   {
-    name: "Task List",
-    icon: TasklistIcon,
-    path: "/task-list",
+    name: "Health Care Workers",
+    icon: HealthcareIcon,
+    path: "/health-care",
     styles:
       "flex items-center text-[12px] gap-2.5 rounded-sm py-2 font-[700] dark:hover:bg-white",
   },
+  // {
+  //   name: "Task List",
+  //   icon: TasklistIcon,
+  //   path: "/task-list",
+  //   styles:
+  //     "flex items-center text-[12px] gap-2.5 rounded-sm py-2 font-[700] dark:hover:bg-white",
+  // },
   // {
   //   name: "Collections",
   //   icon: CollectionIcon,
