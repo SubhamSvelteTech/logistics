@@ -5,8 +5,8 @@ import InventoryTable from "./components/InventoryTable";
 const page = () => {
   return (
     <>
-      {/* <Filter title="Inventory" />
-      <hr className="my-5 text-[#B3B3B3]" /> */}
+      <Filter title="Inventory" />
+      <hr className="my-5 text-[#B3B3B3]" />
       <InventoryTable />
     </>
   );

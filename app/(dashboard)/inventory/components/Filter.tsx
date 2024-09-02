@@ -6,9 +6,14 @@ import { FormField } from "@/Interfaces/Utils/Inventory";
 import { IoAddOutline } from "react-icons/io5";
 import React from "react";
 import { usePathname } from "next/navigation";
+import { openModal } from "@/Redux/Slices/modalSlice";
+import { useDispatch } from "react-redux";
+import AddNewItem from "@/modals/AddNewItem";
+import BookingDoneModal from "@/modals/BookingDoneModal";
 
 const Filter = ({ title }: { title: string }) => {
   const pathname = usePathname();
+  const dispatch = useDispatch();
   const formFields: any = [
     {
       id: 1,
@@ -28,7 +33,10 @@ const Filter = ({ title }: { title: string }) => {
           <BreadCrumb title={title} />
 
           {pathname === "/inventory" && (
-            <button className="w-36 bg-[#0E8080] text-xs py-2 px-3 rounded-md text-white flex items-center justify-around">
+            <button
+              className="w-36 bg-[#0E8080] text-xs py-2 px-3 rounded-md text-white flex items-center justify-around"
+              onClick={() => dispatch(openModal({ id: "add-new-item" }))}
+            >
               Add New Items <IoAddOutline size={20} />
             </button>
           )}
@@ -43,6 +51,8 @@ const Filter = ({ title }: { title: string }) => {
           </div>
         </div>
       </div>
+      <AddNewItem />
+      <BookingDoneModal />
     </>
   );
 };
