@@ -23,7 +23,9 @@ const ConfirmBooking = () => {
       dispatch(openModal({ id: "booking-done" }));
       dispatch(closeModal({ id: "confirm-booking" }));
     }
+
   };
+  console.log(assignedUser?.profilePicture,'dfewdsds')
   return (
     <Modal id="confirm-booking">
       <div>
@@ -54,7 +56,7 @@ const ConfirmBooking = () => {
 
         <div className="px-4 py-4 flex items-center gap-4">
 
-          {workOrder?.profilePicture?.length > 0 ? (
+          {workOrder?.profilePicture !== null ? (
             <img
               src={`http://192.168.15.49:5000/uploads/logistic/${workOrder?.profilePicture}`}
               width={80}
@@ -77,7 +79,7 @@ const ConfirmBooking = () => {
         <hr />
 
         <div className="px-4 py-4 flex items-center gap-4">
-          {assignedUser?.profilePicture?.length > 0 ? (
+          {assignedUser?.profilePicture === null ? (
             <img
               src={`http://192.168.15.49:5000/uploads/logistic/${assignedUser?.profilePicture}`}
               width={80}

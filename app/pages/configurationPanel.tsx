@@ -19,6 +19,7 @@ import BookingDoneModal from "@/modals/BookingDoneModal";
 import { getPatientAddress } from "../common/HelperFunctions";
 import { addPatientAddress, resetPatientAddress } from "@/Redux/Slices/patientAddressesSlice";
 import { closeAllModals } from "@/Redux/Slices/modalSlice";
+import PrescriptionModal from "@/modals/PrescriptionModal";
 
 const ConfigurationPanel = () => {
   const {selectedWorkOrder} = useSelector((state:any)=>state)
@@ -82,6 +83,7 @@ const ConfigurationPanel = () => {
       <DeliveryAddress setAddressFormData={setAddressFormData} addressFormData={addressFormData} id={id}/>
       <ConfirmBooking />
       <BookingDoneModal/>
+      <PrescriptionModal/>
     </>
   );
 };

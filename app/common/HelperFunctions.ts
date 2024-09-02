@@ -2,6 +2,7 @@ import axiosInstance from "@/services/utils/hooks/useApi";
 import {
   FETCH_ADDRESS,
   FETCH_ASSIGNED_TO,
+  LOGISTIC_DASHBOARD_CHART,
   WORK_ORDER_ALL_PATIENT,
 } from "../constants/apiEndpoints";
 
@@ -29,3 +30,12 @@ export const getPatientAddress = async (id: string) => {
     throw new Error("Failed to fetch patients");
   }
 };
+
+export const getChartData = async () => {
+    const res = await axiosInstance.get(LOGISTIC_DASHBOARD_CHART);
+    if (res.status === 200) {
+      return res.data.data.data;
+    } else {
+      throw new Error('Failed to fetch patients');
+    }
+  };

@@ -7,7 +7,7 @@ import { MdOutlineNotificationsNone } from "react-icons/md";
 import Link from "next/link";
 import { signOut, useSession } from "next-auth/react";
 import JanetImg from "@Images/workorder/janet.svg";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import axiosInstance from "@/services/utils/hooks/useApi";
 import { SIGNOUT } from "../constants/apiEndpoints";
 
@@ -15,6 +15,7 @@ const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { data: session, status } = useSession();
   const pathname = usePathname();
+  const router = useRouter();
   const dropdownRef =  useRef<HTMLDivElement | null>(null);
 
   const toggleDropdown = () => {
@@ -43,6 +44,8 @@ const Header = () => {
       signOut();
     }
   }
+
+  console.log(session?.user?.email,'session')
   return (
     <div className="bg-teal w-full p-4 fixed top-0 left-0 right-0 z-10">
       <div className="flex justify-between items-center">
@@ -77,7 +80,7 @@ const Header = () => {
                   <div className="px-4 py-3 text-sm text-gray-900 dark:text-white">
                     <div>Bonnie Green</div>
                     <div className="font-medium truncate">
-                      name@flowbite.com
+                      {session?.user?.email}
                     </div>
                   </div>
                   <ul
@@ -85,28 +88,12 @@ const Header = () => {
                     aria-labelledby="dropdownUserAvatarButton"
                   >
                     <li>
-                      <a
-                        href="#"
+                      <button
+                      onClick={()=>router.push("/dashboard")}
                         className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
                       >
                         Dashboard
-                      </a>
-                    </li>
-                    <li>
-                      <a
-                        href="#"
-                        className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                      >
-                        Settings
-                      </a>
-                    </li>
-                    <li>
-                      <a
-                        href="#"
-                        className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                      >
-                        Earnings
-                      </a>
+                      </button>
                     </li>
                   </ul>
                   <div className="py-2">

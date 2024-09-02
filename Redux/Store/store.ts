@@ -6,6 +6,7 @@ import assignToSlice from '../Slices/assignToSlice';
 import fetchAssignedToSlice from '../Slices/fetchAssignedToSlice';
 import assignedUserSlice from '../Slices/assignedUserSlice';
 import patientAddressesSlice from '../Slices/patientAddressesSlice';
+import prescriptionSlice from '../Slices/prescriptionSlice';
 
 const store = configureStore({
   reducer: {
@@ -14,7 +15,8 @@ const store = configureStore({
     assignTo:assignToSlice,
     fetchAssignedToData: fetchAssignedToSlice,
     assignedUser:assignedUserSlice,
-    patientAddress:patientAddressesSlice
+    patientAddress:patientAddressesSlice,
+    prescription: prescriptionSlice
   },
 });
 

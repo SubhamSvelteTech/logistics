@@ -7,9 +7,13 @@ import WorkOrderCard from "../(dashboard)/work-order/WorkOrderComp/WorkOrderCard
 import Image from "next/image";
 import { getPatientList } from "../common/HelperFunctions";
 import DefaultImg from "@Images/workorder/default-profile.png";
+import { openModal } from "@/Redux/Slices/modalSlice";
+import { useDispatch } from "react-redux";
+import PrescriptionModal from "@/modals/PrescriptionModal";
 
 const WorkOrder = () => {
   const [patients, setPatients] = useState([]);
+  const dispatch = useDispatch();
 
   const getUserDetails = async () => {
     const res = await getPatientList();
@@ -36,9 +40,9 @@ const WorkOrder = () => {
                 <div className="mb-4">
                   <div className="flex gap-4 items-center">
                     <div>
-                      <span className="bg-yellow-300 py-[4px] px-2 rounded-t ml-1 text-black text-[10px] font-semibold">
+                      {/* <span className="bg-yellow-300 py-[4px] px-2 rounded-t ml-1 text-black text-[10px] font-semibold">
                         HWC
-                      </span>
+                      </span> */}
                       {/* <Image src={JanetImg} alt="" className=" w-20" /> */}
                       {item?.profilePicture?.length > 0 ? (
                         <img
@@ -58,18 +62,18 @@ const WorkOrder = () => {
                       <p className="text-gray-900 text-xs font-semibold mt-6">
                         {item?.fullName}
                       </p>
-                      <p className="text-gray-600 text-xs">{item?.country}</p>
+                      <p className="text-gray-600 text-xs">{item?.city} {item?.city && ","}{item?.country}</p>
                       <p className="text-teal font-bold text-xs">
                         {item?.prescriptionType}
                       </p>
-                      <p className="font-semibold text-xs">
+                      {/* <p className="font-semibold text-xs">
                         Priority:{" "}
                         <span className="text-teal">{item?.paymentStatus}</span>
-                      </p>
+                      </p> */}
                       <div className="flex justify-center">
-                        <button className="bg-teal text-white text-[10px] py-2 px-2 font-semibold rounded mt-2">
+                        <a target="_blank" href={`${item?.prescription_pdf?.length > 0 && item?.prescription_pdf?.[0]}`} className="bg-teal text-white text-[10px] py-2 px-2 font-semibold rounded mt-2">
                           View Prescription
-                        </button>
+                        </a>
                       </div>
                     </div>
                   </div>
@@ -90,6 +94,9 @@ const WorkOrder = () => {
           </div>
         ))}
       </div>
+
+
+      <PrescriptionModal/>
     </>
   );
 };
