@@ -851,7 +851,7 @@ const InventoryTable = () => {
         </tbody>
       </table>
       <ConfirmBooking />
-      <BookingDoneModal />
+      <BookingDoneModal title="Inventory send successfully!" />
     </div>
   );
 };

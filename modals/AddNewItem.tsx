@@ -21,13 +21,13 @@ const AddNewItem = () => {
         <form className="max-w-md mx-auto px-4 mt-2">
           <div className="flex items-center gap-5">
             <div className="relative z-0 w-full">
-              <label htmlFor="floating_first_name" className="text-sm">
+              <label htmlFor="item-name" className="text-sm">
                 Name
               </label>
               <input
                 type="text"
-                name="floating_first_name"
-                id="floating_first_name"
+                name="item-name"
+                id="item-name"
                 className="block mb-4 w-full text-sm text-gray-900 bg-transparent border border-black appearance-none dark:text-white dark:border-black-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer px-2 py-1"
                 placeholder=" "
                 required
@@ -35,13 +35,13 @@ const AddNewItem = () => {
             </div>
 
             <div className="relative z-0 w-full">
-              <label htmlFor="floating_last_name" className="text-sm">
+              <label htmlFor="item-id-number" className="text-sm">
                 ID Number
               </label>
               <input
-                type="text"
-                name="floating_last_name"
-                id="floating_last_name"
+                type="number"
+                name="item-id-number"
+                id="item-id-number"
                 className="block mb-4 w-full text-sm text-gray-900 bg-transparent border border-black appearance-none dark:text-white dark:border-black-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer px-2 py-1"
                 placeholder=" "
                 required
@@ -50,25 +50,25 @@ const AddNewItem = () => {
           </div>
 
           <div className="relative z-0 w-full mb-5 group">
-            <label htmlFor="floating_first_name" className="text-sm">
+            <label htmlFor="location-for-item" className="text-sm">
               Location
             </label>
             <input
               type="text"
-              name="floating_first_name"
-              id="floating_first_name"
+              name="location-for-item"
+              id="location-for-item"
               className="block mb-4 w-full text-sm text-gray-900 bg-transparent border border-black appearance-none dark:text-white dark:border-black-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer px-2 py-1"
               placeholder=" "
               required
             />
 
-            <label htmlFor="floating_first_name" className="text-sm">
+            <label htmlFor="total-assets" className="text-sm">
               Total Allotted Assets
             </label>
             <input
-              type="text"
-              name="floating_first_name"
-              id="floating_first_name"
+              type="number"
+              name="total-assets"
+              id="total-assets"
               className="block mb-4 w-full text-sm text-gray-900 bg-transparent border border-black appearance-none dark:text-white dark:border-black-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer px-2 py-1"
               placeholder=" "
               required
@@ -105,7 +105,7 @@ const AddNewItem = () => {
           </button>
         </form>
       </Modal>
-      <BookingDoneModal />
+      <BookingDoneModal title="New Items added successfully!" />
     </>
   );
 };

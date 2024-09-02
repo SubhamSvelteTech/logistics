@@ -152,3 +152,19 @@ body {
 #upload-med-image {
   display: none;
 }
+
+/* Remove arrow from input type number */
+/* #total-assets input[type="number"]::-webkit-inner-spin-button,
+#total-assets
+  input[type="number"]::-webkit-outer-spin-button,
+  #location-for-item
+  input[type="number"]::-webkit-inner-spin-button,
+#location-for-item input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+} */
+/* 
+#total-assets input[type="number"],
+#location-for-item input[type="number"] {
+  -moz-appearance: textfield;
+} */
