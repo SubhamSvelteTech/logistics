@@ -78,7 +78,7 @@ const Header = () => {
                   className="z-10 absolute right-0 mt-2 bg-white divide-y divide-gray-100 rounded-lg shadow-2xl w-44 dark:bg-gray-700 dark:divide-gray-600"
                 >
                   <div className="px-4 py-3 text-sm text-gray-900 dark:text-white">
-                    <div>Bonnie Green</div>
+                    {/* <div>Bonnie Green</div> */}
                     <div className="font-medium truncate">
                       {session?.user?.email}
                     </div>

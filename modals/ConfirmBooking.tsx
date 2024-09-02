@@ -25,7 +25,6 @@ const ConfirmBooking = () => {
     }
 
   };
-  console.log(assignedUser?.profilePicture,'dfewdsds')
   return (
     <Modal id="confirm-booking">
       <div>

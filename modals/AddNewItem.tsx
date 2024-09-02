@@ -1,5 +1,5 @@
 import Modal from "@/app/components/Modal";
-import { openModal } from "@/Redux/Slices/modalSlice";
+import { closeModal, openModal } from "@/Redux/Slices/modalSlice";
 import React from "react";
 import { useDispatch } from "react-redux";
 import BookingDoneModal from "./BookingDoneModal";
@@ -9,6 +9,7 @@ const AddNewItem = () => {
 
   const submitForm = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
+    dispatch(closeModal({ id: "add-new-item" }));
     dispatch(openModal({ id: "booking-done" }));
   };
 
@@ -105,7 +106,7 @@ const AddNewItem = () => {
           </button>
         </form>
       </Modal>
-      <BookingDoneModal title="New Items added successfully!" />
+      <BookingDoneModal title="New Items added successfully!" path="/inventory"/>
     </>
   );
 };

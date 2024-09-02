@@ -851,7 +851,7 @@ const InventoryTable = () => {
         </tbody>
       </table>
       <ConfirmBooking />
-      <BookingDoneModal title="Inventory send successfully!" />
+      <BookingDoneModal title="Inventory send successfully!" path="/inventory"/>
     </div>
   );
 };
