@@ -21,7 +21,7 @@ const InventoryTable = () => {
     { id: 1, ques: "", title: "Sort By: A-Z", options: ["1", "2", "3"] },
   ];
 
-  const handleAccordionToggle = (rowIndex) => {
+  const handleAccordionToggle = (rowIndex:any) => {
     if (selectedRow === rowIndex) {
       setAccordionOpen(!accordionOpen);
     } else {
