@@ -1,4 +1,4 @@
-export const LOGISTIC_DASHBOARD_CHART = "/v1/logisticuser/logisticAdminDashboard?dateFilterDays=30"
+export const LOGISTIC_DASHBOARD_CHART = "/v1/logisticuser/logisticAdminDashboard"
 export const WORK_ORDER_ALL_PATIENT = "/v1/patient/patientall?page=0&pageSize=10&assignTo=false"
 export const REFRESH_TOKEN = "/v1/newAccessToken"
 export const SIGNOUT = "/v1/signout"
