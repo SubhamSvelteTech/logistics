@@ -82,7 +82,7 @@ const ConfigurationPanel = () => {
       {/* modal */}
       <DeliveryAddress setAddressFormData={setAddressFormData} addressFormData={addressFormData} id={id}/>
       <ConfirmBooking />
-      <BookingDoneModal/>
+      <BookingDoneModal title="Booking done successfully!" path="/work-order"/>
       <PrescriptionModal/>
     </>
   );

@@ -46,7 +46,7 @@ const Dashboard = () => {
 
         {/*  */}
         <div className="flex flex-col md:flex-row gap-2 mt-4">
-          <div className="shadowBox hover:cursor-pointer py-4 rounded w-full md:flex-1 hover:shadow-md hover:shadow-teal">
+          <div className="shadowBox hover:cursor-pointer py-4 rounded w-full md:flex-1">
             {/* Added w-full and md:flex-1 */}
             <div className="flex justify-center">
               <span className="font-bold text-lg">Delivery Executives</span>

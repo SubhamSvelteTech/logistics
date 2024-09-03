@@ -26,6 +26,8 @@ const WorkOrderQueueCard = ({ selectedWorkOrder }: any) => {
 
   },[workOrder?.tasklist])
 
+  console.log(workOrder?.tasklist,'vdsfdsv')
+
   return (
     <div className="border col-span-2 gap-2 items-center rounded p-2 md:mt-0 mt-4">
       <div className="flex overflow-x-auto gap-2 scrollbar-hide">
@@ -46,10 +48,10 @@ const WorkOrderQueueCard = ({ selectedWorkOrder }: any) => {
                 className={`${
                   item?.taskId === currentTaskId
                     ? "bg-[#FFC700]"
-                    : "bg-gray text-white"
+                    : item?.taskStatus === "CLOSED" ? "bg-[#72BE27] text-white" : item?.taskStatus === "BOOKED" ? "bg-teal text-white" : "bg-gray text-white"
                 } text-[#474747] px-2 py-1 font-bold rounded text-[10px]`}
               >
-                {item?.taskId === currentTaskId ? "Processing..." : "Assign"}
+                {item?.taskId === currentTaskId ? "Processing..." : item?.taskStatus === "CLOSED" ? "Closed" : item?.taskStatus === "BOOKED" ? "Assigned" : "Assign"}
               </button>
             </div>
           </div>
