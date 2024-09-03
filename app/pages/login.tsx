@@ -78,7 +78,7 @@ const Login = () => {
               </div>
               {/* form */}
 
-              <div className="p-4 flex flex-col gap-5">
+              <div className="p-4 flex flex-col gap-5 mb-6">
                 <div className="relative z-0 w-full mb-3 group">
                   <div className="absolute inset-y-0 left-0 flex items-center pointer-events-none">
                     <Image
@@ -147,19 +147,6 @@ const Login = () => {
                     className="text-xs font-semibold text-teal dark:text-gray-300 cursor-pointer"
                   >
                     Forgot Password?
-                  </Link>
-                </div>
-              </div>
-
-              <div className="flex flex-col gap-2 px-4 mt-4 mb-8">
-                <div className="text-xs flex justify-center">
-                  Don’t have an account?
-                  <Link
-                    href={"/signup"}
-                    prefetch={false}
-                    className="text-teal pl-2 cursor-pointer font-semibold"
-                  >
-                    Sign Up
                   </Link>
                 </div>
               </div>
