@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 body {
-  background-color: #F4F3F3;
+  background-color: #f4f3f3;
 }
 ::-webkit-scrollbar {
   width: 5px;
@@ -20,8 +20,8 @@ body {
   background: rgba(36, 52, 67, 0.37);
   border-radius: 10px;
 }
-.selectedItem{
-  background: #E0E0E0;
+.selectedItem {
+  background: #e0e0e0;
   color: teal;
 }
 
@@ -55,31 +55,30 @@ body {
   width: 100%;
 }
 
-
-.shadowBox{
+.shadowBox {
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25), 0 1px 3px rgba(0, 0, 0, 0.25);
 }
-.hoverShadow{
+.hoverShadow {
   box-shadow: 0 1px 3px rgba(14, 128, 128, 1), rgba(14, 128, 128, 1);
 }
 .chart-container {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 90%;
+  height: 100%;
   width: 100%;          
   padding: 20px;       
   box-sizing: border-box;
 }
 
 .chart-container canvas {
-  max-width: 600px;   
+  max-width: 600px;
   width: 100%;
-  height: auto;      
+  height: auto;
 }
 
 /* calender */
-.date_calender{
+.date_calender {
   padding-right: 6px;
   font-size: 13px;
 }
@@ -144,9 +143,40 @@ body {
 .react-calendar__month-view__days__day--weekend {
   color: #000 !important;
 }
-.react-calendar__navigation__next2-button{
+.react-calendar__navigation__next2-button {
   display: none;
 }
-.react-calendar__navigation__prev2-button{
+.react-calendar__navigation__prev2-button {
   display: none;
 }
+
+.scrollbar-hide {
+  -ms-overflow-style: none;  /* Internet Explorer 10+ */
+  scrollbar-width: none;  /* Firefox */
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;  /* Safari and Chrome */
+}
+.no-scroll {
+  overflow: hidden;
+}
+#upload-med-image {
+  display: none;
+}
+
+/* Remove arrow from input type number */
+/* #total-assets input[type="number"]::-webkit-inner-spin-button,
+#total-assets
+  input[type="number"]::-webkit-outer-spin-button,
+  #location-for-item
+  input[type="number"]::-webkit-inner-spin-button,
+#location-for-item input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+} */
+/* 
+#total-assets input[type="number"],
+#location-for-item input[type="number"] {
+  -moz-appearance: textfield;
+} */

@@ -20,8 +20,8 @@ ChartJS.register(
   Legend
 );
 
-const dataSe = [12,12,11,11,11,11,2,2,21,2,1,6,3,32,4,12,12,11,11,11,11,2,2,21,2,1,6,3,32,4]
-const dataMonth = ["Jan","Feb","Mar","Apr","May","Jun"]
+// const dataSe = [12,12,11,11,11,11,2,2,21,2,1,6,3,32,4,12,12,11,11,11,11,2,2,21,2,1,6,3,32,4]
+// const dataMonth = ["Jan","Feb","Mar","Apr","May","Jun"]
 
 const WorkChart = ({ dashboardData }: any) => {
   const [chartData, setChartData] = useState({
@@ -30,11 +30,11 @@ const WorkChart = ({ dashboardData }: any) => {
   });
 
   useEffect(() => {
-    const labels:any = dataMonth || [];
+    const labels:any = dashboardData?.labels || [];
     const datasets =
       dashboardData?.datasets?.map((dataset: any) => ({
         label: dataset.label,
-        data: dataSe,
+        data: dataset?.data,
         backgroundColor: dataset.backgroundColor,
         borderColor: dataset.borderColor,
       })) || [];

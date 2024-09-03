@@ -5,6 +5,8 @@ import HealthcareIcon from "@Icons/healthcare-icon.svg";
 import TasklistIcon from "@Icons/tasklist-icon.svg";
 import CollectionIcon from "@Icons/collection-icon.svg";
 import MyHrIcon from "@Icons/myhr-icon.svg";
+import HomeIcon from "@Icons/home-icon.svg";
+import OfficeIcon from "@Icons/office-icon.svg"
 
 export const sideBarItems = [
   {
@@ -35,27 +37,27 @@ export const sideBarItems = [
     styles:
       "flex items-center text-[12px] gap-2.5 rounded-sm py-2 font-[700] dark:hover:bg-white",
   },
-  {
-    name: "Task List",
-    icon: TasklistIcon,
-    path: "/task-list",
-    styles:
-      "flex items-center text-[12px] gap-2.5 rounded-sm py-2 font-[700] dark:hover:bg-white",
-  },
-  {
-    name: "Collections",
-    icon: CollectionIcon,
-    path: "/collections",
-    styles:
-      "flex items-center text-[12px] gap-2.5 rounded-sm py-2 font-[700] dark:hover:bg-white",
-  },
-  {
-    name: "My HR",
-    icon: MyHrIcon,
-    path: "/my-hr",
-    styles:
-      "flex items-center text-[12px] gap-2.5 rounded-sm py-2 font-[700] dark:hover:bg-white",
-  },
+  // {
+  //   name: "Task List",
+  //   icon: TasklistIcon,
+  //   path: "/task-list",
+  //   styles:
+  //     "flex items-center text-[12px] gap-2.5 rounded-sm py-2 font-[700] dark:hover:bg-white",
+  // },
+  // {
+  //   name: "Collections",
+  //   icon: CollectionIcon,
+  //   path: "/collections",
+  //   styles:
+  //     "flex items-center text-[12px] gap-2.5 rounded-sm py-2 font-[700] dark:hover:bg-white",
+  // },
+  // {
+  //   name: "My HR",
+  //   icon: MyHrIcon,
+  //   path: "/my-hr",
+  //   styles:
+  //     "flex items-center text-[12px] gap-2.5 rounded-sm py-2 font-[700] dark:hover:bg-white",
+  // },
 ];
 
 export const workOrderdropdwonData = [
@@ -145,3 +147,8 @@ export const workOrderList = [
     ],
   },
 ];
+
+export const addressTypeOption = [
+  {id:1, title:"Home", icon: HomeIcon},
+  {id:2, title:"Office", icon: OfficeIcon},
+]

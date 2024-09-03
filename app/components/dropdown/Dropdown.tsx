@@ -1,7 +1,7 @@
 import { DropdownProps } from "@/Interfaces/Utils/Dropdown";
 import React from "react";
 
-const Dropdown = ({ options,title }: DropdownProps) => {
+const Dropdown = ({ options, title }: DropdownProps) => {
   return (
     <>
       <div className="relative inline-block text-left w-full">
@@ -13,7 +13,7 @@ const Dropdown = ({ options,title }: DropdownProps) => {
           >
             <option selected>{title}</option>
             {options?.map((item,index)=>
-            <option value={title}>{item}</option>
+            <option className="!hover:bg-teal" value={title}>{item}</option>
             )}
           </select>
         </form>
