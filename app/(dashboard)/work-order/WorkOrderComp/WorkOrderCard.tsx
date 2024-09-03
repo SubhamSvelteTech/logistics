@@ -6,6 +6,8 @@ import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { addWorkOrderTask } from "@/Redux/Slices/selectedWorkOrderSlice";
 import { setCookie } from "cookies-next";
+import DeliverIcon from "@Icons/deliver-icon.svg"
+import DeliveredIcon from "@/app/components/icons/DeliveredIcon";
 
 const WorkOrderCard = ({ data, image, status, assigned, item }: any) => {
   const router = useRouter();
@@ -18,15 +20,15 @@ const WorkOrderCard = ({ data, image, status, assigned, item }: any) => {
   };
   return (
     <div className="w-full py-4 px-2">
-      <div className="relative rounded-lg shadowBox p-2 bg-white">
-        {assigned === "CLOSED" && (
+      <div className="relative rounded-lg shadowBox bg-white">
+        {/* {assigned === "CLOSED" && (
           <div className="absolute inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center rounded-lg">
             <span className="text-black text-md font-bold">DELIVERED</span>
           </div>
-        )}
+        )} */}
         <div
-          className={`relative ${
-            assigned === "CLOSED" ? "filter blur-sm opacity-50" : ""
+          className={`relative p-2 ${
+            assigned === "CLOSED" ? "" : ""
           }`}
         >
           <div className="flex justify-between items-start mb-4">
@@ -38,10 +40,11 @@ const WorkOrderCard = ({ data, image, status, assigned, item }: any) => {
                 status === "pending" && "p-1"
               } ${
                 assigned === "BOOKED"
-                  ? "bg-[#72BE27]"
+                  ? "bg-teal"
                   : assigned === "OPEN"
                   ? "bg-[#DBDBDB]"
-                  : "bg-[#72BE27]"
+                  : assigned === "CLOSED"
+                  ? "bg-[#72BE27]" : ""
               }`}
             >
               <span className={`text-xs text-white`}>
@@ -50,7 +53,7 @@ const WorkOrderCard = ({ data, image, status, assigned, item }: any) => {
                 ) : assigned === "OPEN" ? (
                   <Image src={ClockIcon} alt="" />
                 ) : (
-                  "!"
+                  <DeliveredIcon/>
                 )}
               </span>
             </div>
@@ -77,7 +80,7 @@ const WorkOrderCard = ({ data, image, status, assigned, item }: any) => {
               <p className="text-gray-900 font-semibold text-[12px]">
                 {data?.fullName}
               </p>
-              <p className="text-gray-600 text-[12px]">{data?.role}</p>
+              {/* <p className="text-gray-600 text-[12px]">{data?.role}</p>
               {assigned === "BOOKED" && (
                 <div className="flex">
                   {[...Array(5)].map((star, index) => (
@@ -91,7 +94,7 @@ const WorkOrderCard = ({ data, image, status, assigned, item }: any) => {
                     </svg>
                   ))}
                 </div>
-              )}
+              )} */}
             </div>
 
             
@@ -108,7 +111,7 @@ const WorkOrderCard = ({ data, image, status, assigned, item }: any) => {
                   : "bg-black"
               } hover:bg-teal-700 text-[10px] text-white font-semibold py-2 px-4 rounded`}
             >
-              {assigned === "BOOKED" ? "ASSIGNED" : "ASSIGN"}
+              {assigned === "BOOKED" ? "ASSIGNED" : assigned === "CLOSED" ? "DELIVERED" : "ASSIGN"}
             </button>
           </div>
         </div>

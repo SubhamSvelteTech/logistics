@@ -16,7 +16,9 @@ export const fetchAssignedTo = async (id: any, addressId: any) => {
 export const getPatientList = async () => {
   const res = await axiosInstance.get(WORK_ORDER_ALL_PATIENT);
   if (res.status === 200) {
-    return res.data.data.data;
+    // return res.data.data.data;
+    return res.data;
+
   } else {
     throw new Error("Failed to fetch patients");
   }

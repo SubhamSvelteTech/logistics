@@ -7,11 +7,7 @@ import { getCookie } from "cookies-next";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-const WorkOrderDropdown = ({
-  selectedWorkOrder,
-  assignto,
-  id,
-}: any) => {
+const WorkOrderDropdown = ({ selectedWorkOrder, assignto, id }: any) => {
   const { workOrder } = selectedWorkOrder;
   const taskId = getCookie("taskId");
   const [formFields, setFormFields] = useState<any>();
@@ -20,7 +16,7 @@ const WorkOrderDropdown = ({
     (state: any) => state.fetchAssignedToData
   );
   const dispatch = useDispatch();
-  const {patientAddress} = useSelector((state:any)=>state.patientAddress)
+  const { patientAddress } = useSelector((state: any) => state.patientAddress);
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
 
   const requiredKeys = [
@@ -34,7 +30,7 @@ const WorkOrderDropdown = ({
     "slotBookedId",
     "address",
     "addressId",
-    "logisticId"
+    "logisticId",
   ];
 
   useEffect(() => {
@@ -79,18 +75,20 @@ const WorkOrderDropdown = ({
         },
       ]);
     }
-  }, [workOrder, taskId,fetchAssignedToData,patientAddress]);
+  }, [workOrder, taskId, fetchAssignedToData, patientAddress]);
 
-  useEffect(()=>{
-    const isAllKeysPresent = requiredKeys.every((key:any) => assignTo.hasOwnProperty(key));
-    setIsButtonDisabled(!isAllKeysPresent); 
-  },[assignTo])
+  useEffect(() => {
+    const isAllKeysPresent = requiredKeys.every((key: any) =>
+      assignTo.hasOwnProperty(key)
+    );
+    setIsButtonDisabled(!isAllKeysPresent);
+  }, [assignTo]);
 
   const handleSubmit = async (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     e.preventDefault();
-    dispatch(openModal({id:"confirm-booking"}))
+    dispatch(openModal({ id: "confirm-booking" }));
   };
 
   return (
@@ -98,19 +96,22 @@ const WorkOrderDropdown = ({
       <ErrorBoundary>
         <div className="mt-4 lg:w-1/3">
           {formFields?.map((item: any, index: any) => (
-            <>
-              <div className="flex items-center gap-4 mt-6">
-                <span className="w-1/3 font-bold text-xs">{item?.ques}</span>
-                {/* <Dropdown options={item?.options} title={item?.title} /> */}
-                <CustomSelect item={item} id={id} />
-              </div>
-            </>
+            <div
+              className="flex items-center gap-4 mt-6"
+              key={`workdropdown-${index}`}
+            >
+              <span className="w-1/3 font-bold text-xs">{item?.ques}</span>
+              {/* <Dropdown options={item?.options} title={item?.title} /> */}
+              <CustomSelect item={item} id={id} />
+            </div>
           ))}
           <div className="flex text-center justify-end mt-8">
             <button
-            disabled={isButtonDisabled}
+              disabled={isButtonDisabled}
               onClick={(e) => handleSubmit(e)}
-              className={`font-bold text-white px-12 py-2 rounded  text-[11px] ${isButtonDisabled ? 'bg-gray' : 'bg-black'}`}
+              className={`font-bold text-white px-12 py-2 rounded  text-[11px] ${
+                isButtonDisabled ? "bg-gray" : "bg-black"
+              }`}
             >
               Schedule
             </button>

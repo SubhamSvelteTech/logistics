@@ -12,12 +12,14 @@ const CalenderWithSlots = () => {
   const formattedDate = format(value, "yyyy-MM-dd");
   const dispatch = useDispatch();
   const { data: slots, refetch } = useFetchSlots(formattedDate);
+  const [selectedSlot, setSelectedSlot] = useState<string | null>(null);
 
   const handleSlots = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
     time: string,
     id: string
   ) => {
+    setSelectedSlot(time);
     const payload = {
       assignedDate: formattedDate,
       startTime: time,
@@ -41,21 +43,21 @@ const CalenderWithSlots = () => {
             <span className="font-semibold text-[10px]">Select Time</span>
             {slots?.data?.[0]?.alotedTime.length > 0 ? (
               <div className="grid grid-cols-2 gap-2 w-full overflow-y-scroll h-[11rem]">
-                {slots?.data?.[0]?.alotedTime?.map(
-                  (item: any, index: number) => (
-                    <div key={`slots/${index + 1}`}>
-                      <button
-                        onClick={(e) =>
-                          handleSlots(e, item?.startTime, item?._id)
-                        }
-                        className="shadow-md text-[12px] w-full px-2 mt-2 py-1 rounded focus:bg-teal focus:text-white focus:font-bold"
-                      >
-                        {item?.startTime}
-                      </button>
-                    </div>
-                  )
-                )}
-              </div>
+              {slots?.data?.[0]?.alotedTime?.map((item: any, index: number) => (
+                <div key={`slots/${index + 1}`}>
+                  <button
+                    onClick={(e) => handleSlots(e, item?.startTime, item?._id)}
+                    className={`shadow-md text-[12px] w-full px-2 mt-2 py-1 rounded ${
+                      selectedSlot === item?.startTime
+                        ? 'bg-teal text-white font-bold'
+                        : ''
+                    }`}
+                  >
+                    {item?.startTime}
+                  </button>
+                </div>
+              ))}
+            </div>
             ) : (
               <div className="text-center text-sm h-[11rem]">
                 No Slots Availabel

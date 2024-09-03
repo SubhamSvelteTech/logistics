@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useRef, useState } from "react";
-import GLLOGO from "../../public/icons/gl-logo.svg";
+import GLLOGO from "@Images/logo_f_h.svg";
 import Image from "next/image";
 import { PiShoppingCartFill } from "react-icons/pi";
 import { MdOutlineNotificationsNone } from "react-icons/md";
@@ -36,21 +36,21 @@ const Header = () => {
   }, []);
 
   const handleSignout = async() => {
-    const payload = {
-      refreshToken: session?.user?.refreshToken
-    }
-    const res = await axiosInstance.post(SIGNOUT,payload);
-    if(res?.status === 200){
-      signOut();
-    }
+    // const payload = {
+    //   refreshToken: session?.user?.refreshToken
+    // }
+    // const res = await axiosInstance.post(SIGNOUT,payload);
+    // if(res?.status === 200){
+    // }
+    signOut();
   }
 
-  console.log(session?.user?.email,'session')
+  console.log(session,'session')
   return (
     <div className="bg-teal w-full p-4 fixed top-0 left-0 right-0 z-10">
       <div className="flex justify-between items-center">
-        <Link href="/">
-          <Image src={GLLOGO} width={200} height={100} alt="gl-logo" priority />
+        <Link href="/dashboard">
+          <Image src={GLLOGO} width={160} height={100} alt="gl-logo" priority />
         </Link>
         {session && pathname.length > 1 && (
           <div className="flex items-center justify-center">
