@@ -37,13 +37,13 @@ export const sideBarItems = [
     styles:
       "flex items-center text-[12px] gap-2.5 rounded-sm py-2 font-[700] dark:hover:bg-white",
   },
-  // {
-  //   name: "Task List",
-  //   icon: TasklistIcon,
-  //   path: "/task-list",
-  //   styles:
-  //     "flex items-center text-[12px] gap-2.5 rounded-sm py-2 font-[700] dark:hover:bg-white",
-  // },
+  {
+    name: "Task List",
+    icon: TasklistIcon,
+    path: "/task-list",
+    styles:
+      "flex items-center text-[12px] gap-2.5 rounded-sm py-2 font-[700] dark:hover:bg-white",
+  },
   // {
   //   name: "Collections",
   //   icon: CollectionIcon,
@@ -64,8 +64,8 @@ export const workOrderdropdwonData = [
   { id: 1, title: "Today", options: ["Today", "Tomorrow"] },
   { id: 2, title: "Tests", options: ["Tests"] },
   { id: 3, title: "Location", options: ["Delhi", "Gurugram"] },
-  { id: 4, title: "IPD", options: ["IUD", "OPD"] },
-  { id: 5, title: "Priority:High", options: ["High", "Low", "Moderate"] },
+  // { id: 4, title: "IPD", options: ["IUD", "OPD"] },
+  // { id: 5, title: "Priority:High", options: ["High", "Low", "Moderate"] },
 ];
 
 export const workOrderList = [
