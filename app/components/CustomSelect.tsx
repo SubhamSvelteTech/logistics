@@ -12,12 +12,14 @@ import { FETCH_ASSIGNED_TO } from "../constants/apiEndpoints";
 import { fetchAssignedTo } from "../common/HelperFunctions";
 import { addFetchAssignTo } from "@/Redux/Slices/fetchAssignedToSlice";
 import { assignedUser } from "@/Redux/Slices/assignedUserSlice";
+import { getCookie } from "cookies-next";
 
 const CustomSelect = ({ item, placeholder = "Select an option",id }: any) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState<any>(null);
   const dropdownRef = useRef<any>(null);
   const dispatch = useDispatch();
+  const taskId = getCookie("taskId");
 
   const toggleDropdown = () => setIsOpen(!isOpen);
 
@@ -27,7 +29,7 @@ const CustomSelect = ({ item, placeholder = "Select an option",id }: any) => {
     }
     setSelectedOption(option);
     if(item?.identifier === "address" && option !== "Add New Address"){
-      const res = await fetchAssignedTo(id,data)
+      const res = await fetchAssignedTo(id,data,taskId)
       dispatch(addFetchAssignTo(res))
       const payload = {
         address: option,
