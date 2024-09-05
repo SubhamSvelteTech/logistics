@@ -6,6 +6,14 @@ import axiosInstance from "@/services/utils/hooks/useApi";
 import { GET_INVENTORY } from "@/app/constants/apiEndpoints";
 import { useSelector } from "react-redux";
 
+const tableHeaders = [
+  "Name",
+  "ID Number",
+  "Location",
+  "Total Allotted Assets",
+  "Image",
+];
+
 const page = () => {
   const [inventory, setInventory] = useState<any[]>([]);
   const isInventoryData = useSelector(
@@ -23,11 +31,12 @@ const page = () => {
       setInventory([...res?.data?.data]);
     }
   };
+
   return (
     <>
       <Filter title="Inventory" setInventory={setInventory}/>
       <hr className="my-5 text-[#B3B3B3]" />
-      <InventoryTable inventory={inventory}/>
+      <InventoryTable endPoint={GET_INVENTORY} tableHeaders={tableHeaders} inventory={inventory}/>
     </>
   );
 };

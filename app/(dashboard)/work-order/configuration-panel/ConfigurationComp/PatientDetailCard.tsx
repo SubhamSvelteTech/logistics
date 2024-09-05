@@ -31,7 +31,7 @@ const PatientDetailCard = ({ selectedWorkOrder }: any) => {
           <div className="flex items-center gap-1 mt-1">
             <Image src={LocationIcon} alt="" />
             <p className="font-light text-[10px]">
-              {workOrder?.city}, {workOrder?.country}
+              {workOrder?.city}{workOrder?.city && ","} {workOrder?.country}
             </p>
           </div>
         </div>

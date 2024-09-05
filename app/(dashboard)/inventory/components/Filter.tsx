@@ -12,8 +12,15 @@ import AddNewItem from "@/modals/AddNewItem";
 import BookingDoneModal from "@/modals/BookingDoneModal";
 import { searchAllInventory } from "@/app/common/HelperFunctions";
 
-const Filter = ({ title,setInventory }: { title: string,setInventory:any }) => {
+const Filter = ({
+  title,
+  setInventory,
+}: {
+  title: string;
+  setInventory: any;
+}) => {
   const pathname = usePathname();
+  console.log(pathname, "pathname");
   const dispatch = useDispatch();
   const formFields: any = [
     {
@@ -27,12 +34,9 @@ const Filter = ({ title,setInventory }: { title: string,setInventory:any }) => {
   ];
 
   const handleSearch = async (query: string) => {
-    if(query?.length > 0){
-      const res = await searchAllInventory(query);
-      if(res?.status === 200){
-        setInventory(res?.data)
-      }
-
+    const res = await searchAllInventory(query?.length > 0 ? query : "");
+    if (res?.status === 200) {
+      setInventory(res?.data);
     }
   };
   return (
@@ -54,14 +58,17 @@ const Filter = ({ title,setInventory }: { title: string,setInventory:any }) => {
           {/* {formFields?.map((item: FormField) => (
             <Dropdown title={item.title} options={item?.options} />
           ))} */}
-          <SearchBar onSearch={handleSearch}/>
+          {pathname !== "/health-care" && <SearchBar onSearch={handleSearch} />}
           {/* <div className="col-span-2 text-sm text-[#7C7C7C]">
             Showing results for Delhi
           </div> */}
         </div>
       </div>
       <AddNewItem />
-      <BookingDoneModal title="New Items added successfully!" path="/inventory"/>
+      <BookingDoneModal
+        title="New Items added successfully!"
+        path="/inventory"
+      />
     </>
   );
 };

@@ -70,7 +70,7 @@ export const downloadPDFFile = async (response: any) => {
 };
 
 export const searchAllInventory = async(query:string) => {
-  const res = await axiosInstance.get(`${GET_INVENTORY}?page=0&pageSize=10&query=${query}`)
+  const res = await axiosInstance.get(`${GET_INVENTORY}?page=0&pageSize=10&${query?.length > 0 ? "query="+query : ""}`)
   if(res?.status === 200){
     return res?.data
   }
