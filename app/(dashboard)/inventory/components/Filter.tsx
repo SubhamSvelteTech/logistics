@@ -25,7 +25,7 @@ const Filter = ({ title }: { title: string }) => {
     { id: 3, ques: "", title: "Sort By : Location", options: ["1", "2", "3"] },
   ];
 
-  console.log(pathname, "pathname");
+  const handleSearch = async (query: string) => {};
   return (
     <>
       <div className="bg-white rounded-lg py-6 px-8">
@@ -45,7 +45,7 @@ const Filter = ({ title }: { title: string }) => {
           {formFields?.map((item: FormField) => (
             <Dropdown title={item.title} options={item?.options} />
           ))}
-          <SearchBar />
+          <SearchBar onSearch={handleSearch}/>
           <div className="col-span-2 text-sm text-[#7C7C7C]">
             Showing results for Delhi
           </div>

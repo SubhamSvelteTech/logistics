@@ -11,7 +11,7 @@ import { useDispatch, useSelector } from "react-redux";
 import axiosInstance from "@/services/utils/hooks/useApi";
 import { PATIENT_BY_ID } from "../constants/apiEndpoints";
 import { useParams } from "next/navigation";
-import { addWorkOrderTask } from "@/Redux/Slices/selectedWorkOrderSlice";
+import { addWorkOrderTask, resetWorkOrder } from "@/Redux/Slices/selectedWorkOrderSlice";
 import DeliveryAddress from "@/modals/DeliveryAddress";
 import { addAssignTo, resetAssignTo } from "@/Redux/Slices/assignToSlice";
 import ConfirmBooking from "@/modals/ConfirmBooking";
@@ -51,6 +51,7 @@ const ConfigurationPanel = () => {
       dispatch(resetAssignTo())
       dispatch(resetPatientAddress())
       dispatch(closeAllModals())
+      dispatch(resetWorkOrder())
     }
   },[])
   return (

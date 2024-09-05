@@ -2,14 +2,10 @@
 import React, { useEffect, useRef, useState } from "react";
 import GLLOGO from "@Images/logo_f_h.svg";
 import Image from "next/image";
-import { PiShoppingCartFill } from "react-icons/pi";
-import { MdOutlineNotificationsNone } from "react-icons/md";
 import Link from "next/link";
 import { signOut, useSession } from "next-auth/react";
-import JanetImg from "@Images/workorder/janet.svg";
+import JanetImg from "@Images/workorder/default-profile.png";
 import { usePathname, useRouter } from "next/navigation";
-import axiosInstance from "@/services/utils/hooks/useApi";
-import { SIGNOUT } from "../constants/apiEndpoints";
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -80,7 +76,8 @@ const Header = () => {
                   <div className="px-4 py-3 text-sm text-gray-900 dark:text-white">
                     {/* <div>Bonnie Green</div> */}
                     <div className="font-medium truncate">
-                      {session?.user?.email}
+                      {session?.user?.name}
+                      
                     </div>
                   </div>
                   <ul

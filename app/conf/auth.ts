@@ -26,11 +26,11 @@ export const authOptions: NextAuthOptions = {
           );
 
           const { statusCode, message, data } = response.data;
-
+          console.log(data)
           if (statusCode === 'SUC' && data) {
             const user = {
               id: credentials.email, // or any unique identifier from the response
-              name: credentials.email, // replace with user's name if available
+              name: data.user.fullName, // replace with user's name if available
               email: credentials.email,
               accessToken: data.accessToken,
               refreshToken: data.refreshToken,

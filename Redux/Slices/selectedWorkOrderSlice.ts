@@ -12,5 +12,5 @@ const selectedWorkOrderSlice = createSlice({
   reducers: selectedWorkOrderReducer,
 });
 
-export const { addWorkOrderTask } = selectedWorkOrderSlice.actions;
+export const { addWorkOrderTask,resetWorkOrder } = selectedWorkOrderSlice.actions;
 export default selectedWorkOrderSlice.reducer;
