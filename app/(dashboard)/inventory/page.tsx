@@ -2,7 +2,7 @@ import React from "react";
 import Filter from "./components/Filter";
 import InventoryTable from "./components/InventoryTable";
 
-const page = () => {
+const Page = async () => {
   return (
     <>
       <Filter title="Inventory" />
@@ -12,4 +12,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;

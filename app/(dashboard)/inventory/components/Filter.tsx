@@ -25,7 +25,6 @@ const Filter = ({ title }: { title: string }) => {
     { id: 3, ques: "", title: "Sort By : Location", options: ["1", "2", "3"] },
   ];
 
-  console.log(pathname, "pathname");
   return (
     <>
       <div className="bg-white rounded-lg py-6 px-8">
@@ -52,7 +51,10 @@ const Filter = ({ title }: { title: string }) => {
         </div>
       </div>
       <AddNewItem />
-      <BookingDoneModal title="New Items added successfully!" path="/inventory"/>
+      <BookingDoneModal
+        title="New Items added successfully!"
+        path="/inventory"
+      />
     </>
   );
 };

@@ -174,8 +174,8 @@ body {
 #location-for-item input[type="number"]::-webkit-outer-spin-button {
   -webkit-appearance: none;
   margin: 0;
-} */
-/* 
+}
+
 #total-assets input[type="number"],
 #location-for-item input[type="number"] {
   -moz-appearance: textfield;
