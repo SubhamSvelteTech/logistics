@@ -7,6 +7,7 @@ import demoImage from "@Images/astha-gill.svg";
 import { openModal } from "@/Redux/Slices/modalSlice";
 import { useDispatch } from "react-redux";
 import { FormField } from "@/Interfaces/Utils/Inventory";
+import defaultProfile from "@Images/workorder/default-profile.png";
 
 const TableRow = ({
   item,
@@ -17,6 +18,8 @@ const TableRow = ({
   const pathname = usePathname();
   const dispatch = useDispatch();
 
+  const isValidPath = pathname === "/inventory" ? true : false;
+  console.log(item, "itemitem");
   const formFields: any = [
     { id: 1, ques: "", title: "Sort By: A-Z", options: ["1", "2", "3"] },
   ];
@@ -35,16 +38,39 @@ const TableRow = ({
             className="cursor-pointer"
           />
         </td> */}
-        <td className="px-6 py-4">{item?.item}</td>
-        <td className="px-6 py-4">{item?._id}</td>
-        <td className="px-6 py-4">{item?.location}</td>
-        <td className="px-6 py-4">{item?.totalValue}</td>
+        <td className="px-6 py-4">
+          {isValidPath ? item?.item : item?.fullName}
+        </td>
+        <td className="px-6 py-4">
+          {isValidPath ? item?.itemNumber : item?.mobile}
+        </td>
+        <td className="px-6 py-4">
+          {isValidPath ? (item?.location ? item?.location : "N/A") : item?.city}
+        </td>
+        {isValidPath && <td className="px-6 py-4">{item?.totalValue}</td>}
         <td className="px-6 py-4">
           <div className="inline-block bg-[#C4C4C4] p-2">
-            <Image width={20} src={injectionIcon} alt="injection-icon" />
+            <Image
+              width={20}
+              height={20}
+              src={
+                // isValidPath
+                //   ? process.env.NEXT_PUBLIC_API_URL_FOR_IMG + item?.image
+                //   : item?.profilePicture !== "NULL"
+                //   ? process.env.NEXT_PUBLIC_API_URL_FOR_IMG +
+                //     item?.profilePicture
+                //   : injectionIcon
+
+                isValidPath ? injectionIcon : defaultProfile
+              }
+              alt="injection-icon"
+            />
           </div>
         </td>
       </tr>
+
+
+      {/* ------------- DO NOT REMOVE THESE COMMENTED CODE */}
 
       {/* {accordionOpen && selectedRow === item?._id && (
         <tr className="bg-white border border-[#DDDDDD]">
