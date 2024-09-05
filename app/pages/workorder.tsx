@@ -6,7 +6,6 @@ import Image from "next/image";
 import { getPatientList } from "../common/HelperFunctions";
 import DefaultImg from "@Images/workorder/default-profile.png";
 import Loader from "../components/loader/Loader";
-import PrescriptionModal from "@/modals/PrescriptionModal";
 
 const WorkOrder = () => {
   const [patients, setPatients] = useState<any>([]);

@@ -2,6 +2,7 @@ import axiosInstance from "@/services/utils/hooks/useApi";
 import {
   FETCH_ADDRESS,
   FETCH_ASSIGNED_TO,
+  GET_INVENTORY,
   LOGISTIC_DASHBOARD_CHART,
   TASK_LIST,
   WORK_ORDER_ALL_PATIENT,
@@ -14,8 +15,10 @@ export const fetchAssignedTo = async (id: any, addressId: any, taskId: any) => {
   return res?.data?.data;
 };
 
-export const getPatientList = async (page:any) => {
-  const res = await axiosInstance.get(`${WORK_ORDER_ALL_PATIENT}page=${page}&pageSize=10&assignTo=false`);
+export const getPatientList = async (page: any) => {
+  const res = await axiosInstance.get(
+    `${WORK_ORDER_ALL_PATIENT}page=${page}&pageSize=10&assignTo=false`
+  );
   if (res.status === 200) {
     // return res.data.data.data;
     return res.data;
@@ -42,11 +45,33 @@ export const getChartData = async () => {
   }
 };
 
-export const getTaskListData = async () => {
-  const res = await axiosInstance.get(TASK_LIST);
+export const getTaskListData = async (page?:any,testType?:any,search?:any) => {
+  const res = await axiosInstance.get(`${TASK_LIST}page=${page}&pageSize=10${testType?.length > 0 ? "&testType="+testType : ''}${search?.length > 0 ? "&search="+search : ''}`);
   if (res?.status === 200) {
     return res?.data;
   } else {
     throw new Error("Failed to fetch patients");
   }
 };
+
+export const downloadPDFFile = async (response: any) => {
+    try {
+      const url = response
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'file.pdf'; // Set default name if fileName is not provided
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error('Download failed:', error);
+    }
+};
+
+export const searchAllInventory = async(query:string) => {
+  const res = await axiosInstance.get(`${GET_INVENTORY}?page=0&pageSize=10&${query?.length > 0 ? "query="+query : ""}`)
+  if(res?.status === 200){
+    return res?.data
+  }
+}
