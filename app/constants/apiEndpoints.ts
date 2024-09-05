@@ -10,3 +10,6 @@ export const FETCH_ADDRESS = "v1/patient/fetchAddress/"
 export const FETCH_ASSIGNED_TO = "v1/patient/fetchAssigned"
 export const ASSIGN_TO = "v1/logisticUser/assignTo"
 export const TASK_LIST = "v1/logisticUser/taskList?"
+export const GET_INVENTORY = "v1/inventory/getAllProduct";
+export const GET_CATEGORIES = "v1/inventory/getAllCategory";
+export const ADD_INVENTORY_PRODUCT = "v1/inventory/products";

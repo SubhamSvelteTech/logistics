@@ -4,24 +4,37 @@ import { FormField } from "@/Interfaces/Utils/Inventory";
 import injectionIcon from "@Icons/injection.svg";
 import Image from "next/image";
 import demoImage from "@Images/astha-gill.svg";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { openModal } from "@/Redux/Slices/modalSlice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import ConfirmBooking from "@/modals/ConfirmBooking";
 import BookingDoneModal from "@/modals/BookingDoneModal";
 import { usePathname } from "next/navigation";
+import TableRow from "./TableRow";
+import axiosInstance from "@/services/utils/hooks/useApi";
+import {
+  ADD_INVENTORY_PRODUCT,
+  GET_INVENTORY,
+} from "@/app/constants/apiEndpoints";
 
-const InventoryTable = () => {
+const InventoryTable = ({ inventory }: any) => {
+  
   const [accordionOpen, setAccordionOpen] = useState(false);
   const [selectedRow, setSelectedRow] = useState(null);
+
+
   const dispatch = useDispatch();
   const pathname = usePathname();
+
+
 
   const formFields: any = [
     { id: 1, ques: "", title: "Sort By: A-Z", options: ["1", "2", "3"] },
   ];
 
-  const handleAccordionToggle = (rowIndex:any) => {
+
+
+  const handleAccordionToggle = (rowIndex: any) => {
     if (selectedRow === rowIndex) {
       setAccordionOpen(!accordionOpen);
     } else {
@@ -35,13 +48,13 @@ const InventoryTable = () => {
       <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
         <thead className="text-xs text-gray-700 uppercase bg-[#0E808033] dark:bg-gray-700 dark:text-gray-400">
           <tr>
-            <th scope="col" className="px-6 py-3">
+            {/* <th scope="col" className="px-6 py-3">
               <input
                 type="checkbox"
                 name="Select All Inventory"
                 className="cursor-pointer"
               />
-            </th>
+            </th> */}
             <th scope="col" className="px-6 py-3">
               Name
             </th>
@@ -60,7 +73,16 @@ const InventoryTable = () => {
           </tr>
         </thead>
         <tbody>
-          <tr
+          {inventory?.map((item:any) => (
+            <TableRow
+              item={item}
+              handleAccordionToggle={handleAccordionToggle}
+              accordionOpen={accordionOpen}
+              selectedRow={selectedRow}
+            />
+          ))}
+
+          {/* <tr
             className="bg-white border border-[#DDDDDD] rounded-md cursor-pointer"
             onClick={() => handleAccordionToggle(0)}
           >
@@ -76,9 +98,9 @@ const InventoryTable = () => {
             <td className="px-6 py-4">124</td>
             <td className="px-6 py-4">Laptop</td>
             <td className="px-6 py-4">
-              <span className="inline-block bg-[#C4C4C4] p-2">
+              <div className="inline-block bg-[#C4C4C4] p-2">
                 <Image width={20} src={injectionIcon} alt="injection icon" />
-              </span>
+              </div>
             </td>
           </tr>
 
@@ -89,19 +111,19 @@ const InventoryTable = () => {
                   <div className="w-full basis-6/12 xl:border-r-2 xl:border-[#0E8080]">
                     <div className="flex items-start justify-between">
                       <div className="basis-4/12">
-                        <span className="inline-block p-10 bg-[#C4C4C4] border-2 border-[#0E8080]">
+                        <div className="inline-block p-10 bg-[#C4C4C4] border-2 border-[#0E8080]">
                           <Image
                             src={injectionIcon}
                             alt="injection icon"
                             className="w-[5.3rem]"
                           />
-                        </span>
+                        </div>
                       </div>
                       <div className="basis-8/12 flex flex-col pr-5">
-                        <span className="text-[#6F6F6F]">
+                        <div className="text-[#6F6F6F]">
                           <strong className="pr-3">SKU Allotted</strong> Aug
                           2023
-                        </span>
+                        </div>
                         <input
                           type="text"
                           name=""
@@ -110,9 +132,7 @@ const InventoryTable = () => {
 
                         <div className="flex items-center justify-between">
                           <div className="w-2/5 flex items-start flex-col">
-                            <span className="text-[#6F6F6F] pt-2">
-                              SKU Left
-                            </span>
+                            <div className="text-[#6F6F6F] pt-2">SKU Left</div>
                             <input
                               type="text"
                               name=""
@@ -121,9 +141,7 @@ const InventoryTable = () => {
                           </div>
 
                           <div className="w-2/5 flex items-start flex-col">
-                            <span className="text-[#6F6F6F] pt-2">
-                              SKU Used
-                            </span>
+                            <div className="text-[#6F6F6F] pt-2">SKU Used</div>
                             <input
                               type="text"
                               name=""
@@ -134,9 +152,9 @@ const InventoryTable = () => {
 
                         <div className="flex items-center justify-between">
                           <div className="w-2/5 flex items-start flex-col">
-                            <span className="text-[#6F6F6F] pt-2">
+                            <div className="text-[#6F6F6F] pt-2">
                               SKU Defective
-                            </span>
+                            </div>
                             <input
                               type="text"
                               name=""
@@ -145,9 +163,9 @@ const InventoryTable = () => {
                           </div>
 
                           <div className="w-2/5 flex items-start flex-col">
-                            <span className="text-[#6F6F6F] pt-2">
+                            <div className="text-[#6F6F6F] pt-2">
                               lorem Ipsum
-                            </span>
+                            </div>
                             <input
                               type="text"
                               name=""
@@ -175,39 +193,39 @@ const InventoryTable = () => {
 
                     <div className="overflow-y-scroll h-[8rem] mt-2 xl:mt-0">
                       <div className="flex items-center border border-[#DDDDDD] px-3 py-1 mt-3 rounded-md cursor-pointer mr-2">
-                        <span className="basis-0/12 pr-3">
+                        <div className="basis-0/12 pr-3">
                           <input
                             type="checkbox"
                             name="select patient"
                             className="cursor-pointer"
                           />
-                        </span>
+                        </div>
 
-                        <span className="flex items-center basis-5/12">
+                        <div className="flex items-center basis-5/12">
                           <Image
                             width={40}
                             src={demoImage}
                             alt="patient image"
                             className="rounded-md"
                           />
-                          <span className="pl-2 font-semibold">
+                          <div className="pl-2 font-semibold">
                             Sheetal Sharma
-                          </span>
-                        </span>
+                          </div>
+                        </div>
 
-                        <span className="basis-5/12 text-[#A0A0A0]">
+                        <div className="basis-5/12 text-[#A0A0A0]">
                           order placed 23,Aug 2023
-                        </span>
+                        </div>
 
-                        <span className="basis-2/12">
+                        <div className="basis-2/12">
                           {pathname === "/health-care" ? (
                             <>
-                              <span className="text-xs pr-2 underline text-[#10800E]">
+                              <div className="text-xs pr-2 underline text-[#10800E]">
                                 Approve
-                              </span>
-                              <span className="text-xs underline text-[#FF4B4B]">
+                              </div>
+                              <div className="text-xs underline text-[#FF4B4B]">
                                 Deny
-                              </span>
+                              </div>
                             </>
                           ) : (
                             <input
@@ -216,43 +234,43 @@ const InventoryTable = () => {
                               className="w-full h-[1.5rem] border border-[#0E8080] outline-none rounded-sm pl-1"
                             />
                           )}
-                        </span>
+                        </div>
                       </div>
 
                       <div className="flex items-center border border-[#DDDDDD] px-3 py-1 mt-3 rounded-md cursor-pointer mr-2">
-                        <span className="basis-0/12 pr-3">
+                        <div className="basis-0/12 pr-3">
                           <input
                             type="checkbox"
                             name="select patient"
                             className="cursor-pointer"
                           />
-                        </span>
+                        </div>
 
-                        <span className="flex items-center basis-5/12">
+                        <div className="flex items-center basis-5/12">
                           <Image
                             width={40}
                             src={demoImage}
                             alt="patient image"
                             className="rounded-md"
                           />
-                          <span className="pl-2 font-semibold">
+                          <div className="pl-2 font-semibold">
                             Sheetal Sharma
-                          </span>
-                        </span>
+                          </div>
+                        </div>
 
-                        <span className="basis-5/12 text-[#A0A0A0]">
+                        <div className="basis-5/12 text-[#A0A0A0]">
                           order placed 23,Aug 2023
-                        </span>
+                        </div>
 
-                        <span className="basis-2/12">
+                        <div className="basis-2/12">
                           {pathname === "/health-care" ? (
                             <>
-                              <span className="text-xs pr-2 underline text-[#10800E]">
+                              <div className="text-xs pr-2 underline text-[#10800E]">
                                 Approve
-                              </span>
-                              <span className="text-xs underline text-[#FF4B4B]">
+                              </div>
+                              <div className="text-xs underline text-[#FF4B4B]">
                                 Deny
-                              </span>
+                              </div>
                             </>
                           ) : (
                             <input
@@ -261,43 +279,43 @@ const InventoryTable = () => {
                               className="w-full h-[1.5rem] border border-[#0E8080] outline-none rounded-sm pl-1"
                             />
                           )}
-                        </span>
+                        </div>
                       </div>
 
                       <div className="flex items-center border border-[#DDDDDD] px-3 py-1 mt-3 rounded-md cursor-pointer mr-2">
-                        <span className="basis-0/12 pr-3">
+                        <div className="basis-0/12 pr-3">
                           <input
                             type="checkbox"
                             name="select patient"
                             className="cursor-pointer"
                           />
-                        </span>
+                        </div>
 
-                        <span className="flex items-center basis-5/12">
+                        <div className="flex items-center basis-5/12">
                           <Image
                             width={40}
                             src={demoImage}
                             alt="patient image"
                             className="rounded-md"
                           />
-                          <span className="pl-2 font-semibold">
+                          <div className="pl-2 font-semibold">
                             Sheetal Sharma
-                          </span>
-                        </span>
+                          </div>
+                        </div>
 
-                        <span className="basis-5/12 text-[#A0A0A0]">
+                        <div className="basis-5/12 text-[#A0A0A0]">
                           order placed 23,Aug 2023
-                        </span>
+                        </div>
 
-                        <span className="basis-2/12">
+                        <div className="basis-2/12">
                           {pathname === "/health-care" ? (
                             <>
-                              <span className="text-xs pr-2 underline text-[#10800E]">
+                              <div className="text-xs pr-2 underline text-[#10800E]">
                                 Approve
-                              </span>
-                              <span className="text-xs underline text-[#FF4B4B]">
+                              </div>
+                              <div className="text-xs underline text-[#FF4B4B]">
                                 Deny
-                              </span>
+                              </div>
                             </>
                           ) : (
                             <input
@@ -306,7 +324,7 @@ const InventoryTable = () => {
                               className="w-full h-[1.5rem] border border-[#0E8080] outline-none rounded-sm pl-1"
                             />
                           )}
-                        </span>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -321,7 +339,7 @@ const InventoryTable = () => {
             </tr>
           )}
 
-          <span className="block h-[0.5rem]"></span>
+          <div className="block h-[0.5rem]"></div>
 
           <tr
             className="bg-white border border-[#DDDDDD] rounded-md cursor-pointer"
@@ -339,9 +357,9 @@ const InventoryTable = () => {
             <td className="px-6 py-4">124</td>
             <td className="px-6 py-4">Laptop</td>
             <td className="px-6 py-4">
-              <span className="inline-block bg-[#C4C4C4] p-2">
+              <div className="inline-block bg-[#C4C4C4] p-2">
                 <Image width={20} src={injectionIcon} alt="injection icon" />
-              </span>
+              </div>
             </td>
           </tr>
 
@@ -352,19 +370,19 @@ const InventoryTable = () => {
                   <div className="w-full basis-6/12 xl:border-r-2 xl:border-[#0E8080]">
                     <div className="flex items-start justify-between">
                       <div className="basis-4/12">
-                        <span className="inline-block p-10 bg-[#C4C4C4] border-2 border-[#0E8080]">
+                        <div className="inline-block p-10 bg-[#C4C4C4] border-2 border-[#0E8080]">
                           <Image
                             src={injectionIcon}
                             alt="injection icon"
                             className="w-[5.3rem]"
                           />
-                        </span>
+                        </div>
                       </div>
                       <div className="basis-8/12 flex flex-col pr-5">
-                        <span className="text-[#6F6F6F]">
+                        <div className="text-[#6F6F6F]">
                           <strong className="pr-3">SKU Allotted</strong> Aug
                           2023
-                        </span>
+                        </div>
                         <input
                           type="text"
                           name=""
@@ -373,9 +391,7 @@ const InventoryTable = () => {
 
                         <div className="flex items-center justify-between">
                           <div className="w-2/5 flex items-start flex-col">
-                            <span className="text-[#6F6F6F] pt-2">
-                              SKU Left
-                            </span>
+                            <div className="text-[#6F6F6F] pt-2">SKU Left</div>
                             <input
                               type="text"
                               name=""
@@ -384,9 +400,7 @@ const InventoryTable = () => {
                           </div>
 
                           <div className="w-2/5 flex items-start flex-col">
-                            <span className="text-[#6F6F6F] pt-2">
-                              SKU Used
-                            </span>
+                            <div className="text-[#6F6F6F] pt-2">SKU Used</div>
                             <input
                               type="text"
                               name=""
@@ -397,9 +411,9 @@ const InventoryTable = () => {
 
                         <div className="flex items-center justify-between">
                           <div className="w-2/5 flex items-start flex-col">
-                            <span className="text-[#6F6F6F] pt-2">
+                            <div className="text-[#6F6F6F] pt-2">
                               SKU Defective
-                            </span>
+                            </div>
                             <input
                               type="text"
                               name=""
@@ -408,9 +422,9 @@ const InventoryTable = () => {
                           </div>
 
                           <div className="w-2/5 flex items-start flex-col">
-                            <span className="text-[#6F6F6F] pt-2">
+                            <div className="text-[#6F6F6F] pt-2">
                               lorem Ipsum
-                            </span>
+                            </div>
                             <input
                               type="text"
                               name=""
@@ -438,39 +452,39 @@ const InventoryTable = () => {
 
                     <div className="overflow-y-scroll h-[8rem] mt-2 xl:mt-0">
                       <div className="flex items-center border border-[#DDDDDD] px-3 py-1 mt-3 rounded-md cursor-pointer mr-2">
-                        <span className="basis-0/12 pr-3">
+                        <div className="basis-0/12 pr-3">
                           <input
                             type="checkbox"
                             name="select patient"
                             className="cursor-pointer"
                           />
-                        </span>
+                        </div>
 
-                        <span className="flex items-center basis-5/12">
+                        <div className="flex items-center basis-5/12">
                           <Image
                             width={40}
                             src={demoImage}
                             alt="patient image"
                             className="rounded-md"
                           />
-                          <span className="pl-2 font-semibold">
+                          <div className="pl-2 font-semibold">
                             Sheetal Sharma
-                          </span>
-                        </span>
+                          </div>
+                        </div>
 
-                        <span className="basis-5/12 text-[#A0A0A0]">
+                        <div className="basis-5/12 text-[#A0A0A0]">
                           order placed 23,Aug 2023
-                        </span>
+                        </div>
 
-                        <span className="basis-2/12">
+                        <div className="basis-2/12">
                           {pathname === "/health-care" ? (
                             <>
-                              <span className="text-xs pr-2 underline text-[#10800E]">
+                              <div className="text-xs pr-2 underline text-[#10800E]">
                                 Approve
-                              </span>
-                              <span className="text-xs underline text-[#FF4B4B]">
+                              </div>
+                              <div className="text-xs underline text-[#FF4B4B]">
                                 Deny
-                              </span>
+                              </div>
                             </>
                           ) : (
                             <input
@@ -479,43 +493,43 @@ const InventoryTable = () => {
                               className="w-full h-[1.5rem] border border-[#0E8080] outline-none rounded-sm pl-1"
                             />
                           )}
-                        </span>
+                        </div>
                       </div>
 
                       <div className="flex items-center border border-[#DDDDDD] px-3 py-1 mt-3 rounded-md cursor-pointer mr-2">
-                        <span className="basis-0/12 pr-3">
+                        <div className="basis-0/12 pr-3">
                           <input
                             type="checkbox"
                             name="select patient"
                             className="cursor-pointer"
                           />
-                        </span>
+                        </div>
 
-                        <span className="flex items-center basis-5/12">
+                        <div className="flex items-center basis-5/12">
                           <Image
                             width={40}
                             src={demoImage}
                             alt="patient image"
                             className="rounded-md"
                           />
-                          <span className="pl-2 font-semibold">
+                          <div className="pl-2 font-semibold">
                             Sheetal Sharma
-                          </span>
-                        </span>
+                          </div>
+                        </div>
 
-                        <span className="basis-5/12 text-[#A0A0A0]">
+                        <div className="basis-5/12 text-[#A0A0A0]">
                           order placed 23,Aug 2023
-                        </span>
+                        </div>
 
-                        <span className="basis-2/12">
+                        <div className="basis-2/12">
                           {pathname === "/health-care" ? (
                             <>
-                              <span className="text-xs pr-2 underline text-[#10800E]">
+                              <div className="text-xs pr-2 underline text-[#10800E]">
                                 Approve
-                              </span>
-                              <span className="text-xs underline text-[#FF4B4B]">
+                              </div>
+                              <div className="text-xs underline text-[#FF4B4B]">
                                 Deny
-                              </span>
+                              </div>
                             </>
                           ) : (
                             <input
@@ -524,43 +538,43 @@ const InventoryTable = () => {
                               className="w-full h-[1.5rem] border border-[#0E8080] outline-none rounded-sm pl-1"
                             />
                           )}
-                        </span>
+                        </div>
                       </div>
 
                       <div className="flex items-center border border-[#DDDDDD] px-3 py-1 mt-3 rounded-md cursor-pointer mr-2">
-                        <span className="basis-0/12 pr-3">
+                        <div className="basis-0/12 pr-3">
                           <input
                             type="checkbox"
                             name="select patient"
                             className="cursor-pointer"
                           />
-                        </span>
+                        </div>
 
-                        <span className="flex items-center basis-5/12">
+                        <div className="flex items-center basis-5/12">
                           <Image
                             width={40}
                             src={demoImage}
                             alt="patient image"
                             className="rounded-md"
                           />
-                          <span className="pl-2 font-semibold">
+                          <div className="pl-2 font-semibold">
                             Sheetal Sharma
-                          </span>
-                        </span>
+                          </div>
+                        </div>
 
-                        <span className="basis-5/12 text-[#A0A0A0]">
+                        <div className="basis-5/12 text-[#A0A0A0]">
                           order placed 23,Aug 2023
-                        </span>
+                        </div>
 
-                        <span className="basis-2/12">
+                        <div className="basis-2/12">
                           {pathname === "/health-care" ? (
                             <>
-                              <span className="text-xs pr-2 underline text-[#10800E]">
+                              <div className="text-xs pr-2 underline text-[#10800E]">
                                 Approve
-                              </span>
-                              <span className="text-xs underline text-[#FF4B4B]">
+                              </div>
+                              <div className="text-xs underline text-[#FF4B4B]">
                                 Deny
-                              </span>
+                              </div>
                             </>
                           ) : (
                             <input
@@ -569,7 +583,7 @@ const InventoryTable = () => {
                               className="w-full h-[1.5rem] border border-[#0E8080] outline-none rounded-sm pl-1"
                             />
                           )}
-                        </span>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -584,7 +598,7 @@ const InventoryTable = () => {
             </tr>
           )}
 
-          <span className="block h-[0.5rem]"></span>
+          <div className="block h-[0.5rem]"></div>
 
           <tr
             className="bg-white border border-[#DDDDDD] rounded-md cursor-pointer"
@@ -602,9 +616,9 @@ const InventoryTable = () => {
             <td className="px-6 py-4">124</td>
             <td className="px-6 py-4">Laptop</td>
             <td className="px-6 py-4">
-              <span className="inline-block bg-[#C4C4C4] p-2">
+              <div className="inline-block bg-[#C4C4C4] p-2">
                 <Image width={20} src={injectionIcon} alt="injection icon" />
-              </span>
+              </div>
             </td>
           </tr>
 
@@ -615,19 +629,19 @@ const InventoryTable = () => {
                   <div className="w-full basis-6/12 xl:border-r-2 xl:border-[#0E8080]">
                     <div className="flex items-start justify-between">
                       <div className="basis-4/12">
-                        <span className="inline-block p-10 bg-[#C4C4C4] border-2 border-[#0E8080]">
+                        <div className="inline-block p-10 bg-[#C4C4C4] border-2 border-[#0E8080]">
                           <Image
                             src={injectionIcon}
                             alt="injection icon"
                             className="w-[5.3rem]"
                           />
-                        </span>
+                        </div>
                       </div>
                       <div className="basis-8/12 flex flex-col pr-5">
-                        <span className="text-[#6F6F6F]">
+                        <div className="text-[#6F6F6F]">
                           <strong className="pr-3">SKU Allotted</strong> Aug
                           2023
-                        </span>
+                        </div>
                         <input
                           type="text"
                           name=""
@@ -636,9 +650,7 @@ const InventoryTable = () => {
 
                         <div className="flex items-center justify-between">
                           <div className="w-2/5 flex items-start flex-col">
-                            <span className="text-[#6F6F6F] pt-2">
-                              SKU Left
-                            </span>
+                            <div className="text-[#6F6F6F] pt-2">SKU Left</div>
                             <input
                               type="text"
                               name=""
@@ -647,9 +659,7 @@ const InventoryTable = () => {
                           </div>
 
                           <div className="w-2/5 flex items-start flex-col">
-                            <span className="text-[#6F6F6F] pt-2">
-                              SKU Used
-                            </span>
+                            <div className="text-[#6F6F6F] pt-2">SKU Used</div>
                             <input
                               type="text"
                               name=""
@@ -660,9 +670,9 @@ const InventoryTable = () => {
 
                         <div className="flex items-center justify-between">
                           <div className="w-2/5 flex items-start flex-col">
-                            <span className="text-[#6F6F6F] pt-2">
+                            <div className="text-[#6F6F6F] pt-2">
                               SKU Defective
-                            </span>
+                            </div>
                             <input
                               type="text"
                               name=""
@@ -671,9 +681,9 @@ const InventoryTable = () => {
                           </div>
 
                           <div className="w-2/5 flex items-start flex-col">
-                            <span className="text-[#6F6F6F] pt-2">
+                            <div className="text-[#6F6F6F] pt-2">
                               lorem Ipsum
-                            </span>
+                            </div>
                             <input
                               type="text"
                               name=""
@@ -701,39 +711,39 @@ const InventoryTable = () => {
 
                     <div className="overflow-y-scroll h-[8rem] mt-2 xl:mt-0">
                       <div className="flex items-center border border-[#DDDDDD] px-3 py-1 mt-3 rounded-md cursor-pointer mr-2">
-                        <span className="basis-0/12 pr-3">
+                        <div className="basis-0/12 pr-3">
                           <input
                             type="checkbox"
                             name="select patient"
                             className="cursor-pointer"
                           />
-                        </span>
+                        </div>
 
-                        <span className="flex items-center basis-5/12">
+                        <div className="flex items-center basis-5/12">
                           <Image
                             width={40}
                             src={demoImage}
                             alt="patient image"
                             className="rounded-md"
                           />
-                          <span className="pl-2 font-semibold">
+                          <div className="pl-2 font-semibold">
                             Sheetal Sharma
-                          </span>
-                        </span>
+                          </div>
+                        </div>
 
-                        <span className="basis-5/12 text-[#A0A0A0]">
+                        <div className="basis-5/12 text-[#A0A0A0]">
                           order placed 23,Aug 2023
-                        </span>
+                        </div>
 
-                        <span className="basis-2/12">
+                        <div className="basis-2/12">
                           {pathname === "/health-care" ? (
                             <>
-                              <span className="text-xs pr-2 underline text-[#10800E]">
+                              <div className="text-xs pr-2 underline text-[#10800E]">
                                 Approve
-                              </span>
-                              <span className="text-xs underline text-[#FF4B4B]">
+                              </div>
+                              <div className="text-xs underline text-[#FF4B4B]">
                                 Deny
-                              </span>
+                              </div>
                             </>
                           ) : (
                             <input
@@ -742,43 +752,43 @@ const InventoryTable = () => {
                               className="w-full h-[1.5rem] border border-[#0E8080] outline-none rounded-sm pl-1"
                             />
                           )}
-                        </span>
+                        </div>
                       </div>
 
                       <div className="flex items-center border border-[#DDDDDD] px-3 py-1 mt-3 rounded-md cursor-pointer mr-2">
-                        <span className="basis-0/12 pr-3">
+                        <div className="basis-0/12 pr-3">
                           <input
                             type="checkbox"
                             name="select patient"
                             className="cursor-pointer"
                           />
-                        </span>
+                        </div>
 
-                        <span className="flex items-center basis-5/12">
+                        <div className="flex items-center basis-5/12">
                           <Image
                             width={40}
                             src={demoImage}
                             alt="patient image"
                             className="rounded-md"
                           />
-                          <span className="pl-2 font-semibold">
+                          <div className="pl-2 font-semibold">
                             Sheetal Sharma
-                          </span>
-                        </span>
+                          </div>
+                        </div>
 
-                        <span className="basis-5/12 text-[#A0A0A0]">
+                        <div className="basis-5/12 text-[#A0A0A0]">
                           order placed 23,Aug 2023
-                        </span>
+                        </div>
 
-                        <span className="basis-2/12">
+                        <div className="basis-2/12">
                           {pathname === "/health-care" ? (
                             <>
-                              <span className="text-xs pr-2 underline text-[#10800E]">
+                              <div className="text-xs pr-2 underline text-[#10800E]">
                                 Approve
-                              </span>
-                              <span className="text-xs underline text-[#FF4B4B]">
+                              </div>
+                              <div className="text-xs underline text-[#FF4B4B]">
                                 Deny
-                              </span>
+                              </div>
                             </>
                           ) : (
                             <input
@@ -787,43 +797,43 @@ const InventoryTable = () => {
                               className="w-full h-[1.5rem] border border-[#0E8080] outline-none rounded-sm pl-1"
                             />
                           )}
-                        </span>
+                        </div>
                       </div>
 
                       <div className="flex items-center border border-[#DDDDDD] px-3 py-1 mt-3 rounded-md cursor-pointer mr-2">
-                        <span className="basis-0/12 pr-3">
+                        <div className="basis-0/12 pr-3">
                           <input
                             type="checkbox"
                             name="select patient"
                             className="cursor-pointer"
                           />
-                        </span>
+                        </div>
 
-                        <span className="flex items-center basis-5/12">
+                        <div className="flex items-center basis-5/12">
                           <Image
                             width={40}
                             src={demoImage}
                             alt="patient image"
                             className="rounded-md"
                           />
-                          <span className="pl-2 font-semibold">
+                          <div className="pl-2 font-semibold">
                             Sheetal Sharma
-                          </span>
-                        </span>
+                          </div>
+                        </div>
 
-                        <span className="basis-5/12 text-[#A0A0A0]">
+                        <div className="basis-5/12 text-[#A0A0A0]">
                           order placed 23,Aug 2023
-                        </span>
+                        </div>
 
-                        <span className="basis-2/12">
+                        <div className="basis-2/12">
                           {pathname === "/health-care" ? (
                             <>
-                              <span className="text-xs pr-2 underline text-[#10800E]">
+                              <div className="text-xs pr-2 underline text-[#10800E]">
                                 Approve
-                              </span>
-                              <span className="text-xs underline text-[#FF4B4B]">
+                              </div>
+                              <div className="text-xs underline text-[#FF4B4B]">
                                 Deny
-                              </span>
+                              </div>
                             </>
                           ) : (
                             <input
@@ -832,7 +842,7 @@ const InventoryTable = () => {
                               className="w-full h-[1.5rem] border border-[#0E8080] outline-none rounded-sm pl-1"
                             />
                           )}
-                        </span>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -847,11 +857,14 @@ const InventoryTable = () => {
             </tr>
           )}
 
-          <span className="block h-[0.5rem]"></span>
+          <div className="block h-[0.5rem]"></div> */}
         </tbody>
       </table>
       <ConfirmBooking />
-      <BookingDoneModal title="Inventory send successfully!" path="/inventory"/>
+      <BookingDoneModal
+        title="Inventory send successfully!"
+        path="/inventory"
+      />
     </div>
   );
 };

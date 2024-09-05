@@ -10,8 +10,9 @@ import { openModal } from "@/Redux/Slices/modalSlice";
 import { useDispatch } from "react-redux";
 import AddNewItem from "@/modals/AddNewItem";
 import BookingDoneModal from "@/modals/BookingDoneModal";
+import { searchAllInventory } from "@/app/common/HelperFunctions";
 
-const Filter = ({ title }: { title: string }) => {
+const Filter = ({ title,setInventory }: { title: string,setInventory:any }) => {
   const pathname = usePathname();
   const dispatch = useDispatch();
   const formFields: any = [
@@ -25,7 +26,15 @@ const Filter = ({ title }: { title: string }) => {
     { id: 3, ques: "", title: "Sort By : Location", options: ["1", "2", "3"] },
   ];
 
-  const handleSearch = async (query: string) => {};
+  const handleSearch = async (query: string) => {
+    if(query?.length > 0){
+      const res = await searchAllInventory(query);
+      if(res?.status === 200){
+        setInventory(res?.data)
+      }
+
+    }
+  };
   return (
     <>
       <div className="bg-white rounded-lg py-6 px-8">
@@ -42,13 +51,13 @@ const Filter = ({ title }: { title: string }) => {
           )}
         </div>
         <div className="grid md:grid-cols-8 gap-2 xxs:pr-8 mt-4 items-center">
-          {formFields?.map((item: FormField) => (
+          {/* {formFields?.map((item: FormField) => (
             <Dropdown title={item.title} options={item?.options} />
-          ))}
+          ))} */}
           <SearchBar onSearch={handleSearch}/>
-          <div className="col-span-2 text-sm text-[#7C7C7C]">
+          {/* <div className="col-span-2 text-sm text-[#7C7C7C]">
             Showing results for Delhi
-          </div>
+          </div> */}
         </div>
       </div>
       <AddNewItem />

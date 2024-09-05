@@ -2,6 +2,7 @@ import axiosInstance from "@/services/utils/hooks/useApi";
 import {
   FETCH_ADDRESS,
   FETCH_ASSIGNED_TO,
+  GET_INVENTORY,
   LOGISTIC_DASHBOARD_CHART,
   TASK_LIST,
   WORK_ORDER_ALL_PATIENT,
@@ -67,3 +68,10 @@ export const downloadPDFFile = async (response: any) => {
       console.error('Download failed:', error);
     }
 };
+
+export const searchAllInventory = async(query:string) => {
+  const res = await axiosInstance.get(`${GET_INVENTORY}?page=0&pageSize=10&query=${query}`)
+  if(res?.status === 200){
+    return res?.data
+  }
+}
