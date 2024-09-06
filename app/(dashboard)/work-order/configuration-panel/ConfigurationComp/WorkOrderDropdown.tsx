@@ -1,6 +1,7 @@
 import CustomSelect from "@/app/components/CustomSelect";
 import ErrorBoundary from "@/app/components/ErrorBoundary";
 import { ASSIGN_TO } from "@/app/constants/apiEndpoints";
+import { addConfirmedData } from "@/Redux/Slices/confirmModalDataSlice";
 import { openModal } from "@/Redux/Slices/modalSlice";
 import axiosInstance from "@/services/utils/hooks/useApi";
 import { getCookie } from "cookies-next";
@@ -12,6 +13,7 @@ const WorkOrderDropdown = ({ selectedWorkOrder, assignto, id }: any) => {
   const taskId = getCookie("taskId");
   const [formFields, setFormFields] = useState<any>();
   const { assignTo } = useSelector((state: any) => state.assignTo);
+  const {assignedUser} = useSelector((state:any)=>state.assignedUser)
   const { fetchAssignedToData } = useSelector(
     (state: any) => state.fetchAssignedToData
   );
@@ -89,6 +91,7 @@ const WorkOrderDropdown = ({ selectedWorkOrder, assignto, id }: any) => {
   ) => {
     e.preventDefault();
     dispatch(openModal({ id: "confirm-booking" }));
+    dispatch(addConfirmedData({workOrder,assignTo,assignedUser}));
   };
 
   return (

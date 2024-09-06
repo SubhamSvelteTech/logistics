@@ -8,6 +8,7 @@ import assignedUserSlice from "../Slices/assignedUserSlice";
 import patientAddressesSlice from "../Slices/patientAddressesSlice";
 import prescriptionSlice from "../Slices/prescriptionSlice";
 import inventorySlice from "../Slices/inventorySlice";
+import confirmModalDataSlice from "../Slices/confirmModalDataSlice";
 
 const store = configureStore({
   reducer: {
@@ -19,6 +20,7 @@ const store = configureStore({
     patientAddress: patientAddressesSlice,
     prescription: prescriptionSlice,
     inventory: inventorySlice,
+    confirmModalData: confirmModalDataSlice
   },
 });
 
