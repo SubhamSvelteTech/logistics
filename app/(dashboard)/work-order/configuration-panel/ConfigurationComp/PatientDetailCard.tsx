@@ -7,11 +7,28 @@ import CalenderIcon from "@Icons/calender-icon.svg";
 import { openModal } from "@/Redux/Slices/modalSlice";
 import { useDispatch } from "react-redux";
 import DefaultImg from "@Images/workorder/default-profile.png";
+import axiosInstance from "@/services/utils/hooks/useApi";
+import { SEND_CALLING } from "@/app/constants/apiEndpoints";
 
 const PatientDetailCard = ({ selectedWorkOrder }: any) => {
   const { workOrder } = selectedWorkOrder;
   console.log(workOrder, "selectedWorkOrder");
   const dispatch = useDispatch();
+
+  const sendCallNotificationApi = async(patientId:string) => {
+    let payload = {
+      title:"Call From Logistics Manager",
+      patientId:patientId
+      
+    }
+
+    const res = await axiosInstance?.post(SEND_CALLING,payload)
+  }
+
+  const sendCallNotification = (patientId:string) => {
+    console.log("patientId",patientId)
+    sendCallNotificationApi(patientId)
+  }
   return (
     <div className="col-span-1 shadowBox p-2 rounded">
       <div className="flex gap-2">
@@ -44,12 +61,16 @@ const PatientDetailCard = ({ selectedWorkOrder }: any) => {
         >
           View Prescription
         </a>
-        {/* <button className="bg-teal h-[22px] w-[22px] rounded-full flex justify-center items-center">
+        {
+        <button className="bg-teal h-[22px] w-[22px] rounded-full flex justify-center items-center" onClick={() => sendCallNotification(workOrder?._id)}>
           <Image src={CallIcon} alt="" className="w-[10px]" />
         </button>
-        <button className="bg-teal h-[22px] w-[22px] rounded-full flex justify-center items-center">
+}
+        
+        {/* <button className="bg-teal h-[22px] w-[22px] rounded-full flex justify-center items-center">
           <Image src={CalenderIcon} alt="" className="w-[10px]" />
-        </button> */}
+        </button>  */}
+        
       </div>
     </div>
   );
