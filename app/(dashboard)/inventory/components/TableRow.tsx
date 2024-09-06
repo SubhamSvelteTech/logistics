@@ -1,5 +1,5 @@
 import Image from "next/image";
-import React from "react";
+import React, { useState } from "react";
 import { usePathname } from "next/navigation";
 import injectionIcon from "@Icons/injection.svg";
 import Dropdown from "@/app/components/dropdown/Dropdown";
@@ -8,21 +8,33 @@ import { openModal } from "@/Redux/Slices/modalSlice";
 import { useDispatch } from "react-redux";
 import { FormField } from "@/Interfaces/Utils/Inventory";
 import defaultProfile from "@Images/workorder/default-profile.png";
+import ConfirmBooking from "@/modals/ConfirmBooking";
+import BookingDoneModal from "@/modals/BookingDoneModal";
 
 const TableRow = ({
   item,
   handleAccordionToggle,
   selectedRow,
   accordionOpen,
+  innerRowData,
 }: any) => {
+  const [selectedItem, setSelectedItem] = useState<any>({});
+
   const pathname = usePathname();
   const dispatch = useDispatch();
 
   const isValidPath = pathname === "/inventory" ? true : false;
-  console.log(item, "itemitem");
+  console.log(item, "itemitem", innerRowData);
   const formFields: any = [
     { id: 1, ques: "", title: "Sort By: A-Z", options: ["1", "2", "3"] },
   ];
+
+  const selectItem = (itm: any) => {
+    console.log(itm, "ioio");
+    setSelectedItem({ ...itm, med_name: item?.item, med_img: item?.image });
+  };
+
+  console.log(selectedItem, "selectItem", item);
 
   return (
     <>
@@ -69,10 +81,9 @@ const TableRow = ({
         </td>
       </tr>
 
-
       {/* ------------- DO NOT REMOVE THESE COMMENTED CODE */}
 
-      {/* {accordionOpen && selectedRow === item?._id && (
+      {accordionOpen && selectedRow === item?._id && (
         <tr className="bg-white border border-[#DDDDDD]">
           <td colSpan={6} className="px-6 py-5">
             <div className="bg-gray-100 dark:bg-gray-700 flex items-start flex-col  xl:flex-row xl:items-stretch">
@@ -152,7 +163,7 @@ const TableRow = ({
                 </div>
 
                 <div className="overflow-y-scroll h-[8rem] mt-2 xl:mt-0">
-                  <div className="flex items-center border border-[#DDDDDD] px-3 py-1 mt-3 rounded-md cursor-pointer mr-2">
+                  {/* <div className="flex items-center border border-[#DDDDDD] px-3 py-1 mt-3 rounded-md cursor-pointer mr-2">
                     <div className="basis-0/12 pr-3">
                       <input
                         type="checkbox"
@@ -279,7 +290,67 @@ const TableRow = ({
                         />
                       )}
                     </div>
-                  </div>
+                  </div> */}
+
+                  {innerRowData?.map((item: any) => (
+                    <div
+                      className={`flex items-center border  px-3 py-1 mt-3 rounded-md cursor-pointer mr-2 ${
+                        selectedItem?._id === item?._id
+                          ? "border-[#0E8080]"
+                          : "border-[#DDDDDD]"
+                      } `}
+                      onClick={() => selectItem(item)}
+                    >
+                      {/* <div className="basis-0/12 pr-3">
+                        <input
+                          type="checkbox"
+                          name="select patient"
+                          className="cursor-pointer"
+                        />
+                      </div> */}
+
+                      <div className="flex items-center basis-5/12">
+                        <Image
+                          width={40}
+                          height={40}
+                          src={
+                            item?.profilePicture?.length > 0
+                              ? process.env.NEXT_PUBLIC_API_URL_FOR_IMG +
+                                item?.profilePicture
+                              : defaultProfile
+                          }
+                          alt="patient image"
+                          className="rounded-md"
+                        />
+                        <div className="pl-2 font-semibold">
+                          {item?.fullName}
+                        </div>
+                      </div>
+
+                      <div className="basis-5/12 text-[#A0A0A0]">
+                        order placed 23,Aug 2023
+                      </div>
+
+                      <div className="basis-2/12">
+                        {pathname === "/health-care" ? (
+                          <>
+                            <div className="text-xs pr-2 underline text-[#10800E]">
+                              Approve
+                            </div>
+                            <div className="text-xs underline text-[#FF4B4B]">
+                              Deny
+                            </div>
+                          </>
+                        ) : (
+                          <input
+                            type="number"
+                            name="medicine quantity"
+                            className="w-full h-[1.5rem] border border-[#0E8080] outline-none rounded-sm pl-1"
+                          />
+                        )}
+                      </div>
+                    </div>
+                  ))}
                 </div>
               </div>
             </div>
@@ -291,9 +362,15 @@ const TableRow = ({
             </button>
           </td>
         </tr>
-      )} */}
+      )}
 
       <div className="block h-[0.5rem]"></div>
+
+      <ConfirmBooking />
+      <BookingDoneModal
+        title="Inventory send successfully!"
+        path="/inventory"
+      />
     </>
   );
 };

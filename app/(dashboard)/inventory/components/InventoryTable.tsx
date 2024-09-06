@@ -1,8 +1,9 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ConfirmBooking from "@/modals/ConfirmBooking";
 import BookingDoneModal from "@/modals/BookingDoneModal";
 import TableRow from "./TableRow";
+import axiosInstance from "@/services/utils/hooks/useApi";
 
 const InventoryTable = ({
   endPoint,
@@ -15,6 +16,11 @@ const InventoryTable = ({
 }) => {
   const [accordionOpen, setAccordionOpen] = useState(false);
   const [selectedRow, setSelectedRow] = useState(null);
+  const [innerRowData, setInnerRowData] = useState<any[]>([]);
+
+  useEffect(() => {
+    getData();
+  }, []);
 
   const handleAccordionToggle = (rowIndex: any) => {
     if (selectedRow === rowIndex) {
@@ -24,6 +30,14 @@ const InventoryTable = ({
       setSelectedRow(rowIndex);
     }
   };
+
+  const getData = async () => {
+    const res = await axiosInstance.get(`${endPoint}?page=0&pageSize=10`);
+    if (res?.status === 200) {
+      setInnerRowData([...res?.data?.data]);
+    }
+  };
+  console.log(innerRowData, "innerRowData");
 
   return (
     <div className="relative overflow-x-auto bg-white px-8 py-6 rounded-lg">
@@ -52,15 +66,16 @@ const InventoryTable = ({
               handleAccordionToggle={handleAccordionToggle}
               accordionOpen={accordionOpen}
               selectedRow={selectedRow}
+              innerRowData={innerRowData}
             />
           ))}
         </tbody>
       </table>
-      <ConfirmBooking />
+      {/* <ConfirmBooking />
       <BookingDoneModal
         title="Inventory send successfully!"
         path="/inventory"
-      />
+      /> */}
     </div>
   );
 };

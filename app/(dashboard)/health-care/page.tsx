@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import React, { useEffect, useState } from "react";
 import Filter from "../inventory/components/Filter";
 import InventoryTable from "../inventory/components/InventoryTable";
@@ -23,7 +23,6 @@ const page = () => {
     getInventory();
   }, [isInventoryData]);
 
-
   const getInventory = async () => {
     const res = await axiosInstance.get(`${GET_WORKERS}?page=0&pageSize=10`);
     if (res?.status === 200) {
@@ -33,9 +32,13 @@ const page = () => {
 
   return (
     <>
-      <Filter title="Health Care Worker's" setInventory={setInventory}/>
+      <Filter title="Health Care Worker's" setInventory={setInventory} />
       <hr className="my-5 text-[#B3B3B3]" />
-      <InventoryTable endPoint={GET_WORKERS} tableHeaders={tableHeaders} inventory={inventory}/>
+      <InventoryTable
+        endPoint={GET_WORKERS}
+        tableHeaders={tableHeaders}
+        inventory={inventory}
+      />
     </>
   );
 };
