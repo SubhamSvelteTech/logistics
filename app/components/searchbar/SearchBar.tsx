@@ -22,7 +22,7 @@ const SearchBar = ({ onSearch, debounceDelay = 1500 }: SearchProps) => {
     if (debouncedQuery.trim().length > 0) {
       onSearch(debouncedQuery);
     } else {
-      onSearch(''); // Handle case for empty input if needed
+      onSearch(""); // Handle case for empty input if needed
     }
   }, [debouncedQuery]);
 

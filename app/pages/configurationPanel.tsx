@@ -20,6 +20,8 @@ import { getPatientAddress } from "../common/HelperFunctions";
 import { addPatientAddress, resetPatientAddress } from "@/Redux/Slices/patientAddressesSlice";
 import { closeAllModals } from "@/Redux/Slices/modalSlice";
 import PrescriptionModal from "@/modals/PrescriptionModal";
+import { resetAssignedUser } from "@/Redux/Slices/assignedUserSlice";
+import { addConfirmedData } from "@/Redux/Slices/confirmModalDataSlice";
 
 const ConfigurationPanel = () => {
   const {selectedWorkOrder} = useSelector((state:any)=>state)
@@ -52,8 +54,11 @@ const ConfigurationPanel = () => {
       dispatch(resetPatientAddress())
       dispatch(closeAllModals())
       dispatch(resetWorkOrder())
+      dispatch(resetAssignedUser())
     }
   },[])
+
+  console.log(selectedWorkOrder,'selectedWorkOrder')
   return (
     <>
       <div className="flex flex-col md:flex-row gap-2">

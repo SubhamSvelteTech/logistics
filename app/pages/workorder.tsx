@@ -6,6 +6,7 @@ import Image from "next/image";
 import { getPatientList } from "../common/HelperFunctions";
 import DefaultImg from "@Images/workorder/default-profile.png";
 import Loader from "../components/loader/Loader";
+import SearchBar from "../components/searchbar/SearchBar";
 
 const WorkOrder = () => {
   const [patients, setPatients] = useState<any>([]);
@@ -19,7 +20,7 @@ const WorkOrder = () => {
     if (!hasMore || isLoading) return;
 
     setIsLoading(true);
-    const res = await getPatientList(page);
+    const res = await getPatientList(page,"");
 
     if (res?.status === 200) {
       const newPatients = res?.data?.data;
@@ -56,6 +57,15 @@ const WorkOrder = () => {
     getUserDetails();
   }, []);
 
+  const handleSearch = async (query: string) => {
+    if(query.length > 0){
+      const res = await getPatientList(0, query,);
+      if (res?.status === 200) {
+        setPatients(res?.data?.data);
+      }
+    }
+  };
+
   return (
     <>
       {isLoading && patients.length === 0 ? (
@@ -63,6 +73,9 @@ const WorkOrder = () => {
       ) : (
         <div className="bg-white rounded-lg py-6 px-8 over">
           <BreadCrumb title="Work Order" />
+          <div className="mt-4">
+          <SearchBar onSearch={handleSearch} />
+          </div>
           {patients?.map((item: any, index: number) => (
             <div
               ref={patients.length === index + 1 ? lastPatientElementRef : null}

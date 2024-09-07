@@ -7,14 +7,12 @@ import HomeIcon from "@Icons/home-black.svg";
 import OfficeIcon from "@Icons/office-black.svg";
 import DefaultImg from "@Images/astha-gill.svg";
 import { addAssignTo } from "@/Redux/Slices/assignToSlice";
-import axiosInstance from "@/services/utils/hooks/useApi";
-import { FETCH_ASSIGNED_TO } from "../constants/apiEndpoints";
 import { fetchAssignedTo } from "../common/HelperFunctions";
 import { addFetchAssignTo } from "@/Redux/Slices/fetchAssignedToSlice";
 import { assignedUser } from "@/Redux/Slices/assignedUserSlice";
 import { getCookie } from "cookies-next";
 
-const CustomSelect = ({ item, placeholder = "Select an option",id }: any) => {
+const CustomSelect = ({ item, placeholder = "Select an option", id }: any) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState<any>(null);
   const dropdownRef = useRef<any>(null);
@@ -23,27 +21,35 @@ const CustomSelect = ({ item, placeholder = "Select an option",id }: any) => {
 
   const toggleDropdown = () => setIsOpen(!isOpen);
 
-  const handleOptionClick = async(option: any,data:any) => {
+  const handleOptionClick = async (option: any, data: any, selected: any) => {
     if (option === "Add New Address") {
       dispatch(openModal({ id: "address" }));
     }
     setSelectedOption(option);
-    if(item?.identifier === "address" && option !== "Add New Address"){
-      const res = await fetchAssignedTo(id,data,taskId)
-      dispatch(addFetchAssignTo(res))
+    if (item?.identifier === "address" && option !== "Add New Address") {
+      const res = await fetchAssignedTo(id, data, taskId);
+      dispatch(addFetchAssignTo(res));
       const payload = {
         address: option,
-        addressId:data,
-        orderStatus:"OPEN"
-      }
-      dispatch(addAssignTo({...payload}))
+        addressId: data,
+        orderStatus: "OPEN",
+      };
+      dispatch(addAssignTo({ ...payload }));
     }
-    if(item?.identifier === "assign"){
+    if (item?.identifier === "assign") {
       const payload = {
-        logisticId: data
+        logisticId: data,
+      };
+
+      if (selected?.distance) {
+        if (selected?.distance?.range === true) {
+          dispatch(addAssignTo({ ...payload }));
+        }
+      } else {
+        dispatch(addAssignTo({ ...payload }));
       }
-      dispatch(addAssignTo({...payload}))
     }
+
     setIsOpen(false);
   };
 
@@ -67,11 +73,19 @@ const CustomSelect = ({ item, placeholder = "Select an option",id }: any) => {
     };
   }, []);
 
-  useEffect(()=>{
-    if(item?.identifier === "ordertype" || item?.identifier === "status"){
-      setSelectedOption(item?.options?.[0]?.name)
+  useEffect(() => {
+    if (item?.identifier === "ordertype" || item?.identifier === "status") {
+      setSelectedOption(item?.options?.[0]?.name);
     }
-  },[])
+  }, []);
+
+  const handleFlamBoyClick = (option: any) => {
+    option?.distance && option?.distance?.range
+      ? dispatch(assignedUser({ ...option }))
+      : !option?.distance && !option?.distance?.range
+      ? dispatch(assignedUser({ ...option }))
+      : "";
+  };
 
   return (
     <div className="relative inline-block w-64 text-left" ref={dropdownRef}>
@@ -100,64 +114,92 @@ const CustomSelect = ({ item, placeholder = "Select an option",id }: any) => {
       {isOpen && (
         <div className="absolute z-10 w-full mt-2 bg-white rounded-md shadow-lg origin-top-left ring-1 ring-black ring-opacity-5 focus:outline-none">
           <div className={`py-1 overflow-y-scroll h-[200px]`}>
-            {item?.options?.map((option: any) => (
-              <a
-                key={option.name}
-                onClick={() =>
-                  handleOptionClick(
-                    option?.name ? option?.name : option?.address,option?._id
-                  )
-                }
-                className="block py-2 text-xs text-gray-700 hover:bg-gray-100 cursor-pointer"
-              >
-                {option?.name === "Add New Address" ? (
-                  <>
-                    <hr />
-                    <div className="flex items-center gap-2 py-2 px-4">
-                      <Image src={AddAddressIcon} alt="" width={15} />
-                      <span className="text-teal font-bold text-md">
-                        {option?.name}
+            {item?.options?.map((option: any) => {
+              return (
+                <a
+                  key={option.name}
+                  onClick={() =>
+                    handleOptionClick(
+                      option?.name ? option?.name : option?.address,
+                      option?._id,
+                      option
+                    )
+                  }
+                  className="block py-2 text-xs text-gray-700 hover:bg-gray-100 cursor-pointer"
+                >
+                  {option?.name === "Add New Address" ? (
+                    <>
+                      <hr />
+                      <div className="flex items-center gap-2 py-2 px-4">
+                        <Image src={AddAddressIcon} alt="" width={15} />
+                        <span className="text-teal font-bold text-md">
+                          {option?.name}
+                        </span>
+                      </div>
+                    </>
+                  ) : option?.name ? (
+                    <div className="px-4 hover:bg-[#0e808040] py-1">
+                      {option?.name}
+                    </div>
+                  ) : item?.identifier === "address" ? (
+                    <div className="hover:bg-[#0e808040] px-4">
+                      <div className="flex gap-2 items-center py-1">
+                        <Image
+                          src={
+                            option?.addressName === "Home"
+                              ? HomeIcon
+                              : OfficeIcon
+                          }
+                          alt=""
+                          width={12}
+                        />
+                        <span className="font-bold text-md">
+                          {option?.addressName}
+                        </span>
+                      </div>
+                      <span className="text-[#787878] font-xs">
+                        {option?.address}
                       </span>
                     </div>
-                  </>
-                ) : option?.name ? (
-                  <div className="px-4 hover:bg-[#0e808040] py-1">
-                    {option?.name}
-                  </div>
-                ) : item?.identifier === "address" ? (
-                  <div className="hover:bg-[#0e808040] px-4">
-                    <div className="flex gap-2 items-center py-1">
-                      <Image
-                        src={
-                          option?.addressName === "Home" ? HomeIcon : OfficeIcon
-                        }
-                        alt=""
-                        width={12}
-                      />
-                      <span className="font-bold text-md">
-                        {option?.addressName}
-                      </span>
+                  ) : (
+                    <div
+                      onClick={() => handleFlamBoyClick(option)}
+                      className={`flex items-center px-2 gap-2 ${
+                        option?.distance && option?.distance?.range
+                          ? "opacity-100 cursor-pointer  hover:bg-[#0e808040]"
+                          : !option?.distance && !option?.distance?.range
+                          ? "opacity-100 cursor-pointer  hover:bg-[#0e808040]"
+                          : "opacity-55 cursor-not-allowed"
+                      }`}
+                    >
+                      <div className="flex-shrink-0">
+                        <Image src={DefaultImg} alt="" width={50} height={50} />
+                      </div>
+                      <div className="flex-1">
+                        <p className="font-bold">{option?.fullName}</p>
+                        <p>
+                          {option?.address}, {option?.state}
+                        </p>
+                        <p>{option?.mobile}</p>
+                        {option?.distance && (
+                          <>
+                            <span
+                              className={`${
+                                option?.distance?.range
+                                  ? "text-green-500"
+                                  : "text-red-500"
+                              } text-xs`}
+                            >
+                              {option?.distance?.timeShow}
+                            </span>
+                          </>
+                        )}
+                      </div>
                     </div>
-                    <span className="text-[#787878] font-xs">
-                      {option?.address}
-                    </span>
-                  </div>
-                ) : (
-                  <div onClick={()=>dispatch(assignedUser({...option}))} className="flex items-center px-2 gap-2 hover:bg-[#0e808040]">
-                    <div className="flex-shrink-0">
-                      <Image src={DefaultImg} alt="" width={50} height={50} />
-                    </div>
-                    <div className="flex-1">
-                      <p className="font-bold">{option?.fullName}</p>
-                      <p>
-                        {option?.address}, {option?.state}
-                      </p>
-                      <p>{option?.mobile}</p>
-                    </div>
-                  </div>
-                )}
-              </a>
-            ))}
+                  )}
+                </a>
+              );
+            })}
           </div>
         </div>
       )}
