@@ -10,6 +10,7 @@ import { FormField } from "@/Interfaces/Utils/Inventory";
 import defaultProfile from "@Images/workorder/default-profile.png";
 import ConfirmBooking from "@/modals/ConfirmBooking";
 import BookingDoneModal from "@/modals/BookingDoneModal";
+import InnerRow from "./InnerRow";
 
 const TableRow = ({
   item,
@@ -17,8 +18,10 @@ const TableRow = ({
   selectedRow,
   accordionOpen,
   innerRowData,
+  setSelectedItem,
+  selectedItem,
 }: any) => {
-  const [selectedItem, setSelectedItem] = useState<any>({});
+  // const [selectedItem, setSelectedItem] = useState<any>({});
 
   const pathname = usePathname();
   const dispatch = useDispatch();
@@ -34,7 +37,7 @@ const TableRow = ({
     setSelectedItem({ ...itm, med_name: item?.item, med_img: item?.image });
   };
 
-  console.log(selectedItem, "selectItem", item);
+  console.log("selectItem", item);
 
   return (
     <>
@@ -106,6 +109,8 @@ const TableRow = ({
                       type="text"
                       name=""
                       className="border-b-2 border-[#DDDDDD] outline-none pt-2"
+                      disabled
+                      value="124"
                     />
 
                     <div className="flex items-center justify-between">
@@ -114,6 +119,8 @@ const TableRow = ({
                         <input
                           type="text"
                           name=""
+                          value="21"
+                          disabled
                           className="w-full border-b-2 border-[#DDDDDD] outline-none pt-2"
                         />
                       </div>
@@ -123,6 +130,8 @@ const TableRow = ({
                         <input
                           type="text"
                           name=""
+                          value="100"
+                          disabled
                           className="w-full border-b-2 border-[#DDDDDD] outline-none pt-2"
                         />
                       </div>
@@ -134,6 +143,8 @@ const TableRow = ({
                         <input
                           type="text"
                           name=""
+                          value="3"
+                          disabled
                           className="w-full border-b-2 border-[#DDDDDD] outline-none pt-2"
                         />
                       </div>
@@ -143,6 +154,8 @@ const TableRow = ({
                         <input
                           type="text"
                           name=""
+                          value="0"
+                          disabled
                           className="w-full border-b-2 border-[#DDDDDD] outline-none pt-2"
                         />
                       </div>
@@ -292,7 +305,7 @@ const TableRow = ({
                     </div>
                   </div> */}
 
-                  {innerRowData?.map((item: any) => (
+                  {/* {innerRowData?.map((item: any) => (
                     <div
                       className={`flex items-center border  px-3 py-1 mt-3 rounded-md cursor-pointer mr-2 ${
                         selectedItem?._id === item?._id
@@ -301,14 +314,6 @@ const TableRow = ({
                       } `}
                       onClick={() => selectItem(item)}
                     >
-                      {/* <div className="basis-0/12 pr-3">
-                        <input
-                          type="checkbox"
-                          name="select patient"
-                          className="cursor-pointer"
-                        />
-                      </div> */}
-
                       <div className="flex items-center basis-5/12">
                         <Image
                           width={40}
@@ -350,6 +355,16 @@ const TableRow = ({
                         )}
                       </div>
                     </div>
+                  ))} */}
+
+                  {item?.innerRightData?.map((itm: any) => (
+                    <InnerRow
+                      selectedItem={selectedItem}
+                      item={itm}
+                      rowID={item?._id}
+                      selectItem={selectItem}
+                      setSelectedItem={setSelectedItem}
+                    />
                   ))}
                 </div>
               </div>
@@ -365,12 +380,6 @@ const TableRow = ({
       )}
 
       <div className="block h-[0.5rem]"></div>
-
-      <ConfirmBooking />
-      <BookingDoneModal
-        title="Inventory send successfully!"
-        path="/inventory"
-      />
     </>
   );
 };

@@ -1,10 +1,10 @@
 // src/redux/modalSlice.js
 import { createSlice } from "@reduxjs/toolkit";
-import { selectedWorkOrderReducer } from "../Reducers/selectedWorkOrderReducer";
 import { inventoryReducer } from "../Reducers/inventoryReducer";
 
 const initialState: any = {
   getInventory: false,
+  data: [],
 };
 
 const inventorySlice = createSlice({
@@ -13,5 +13,6 @@ const inventorySlice = createSlice({
   reducers: inventoryReducer,
 });
 
-export const { isInventory } = inventorySlice.actions;
+export const { isInventory, setInventoryData, setAssignPartner } =
+  inventorySlice.actions;
 export default inventorySlice.reducer;

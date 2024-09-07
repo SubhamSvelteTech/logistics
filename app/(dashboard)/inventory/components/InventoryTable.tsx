@@ -4,6 +4,8 @@ import ConfirmBooking from "@/modals/ConfirmBooking";
 import BookingDoneModal from "@/modals/BookingDoneModal";
 import TableRow from "./TableRow";
 import axiosInstance from "@/services/utils/hooks/useApi";
+import { setInventoryData } from "@/Redux/Slices/inventorySlice";
+import { useDispatch, useSelector } from "react-redux";
 
 const InventoryTable = ({
   endPoint,
@@ -14,13 +16,28 @@ const InventoryTable = ({
   tableHeaders: string[];
   inventory: any;
 }) => {
+  const inventoryData = useSelector((state: any) => state?.inventory?.data);
   const [accordionOpen, setAccordionOpen] = useState(false);
   const [selectedRow, setSelectedRow] = useState(null);
   const [innerRowData, setInnerRowData] = useState<any[]>([]);
+  const [selectedItem, setSelectedItem] = useState<any>({});
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
     getData();
   }, []);
+
+  useEffect(() => {
+    if (inventory?.length > 0 && innerRowData?.length > 0) {
+      const result = inventory.map((obj: any) => ({
+        ...obj,
+        innerRightData: [...innerRowData],
+      }));
+
+      dispatch(setInventoryData([...result]));
+    }
+  }, [inventory, innerRowData]);
 
   const handleAccordionToggle = (rowIndex: any) => {
     if (selectedRow === rowIndex) {
@@ -37,7 +54,8 @@ const InventoryTable = ({
       setInnerRowData([...res?.data?.data]);
     }
   };
-  console.log(innerRowData, "innerRowData");
+
+  console.log(innerRowData, "innerRowData", inventory);
 
   return (
     <div className="relative overflow-x-auto bg-white px-8 py-6 rounded-lg">
@@ -60,22 +78,24 @@ const InventoryTable = ({
           </tr>
         </thead>
         <tbody>
-          {inventory?.map((item: any) => (
+          {inventoryData?.map((item: any) => (
             <TableRow
               item={item}
               handleAccordionToggle={handleAccordionToggle}
               accordionOpen={accordionOpen}
               selectedRow={selectedRow}
               innerRowData={innerRowData}
+              setSelectedItem={setSelectedItem}
+              selectedItem={selectedItem}
             />
           ))}
         </tbody>
       </table>
-      {/* <ConfirmBooking />
+      <ConfirmBooking />
       <BookingDoneModal
         title="Inventory send successfully!"
         path="/inventory"
-      /> */}
+      />
     </div>
   );
 };

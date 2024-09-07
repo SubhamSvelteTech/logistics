@@ -6,7 +6,7 @@ const nextConfig = {
   images: {
     domains: ["192.168.15.49"],
   },
-  reactStrictMode: false,
+  reactStrictMode: true,
   // typescript: {
   //     ignoreBuildErrors: true,
   //  },
