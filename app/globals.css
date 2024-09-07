@@ -165,6 +165,14 @@ body {
   display: none;
 }
 
+.lk-chat-toggle {
+  display: none !important;
+}
+
+.lk-button-menu {
+  display: none !important;
+}
+
 /* Remove arrow from input type number */
 /* #total-assets input[type="number"]::-webkit-inner-spin-button,
 #total-assets

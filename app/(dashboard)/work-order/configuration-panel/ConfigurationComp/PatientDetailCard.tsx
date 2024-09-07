@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import React from "react";
+import React, { useState } from "react";
 import LocationIcon from "@Icons/location-icon.svg";
 import CallIcon from "@Icons/call-icon.svg";
 import CalenderIcon from "@Icons/calender-icon.svg";
@@ -9,20 +9,29 @@ import { useDispatch } from "react-redux";
 import DefaultImg from "@Images/workorder/default-profile.png";
 import axiosInstance from "@/services/utils/hooks/useApi";
 import { SEND_CALLING } from "@/app/constants/apiEndpoints";
+import { useSession } from "next-auth/react";
 
 const PatientDetailCard = ({ selectedWorkOrder }: any) => {
   const { workOrder } = selectedWorkOrder;
   console.log(workOrder, "selectedWorkOrder");
-  const dispatch = useDispatch();
-
+  // const dispatch = useDispatch();
   const sendCallNotificationApi = async(patientId:string) => {
+    // let payload = {
+    //       title:"Hi Deepanshu",
+    //       patientId:"66d55274e9d279c09487c5fd"  
+    // }
+
     let payload = {
       title:"Call From Logistics Manager",
       patientId:patientId
-      
     }
 
+    
+
     const res = await axiosInstance?.post(SEND_CALLING,payload)
+    if(res.status === 200){
+      window.open(`/call/${res?.data?.data?.livekitToken}`, "_blank", "noopener");
+    }
   }
 
   const sendCallNotification = (patientId:string) => {
