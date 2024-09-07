@@ -15,9 +15,9 @@ export const fetchAssignedTo = async (id: any, addressId: any, taskId: any) => {
   return res?.data?.data;
 };
 
-export const getPatientList = async (page: any) => {
+export const getPatientList = async (page: any,query:string) => {
   const res = await axiosInstance.get(
-    `${WORK_ORDER_ALL_PATIENT}page=${page}&pageSize=10&assignTo=false`
+    `${WORK_ORDER_ALL_PATIENT}page=${page}&pageSize=10&assignTo=false${query.length > 0 ? '&query='+query : ""}`
   );
   if (res.status === 200) {
     // return res.data.data.data;
