@@ -23,7 +23,8 @@ export const confirmModalDataReducer = {
         workerCity:assignedUser?.city,
         workerCountry:assignedUser?.country,
         workerState:assignedUser?.state,
-        workerMobile:assignedUser?.mobile
+        workerMobile:assignedUser?.mobile,
+        workerImage:assignedUser?.profilePicture
       },
     };
   },

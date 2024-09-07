@@ -4,31 +4,13 @@ import Image from "next/image";
 import React from "react";
 import CalenderIcon from "@Icons/calendar-icon.svg";
 import ClockIcon from "@Icons/click-icon.svg";
-import AsthaGill from "@Images/astha-gill.svg";
-import { closeModal, openModal } from "@/Redux/Slices/modalSlice";
+import { closeModal } from "@/Redux/Slices/modalSlice";
 import { useDispatch, useSelector } from "react-redux";
-import axiosInstance from "@/services/utils/hooks/useApi";
-import { ASSIGN_TO } from "@/app/constants/apiEndpoints";
 import DefaultImg from "@Images/workorder/default-profile.png";
 
-const ConfirmBooking = () => {
+const ConfirmBooking = ({handleSubmit}:any) => {
   const dispatch = useDispatch();
-  const { workOrder } = useSelector((state: any) => state.selectedWorkOrder);
-  const { assignTo } = useSelector((state: any) => state.assignTo);
-  const { assignedUser } = useSelector((state: any) => state.assignedUser);
-
   const {confirmModalData} = useSelector((state:any)=>state?.confirmModalData)
-
-  console.log(confirmModalData,'fsfdsfds')
-
-  const handleSubmit = async () => {
-    const res = await axiosInstance.post(ASSIGN_TO, { ...assignTo });
-    if (res?.status === 200) {
-      dispatch(openModal({ id: "booking-done" }));
-      dispatch(closeModal({ id: "confirm-booking" }));
-    }
-
-  };
   return (
     <Modal id="confirm-booking">
       <div>
@@ -82,9 +64,9 @@ const ConfirmBooking = () => {
         <hr />
 
         <div className="px-4 py-4 flex items-center gap-4">
-          {assignedUser?.profilePicture === null ? (
+          {confirmModalData?.workerImage === null ? (
             <img
-              src={`${process.env.NEXT_PUBLIC_API_URL_FOR_IMG}/uploads/logistic/${assignedUser?.profilePicture}`}
+              src={`${process.env.NEXT_PUBLIC_API_URL_FOR_IMG}/uploads/logistic/${confirmModalData?.workerImage}`}
               width={80}
               height={80}
             />
