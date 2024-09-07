@@ -358,13 +358,7 @@ const TableRow = ({
                   ))} */}
 
                   {item?.innerRightData?.map((itm: any) => (
-                    <InnerRow
-                      selectedItem={selectedItem}
-                      item={itm}
-                      rowID={item?._id}
-                      selectItem={selectItem}
-                      setSelectedItem={setSelectedItem}
-                    />
+                    <InnerRow item={itm} rowID={item?._id} />
                   ))}
                 </div>
               </div>

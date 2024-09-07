@@ -18,8 +18,17 @@ export const inventoryReducer = {
   },
 
   setAssignPartner: (state: any, action: PayloadAction<any>) => {
-    const { inner_id, row_id, value, isChecked, type } = action.payload;
+    const { inner_id, row_id, assignedQuantity, isChecked, type } = action.payload;
     const prevState = current(state);
+
+    console.log(
+      inner_id,
+      row_id,
+      assignedQuantity,
+      isChecked,
+      type,
+      "inner_id, row_id, value, isChecked, type"
+    );
 
     // return {
     //   ...state,
@@ -56,7 +65,7 @@ export const inventoryReducer = {
               if (innerItm?._id === inner_id) {
                 switch (type) {
                   case "SET_VALUE":
-                    return { ...innerItm, value };
+                    return { ...innerItm, assignedQuantity };
                   case "SET_ISCHECKED":
                     return { ...innerItm, isChecked };
                   default:

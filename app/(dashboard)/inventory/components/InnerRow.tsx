@@ -5,27 +5,16 @@ import { usePathname } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { setAssignPartner } from "@/Redux/Slices/inventorySlice";
 
-const InnerRow = ({
-  item,
-  selectedItem,
-  selectItem,
-  setSelectedItem,
-  rowID,
-}: {
-  item: any;
-  selectedItem: any;
-  selectItem: (item: any) => void;
-  setSelectedItem: any;
-  rowID: string;
-}) => {
+const InnerRow = ({ item, rowID }: { item: any; rowID: string }) => {
   const pathname = usePathname();
   const dispatch = useDispatch();
 
   const handleChange = (e: any) => {
     const { name, value } = e.target;
+
     dispatch(
       setAssignPartner({
-        value,
+        [name]: value,
         inner_id: item?._id,
         row_id: rowID,
         type: "SET_VALUE",
@@ -36,7 +25,6 @@ const InnerRow = ({
   const assign = () => {
     dispatch(
       setAssignPartner({
-        value: null,
         inner_id: item?._id,
         row_id: rowID,
         isChecked: true,
@@ -92,10 +80,11 @@ const InnerRow = ({
           ) : (
             <input
               type="number"
-              name="medicine quantity"
+              name="assignedQuantity"
               onChange={handleChange}
-              value={item?.value}
-              className="w-full h-[1.5rem] border border-[#0E8080] outline-none rounded-sm pl-1"
+              value={item?.assignedQuantity}
+              disabled={!item?.isChecked}
+              className="w-full h-[1.5rem] border border-[#0E8080] outline-none rounded-sm pl-1 disabled:bg-[#C4C4C4] disabled:border-0"
             />
           )}
         </div>
