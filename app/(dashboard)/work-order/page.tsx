@@ -1,4 +1,4 @@
-import WorkOrder from '@/app/pages/WorkOrder'
+import WorkOrder from '@/app/pages/workorder'
 import React from 'react'
 
 const page = () => {

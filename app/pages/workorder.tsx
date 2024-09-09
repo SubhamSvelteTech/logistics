@@ -7,7 +7,6 @@ import { getPatientList } from "../common/HelperFunctions";
 import DefaultImg from "@Images/workorder/default-profile.png";
 import Loader from "../components/loader/Loader";
 import SearchBar from "../components/searchbar/SearchBar";
-import { CustomImage } from "../components/custom-image/CustomImage";
 
 const WorkOrder = () => {
   const [patients, setPatients] = useState<any>([]);
@@ -21,7 +20,7 @@ const WorkOrder = () => {
     if (!hasMore || isLoading) return;
 
     setIsLoading(true);
-    const res = await getPatientList(page, "");
+    const res = await getPatientList(page,"");
 
     if (res?.status === 200) {
       const newPatients = res?.data?.data;
@@ -59,8 +58,8 @@ const WorkOrder = () => {
   }, []);
 
   const handleSearch = async (query: string) => {
-    if (query.length > 0) {
-      const res = await getPatientList(0, query);
+    if(query.length > 0){
+      const res = await getPatientList(0, query,);
       if (res?.status === 200) {
         setPatients(res?.data?.data);
       }
@@ -75,7 +74,7 @@ const WorkOrder = () => {
         <div className="bg-white rounded-lg py-6 px-8 over">
           <BreadCrumb title="Work Order" />
           <div className="mt-4">
-            <SearchBar onSearch={handleSearch} />
+          <SearchBar onSearch={handleSearch} />
           </div>
           {patients?.map((item: any, index: number) => (
             <div
@@ -88,10 +87,19 @@ const WorkOrder = () => {
                   <div className="mb-4">
                     <div className="flex gap-4 items-center">
                       <div>
-                        <CustomImage
-                          src={item?.profilePicture}
-                          alt="profile-picture"
-                        />
+                        {item?.profilePicture?.length > 0 ? (
+                          <img
+                            src={`http://192.168.15.49:5000/uploads/logistic/${item?.profilePicture}`}
+                            width={50}
+                            height={50}
+                          />
+                        ) : (
+                          <Image
+                            src={DefaultImg}
+                            alt="default-img"
+                            width={70}
+                          />
+                        )}
                       </div>
                       <div>
                         <p className="text-gray-900 text-xs font-semibold mt-6">

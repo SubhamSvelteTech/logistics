@@ -2,8 +2,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { confirmModalDataReducer } from "../Reducers/confirmModalDataReducer";
 
-const initialState: any = {
-  confirmModalData: {},
+const initialState:any = {
+    confirmModalData: {},
 };
 
 const confirmModalDataSlice = createSlice({
@@ -12,6 +12,5 @@ const confirmModalDataSlice = createSlice({
   reducers: confirmModalDataReducer,
 });
 
-export const { addConfirmedData, resetConfirmedData, setConfirmModalData } =
-  confirmModalDataSlice.actions;
+export const { addConfirmedData,resetConfirmedData } = confirmModalDataSlice.actions;
 export default confirmModalDataSlice.reducer;

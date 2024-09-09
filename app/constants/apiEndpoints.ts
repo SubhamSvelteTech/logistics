@@ -14,4 +14,3 @@ export const GET_INVENTORY = "v1/inventory/getAllProduct";
 export const GET_CATEGORIES = "v1/inventory/getAllCategory";
 export const ADD_INVENTORY_PRODUCT = "v1/inventory/products";
 export const GET_WORKERS = "/v1/logisticUser/logisticUserAll";
-export const ASSIGN_INVENTORY = "v1/inventory/assingedQuantity";

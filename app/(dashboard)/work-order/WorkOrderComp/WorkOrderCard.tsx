@@ -6,9 +6,8 @@ import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { addWorkOrderTask } from "@/Redux/Slices/selectedWorkOrderSlice";
 import { setCookie } from "cookies-next";
-import DeliverIcon from "@Icons/deliver-icon.svg";
+import DeliverIcon from "@Icons/deliver-icon.svg"
 import DeliveredIcon from "@/app/components/icons/DeliveredIcon";
-import { CustomImage } from "@/app/components/custom-image/CustomImage";
 
 const WorkOrderCard = ({ data, image, status, assigned, item }: any) => {
   const router = useRouter();
@@ -27,7 +26,11 @@ const WorkOrderCard = ({ data, image, status, assigned, item }: any) => {
             <span className="text-black text-md font-bold">DELIVERED</span>
           </div>
         )} */}
-        <div className={`relative p-2 ${assigned === "CLOSED" ? "" : ""}`}>
+        <div
+          className={`relative p-2 ${
+            assigned === "CLOSED" ? "" : ""
+          }`}
+        >
           <div className="flex justify-between items-start mb-4">
             <div>
               <h3 className="text-[12px] font-semibold">{data?.workType}</h3>
@@ -41,8 +44,7 @@ const WorkOrderCard = ({ data, image, status, assigned, item }: any) => {
                   : assigned === "OPEN"
                   ? "bg-[#DBDBDB]"
                   : assigned === "CLOSED"
-                  ? "bg-[#72BE27]"
-                  : ""
+                  ? "bg-[#72BE27]" : ""
               }`}
             >
               <span className={`text-xs text-white`}>
@@ -51,13 +53,27 @@ const WorkOrderCard = ({ data, image, status, assigned, item }: any) => {
                 ) : assigned === "OPEN" ? (
                   <Image src={ClockIcon} alt="" />
                 ) : (
-                  <DeliveredIcon />
+                  <DeliveredIcon/>
                 )}
               </span>
             </div>
           </div>
           <div className="flex items-center mb-4 gap-4">
-            <CustomImage src={image} alt="profile-picture" />
+            {image?.length > 0 ? (
+              <img
+                src={`http://192.168.15.49:5000/uploads/logistic/${image}`}
+                className="rounded-full"
+                width={50}
+                height={50}
+              />
+            ) : (
+              <Image
+                src={DefaultImg}
+                alt="default-img"
+                width={50}
+                className="rounded-full"
+              />
+            )}
 
             {/* start rating */}
             <div>
@@ -80,6 +96,8 @@ const WorkOrderCard = ({ data, image, status, assigned, item }: any) => {
                 </div>
               )} */}
             </div>
+
+            
           </div>
           <div className="flex justify-end gap-2">
             <button
@@ -93,11 +111,7 @@ const WorkOrderCard = ({ data, image, status, assigned, item }: any) => {
                   : "bg-black"
               } hover:bg-teal-700 text-[10px] text-white font-semibold py-2 px-4 rounded`}
             >
-              {assigned === "BOOKED"
-                ? "ASSIGNED"
-                : assigned === "CLOSED"
-                ? "DELIVERED"
-                : "ASSIGN"}
+              {assigned === "BOOKED" ? "ASSIGNED" : assigned === "CLOSED" ? "DELIVERED" : "ASSIGN"}
             </button>
           </div>
         </div>

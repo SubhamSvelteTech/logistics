@@ -12,17 +12,14 @@ const Header = () => {
   const { data: session, status } = useSession();
   const pathname = usePathname();
   const router = useRouter();
-  const dropdownRef = useRef<HTMLDivElement | null>(null);
+  const dropdownRef =  useRef<HTMLDivElement | null>(null);
 
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
   };
 
   const handleClickOutside = (event: MouseEvent) => {
-    if (
-      dropdownRef.current &&
-      !dropdownRef.current.contains(event.target as Node)
-    ) {
+    if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
       setIsOpen(false);
     }
   };
@@ -34,7 +31,7 @@ const Header = () => {
     };
   }, []);
 
-  const handleSignout = async () => {
+  const handleSignout = async() => {
     // const payload = {
     //   refreshToken: session?.user?.refreshToken
     // }
@@ -42,8 +39,9 @@ const Header = () => {
     // if(res?.status === 200){
     // }
     signOut();
-  };
+  }
 
+  console.log(session,'session')
   return (
     <div className="bg-teal w-full p-4 fixed top-0 left-0 right-0 z-10">
       <div className="flex justify-between items-center">
@@ -71,7 +69,7 @@ const Header = () => {
 
               {isOpen && (
                 <div
-                  ref={dropdownRef}
+                ref={dropdownRef}
                   id="dropdownAvatar"
                   className="z-10 absolute right-0 mt-2 bg-white divide-y divide-gray-100 rounded-lg shadow-2xl w-44 dark:bg-gray-700 dark:divide-gray-600"
                 >
@@ -79,6 +77,7 @@ const Header = () => {
                     {/* <div>Bonnie Green</div> */}
                     <div className="font-medium truncate">
                       {session?.user?.name}
+                      
                     </div>
                   </div>
                   <ul
@@ -87,7 +86,7 @@ const Header = () => {
                   >
                     <li>
                       <button
-                        onClick={() => router.push("/dashboard")}
+                      onClick={()=>router.push("/dashboard")}
                         className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
                       >
                         Dashboard
