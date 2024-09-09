@@ -20,7 +20,6 @@ const Filter = ({
   setInventory: any;
 }) => {
   const pathname = usePathname();
-  console.log(pathname, "pathname");
   const dispatch = useDispatch();
   const formFields: any = [
     {
