@@ -1,7 +1,7 @@
 import Modal from "@/app/components/Modal";
 import { closeModal, openModal } from "@/Redux/Slices/modalSlice";
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import BookingDoneModal from "./BookingDoneModal";
 import axiosInstance from "@/services/utils/hooks/useApi";
 import {
@@ -15,7 +15,6 @@ import { isInventory } from "@/Redux/Slices/inventorySlice";
 let formData = new FormData();
 
 const AddNewItem = () => {
-  const isInventoryfromStore = useSelector((state:any) => state?.inventory?.getInventory)
   const [categories, setCategories] = useState<any[]>([]);
   const [productDetail, setProductDetail] = useState<any>({});
   const dispatch = useDispatch();
@@ -51,7 +50,7 @@ const AddNewItem = () => {
       dispatch(openModal({ id: "booking-done" }));
       formData = new FormData();
       setProductDetail({});
-      dispatch(isInventory(!isInventoryfromStore));
+      dispatch(isInventory(true));
     } else {
       toast.warn("Please select an image");
     }
@@ -165,14 +164,14 @@ const AddNewItem = () => {
               onChange={handleChange}
             />
 
-            <label htmlFor="quantityOnHand" className="text-sm">
+            <label htmlFor="totalValue" className="text-sm">
               Total Allotted Assets
             </label>
             <input
               type="number"
-              name="quantityOnHand"
-              id="quantityOnHand"
-              value={productDetail?.quantityOnHand}
+              name="totalValue"
+              id="totalValue"
+              value={productDetail?.totalValue}
               className="block mb-4 w-full text-sm text-gray-900 bg-transparent border border-black appearance-none dark:text-white dark:border-black-600 dark:focus:border-black-500 focus:outline-none focus:ring-0 focus:border-black-600 peer px-2 py-1"
               placeholder=" "
               required
