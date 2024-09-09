@@ -12,3 +12,7 @@ export const ASSIGN_TO = "v1/logisticUser/assignTo"
 export const TASK_LIST = "v1/logisticUser/taskList"
 export const SEND_FCM_TOKEN = "v1/logisticUser/registerFcmToken"
 export const SEND_CALLING = "v1/logisticUser/sendPushNotificationForCalling"
+export const GET_INVENTORY = "v1/inventory/getAllProduct";
+export const GET_CATEGORIES = "v1/inventory/getAllCategory";
+export const ADD_INVENTORY_PRODUCT = "v1/inventory/products";
+export const GET_WORKERS = "/v1/logisticUser/logisticUserAll";

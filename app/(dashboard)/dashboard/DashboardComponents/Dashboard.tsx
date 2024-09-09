@@ -100,7 +100,7 @@ const Dashboard = () => {
             </div>
             <div className="flex justify-center">
               <span className="text-[60px] font-[700] py-4">
-                {chartData?.totalPrescription || 0}
+                {chartData?.totalOpenTask || 0}
               </span>
             </div>
           </div>

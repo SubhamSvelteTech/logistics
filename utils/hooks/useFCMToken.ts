@@ -81,7 +81,7 @@ const useFCMToken = () => {
           // setRegisterObj(registeration);
         });
     }
-    throw new Error("The browser doesn`t support service worker.");
+    // throw new Error("The browser doesn`t support service worker.");
   };
 
   // const registerSW = async () => {

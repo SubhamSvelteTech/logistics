@@ -4,27 +4,13 @@ import Image from "next/image";
 import React from "react";
 import CalenderIcon from "@Icons/calendar-icon.svg";
 import ClockIcon from "@Icons/click-icon.svg";
-import AsthaGill from "@Images/astha-gill.svg";
-import { closeModal, openModal } from "@/Redux/Slices/modalSlice";
+import { closeModal } from "@/Redux/Slices/modalSlice";
 import { useDispatch, useSelector } from "react-redux";
-import axiosInstance from "@/services/utils/hooks/useApi";
-import { ASSIGN_TO } from "@/app/constants/apiEndpoints";
 import DefaultImg from "@Images/workorder/default-profile.png";
 
-const ConfirmBooking = () => {
+const ConfirmBooking = ({handleSubmit}:any) => {
   const dispatch = useDispatch();
-  const { workOrder } = useSelector((state: any) => state.selectedWorkOrder);
-  const { assignTo } = useSelector((state: any) => state.assignTo);
-  const { assignedUser } = useSelector((state: any) => state.assignedUser);
-
-  const handleSubmit = async () => {
-    const res = await axiosInstance.post(ASSIGN_TO, { ...assignTo });
-    if (res?.status === 200) {
-      dispatch(openModal({ id: "booking-done" }));
-      dispatch(closeModal({ id: "confirm-booking" }));
-    }
-
-  };
+  const {confirmModalData} = useSelector((state:any)=>state?.confirmModalData)
   return (
     <Modal id="confirm-booking">
       <div>
@@ -36,7 +22,7 @@ const ConfirmBooking = () => {
           <div className="flex items-center gap-2">
             <Image src={CalenderIcon} alt="cal-icon" width={40} />
             <div>
-              <p>On {assignTo?.assignedDate}</p>
+              <p>On {confirmModalData?.date}</p>
               <p
                 onClick={() => dispatch(closeModal({ id: "confirm-booking" }))}
                 className="text-teal font-bold cursor-pointer hover:underline"
@@ -47,7 +33,7 @@ const ConfirmBooking = () => {
           </div>
           <div className="flex items-center gap-2">
             <Image src={ClockIcon} alt="" width={30} />
-            <p>At {assignTo?.startTime}</p>
+            <p>At {confirmModalData?.time}</p>
           </div>
         </div>
 
@@ -55,9 +41,9 @@ const ConfirmBooking = () => {
 
         <div className="px-4 py-4 flex items-center gap-4">
 
-          {workOrder?.profilePicture !== null ? (
+          {confirmModalData?.patientImage !== null ? (
             <img
-              src={`http://192.168.15.49:5000/uploads/logistic/${workOrder?.profilePicture}`}
+              src={`http://192.168.15.49:5000/uploads/logistic/${confirmModalData?.patientImage}`}
               width={80}
               height={80}
             />
@@ -65,22 +51,22 @@ const ConfirmBooking = () => {
             <Image src={DefaultImg} alt="default-img" width={80} />
           )}
           <div>
-            <p className="text-sm font-bold py-1">{workOrder?.fullName}</p>
+            <p className="text-sm font-bold py-1">{confirmModalData?.fullName}</p>
             <p className="text-xs font-bold py-1">
-              {workOrder?.city}
+              {confirmModalData?.city}
               <br />
-              {workOrder?.country}
+              {confirmModalData?.country}
             </p>
-            <p className="text-sm py-1">{workOrder?.mobileNumber}</p>
+            <p className="text-sm py-1">{confirmModalData?.mobile}</p>
           </div>
         </div>
 
         <hr />
 
         <div className="px-4 py-4 flex items-center gap-4">
-          {assignedUser?.profilePicture === null ? (
+          {confirmModalData?.workerImage === null ? (
             <img
-              src={`http://192.168.15.49:5000/uploads/logistic/${assignedUser?.profilePicture}`}
+              src={`${process.env.NEXT_PUBLIC_API_URL_FOR_IMG}/uploads/logistic/${confirmModalData?.workerImage}`}
               width={80}
               height={80}
             />
@@ -89,11 +75,11 @@ const ConfirmBooking = () => {
           )}
           <div>
             <p className="text-sm font-bold py-1"></p>
-            <p className="text-sm font-bold">{assignedUser?.fullName}</p>
+            <p className="text-sm font-bold">{confirmModalData?.workerName}</p>
             <p className="text-xs font-bold">
-              {assignedUser?.address}, {assignedUser?.city}
+              {confirmModalData?.workerCity}, {confirmModalData?.workerCountry}
             </p>
-            <p className="text-sm">+91{assignedUser?.mobile}</p>
+            <p className="text-sm">+91{confirmModalData?.workerMobile}</p>
           </div>
         </div>
 

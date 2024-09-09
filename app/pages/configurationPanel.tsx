@@ -9,23 +9,26 @@ import YourOrder from "../(dashboard)/work-order/configuration-panel/Configurati
 import Status from "../(dashboard)/work-order/configuration-panel/ConfigurationComp/Status";
 import { useDispatch, useSelector } from "react-redux";
 import axiosInstance from "@/services/utils/hooks/useApi";
-import { PATIENT_BY_ID } from "../constants/apiEndpoints";
+import { ASSIGN_TO, PATIENT_BY_ID } from "../constants/apiEndpoints";
 import { useParams } from "next/navigation";
-import { addWorkOrderTask } from "@/Redux/Slices/selectedWorkOrderSlice";
+import { addWorkOrderTask, resetWorkOrder } from "@/Redux/Slices/selectedWorkOrderSlice";
 import DeliveryAddress from "@/modals/DeliveryAddress";
 import { addAssignTo, resetAssignTo } from "@/Redux/Slices/assignToSlice";
 import ConfirmBooking from "@/modals/ConfirmBooking";
 import BookingDoneModal from "@/modals/BookingDoneModal";
 import { getPatientAddress } from "../common/HelperFunctions";
 import { addPatientAddress, resetPatientAddress } from "@/Redux/Slices/patientAddressesSlice";
-import { closeAllModals } from "@/Redux/Slices/modalSlice";
+import { closeAllModals, closeModal, openModal } from "@/Redux/Slices/modalSlice";
 import PrescriptionModal from "@/modals/PrescriptionModal";
+import { resetAssignedUser } from "@/Redux/Slices/assignedUserSlice";
+import { addConfirmedData } from "@/Redux/Slices/confirmModalDataSlice";
 
 const ConfigurationPanel = () => {
   const {selectedWorkOrder} = useSelector((state:any)=>state)
   const {id}:any = useParams();
   const dispatch = useDispatch();
   const [addressFormData, setAddressFormData] = useState<any>({patientId:id});
+  const { assignTo } = useSelector((state: any) => state.assignTo);
 
   const getAddress = async()=>{
     const res = await getPatientAddress(id);
@@ -51,8 +54,20 @@ const ConfigurationPanel = () => {
       dispatch(resetAssignTo())
       dispatch(resetPatientAddress())
       dispatch(closeAllModals())
+      dispatch(resetWorkOrder())
+      dispatch(resetAssignedUser())
     }
   },[])
+
+  const handleSubmit = async () => {
+    const res = await axiosInstance.post(ASSIGN_TO, { ...assignTo });
+    if (res?.status === 200) {
+      dispatch(openModal({ id: "booking-done" }));
+      dispatch(closeModal({ id: "confirm-booking" }));
+    }
+  };
+
+  console.log(selectedWorkOrder,'selectedWorkOrder')
   return (
     <>
       <div className="flex flex-col md:flex-row gap-2">
@@ -81,7 +96,7 @@ const ConfigurationPanel = () => {
 
       {/* modal */}
       <DeliveryAddress setAddressFormData={setAddressFormData} addressFormData={addressFormData} id={id}/>
-      <ConfirmBooking />
+      <ConfirmBooking handleSubmit={handleSubmit}/>
       <BookingDoneModal title="Booking done successfully!" path="/work-order"/>
       <PrescriptionModal/>
     </>
