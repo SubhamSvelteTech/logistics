@@ -1,13 +1,43 @@
 import Image from "next/image";
 import defaultProfile from "@Images/workorder/default-profile.png";
-import React from "react";
+import React, { useEffect } from "react";
 import { usePathname } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { setAssignPartner } from "@/Redux/Slices/inventorySlice";
+import { setConfirmModalData } from "@/Redux/Slices/confirmModalDataSlice";
 
-const InnerRow = ({ item, rowID }: { item: any; rowID: string }) => {
+const InnerRow = ({
+  item,
+  rowID,
+  med_name,
+  med_img,
+}: {
+  item: any;
+  rowID: string;
+  med_name: string;
+  med_img: string;
+}) => {
   const pathname = usePathname();
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (item?.isChecked) {
+      dispatch(
+        setConfirmModalData({
+          productID: rowID,
+          workerID: item?._id,
+          workerName: item?.fullName,
+          workerMobile: item?.mobile,
+          workerCity: item?.city || null,
+          workerCountry: item?.country,
+          workerImage: item?.profilePicture || null,
+          fullName: med_name,
+          patientImage: med_img,
+          assignedQuantity: item?.assignedQuantity || null,
+        })
+      );
+    }
+  }, [item?.isChecked, item?.assignedQuantity]);
 
   const handleChange = (e: any) => {
     const { name, value } = e.target;
@@ -39,7 +69,6 @@ const InnerRow = ({ item, rowID }: { item: any; rowID: string }) => {
         className={`flex items-center border  px-3 py-1 mt-3 rounded-md cursor-pointer mr-2 ${
           item?.isChecked ? "border-[#0E8080]" : "border-[#DDDDDD]"
         } `}
-        // onClick={() => selectItem(item)}
         onClick={assign}
       >
         {/* <div className="basis-0/12 pr-3">
@@ -82,7 +111,7 @@ const InnerRow = ({ item, rowID }: { item: any; rowID: string }) => {
               type="number"
               name="assignedQuantity"
               onChange={handleChange}
-              value={item?.assignedQuantity}
+              value={item?.assignedQuantity ?? 0}
               disabled={!item?.isChecked}
               className="w-full h-[1.5rem] border border-[#0E8080] outline-none rounded-sm pl-1 disabled:bg-[#C4C4C4] disabled:border-0"
             />

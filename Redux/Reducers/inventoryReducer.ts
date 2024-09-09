@@ -18,42 +18,9 @@ export const inventoryReducer = {
   },
 
   setAssignPartner: (state: any, action: PayloadAction<any>) => {
-    const { inner_id, row_id, assignedQuantity, isChecked, type } = action.payload;
+    const { inner_id, row_id, assignedQuantity, isChecked, type } =
+      action.payload;
     const prevState = current(state);
-
-    console.log(
-      inner_id,
-      row_id,
-      assignedQuantity,
-      isChecked,
-      type,
-      "inner_id, row_id, value, isChecked, type"
-    );
-
-    // return {
-    //   ...state,
-    //   data: prevState?.data?.map((item: any) =>
-    //     item?._id === row_id
-    //       ? {
-    //           ...item,
-    //           innerRightData: item?.innerRightData?.map((innerItm: any) =>
-    //             innerItm?._id === inner_id
-    //               ? type === "SET_VALUE" ?   {
-    //                   ...innerItm,
-    //                   value,
-    //                 } : type === "SET_ISCHECKED"
-
-    //                  ? {
-    //                   ...innerItm,
-    //                   isChecked,
-    //                 }
-
-    //               : { ...innerItm }
-    //           ),
-    //         }
-    //       : { ...item }
-    //   ),
-    // };
 
     return {
       ...state,
@@ -80,28 +47,4 @@ export const inventoryReducer = {
       }),
     };
   },
-
-  // checkedAssignPartner: (state: any, action: PayloadAction<any>) => {
-  //   const { inner_id, row_id, isChecked } = action.payload;
-  //   const prevState = current(state);
-
-  //   return {
-  //     ...state,
-  //     data: prevState?.data?.map((item: any) =>
-  //       item?._id === row_id
-  //         ? {
-  //             ...item,
-  //             innerRightData: item?.innerRightData?.map((innerItm: any) =>
-  //               innerItm?._id === inner_id && isChecked
-  //                 ? {
-  //                     ...innerItm,
-  //                     isChecked,
-  //                   }
-  //                 : { ...innerItm, isChecked: false }
-  //             ),
-  //           }
-  //         : { ...item }
-  //     ),
-  //   };
-  // },
 };
