@@ -79,7 +79,7 @@ const InnerRow = ({
                         />
                       </div> */}
 
-        <div className="flex items-center basis-5/12">
+        <div className="flex items-center basis-10/12">
           <Image
             width={40}
             height={40}
@@ -94,9 +94,9 @@ const InnerRow = ({
           <div className="pl-2 font-semibold">{item?.fullName}</div>
         </div>
 
-        <div className="basis-5/12 text-[#A0A0A0]">
+        {/* <div className="basis-5/12 text-[#A0A0A0]">
           order placed 23,Aug 2023
-        </div>
+        </div> */}
 
         <div className="basis-2/12">
           {pathname === "/health-care" ? (
