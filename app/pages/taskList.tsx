@@ -17,6 +17,7 @@ import ChevronLeft from "../components/icons/ChevronLeft";
 import ChevronRight from "../components/icons/ChevronRight";
 import { addWorkOrderTask } from "@/Redux/Slices/selectedWorkOrderSlice";
 import Pagination from "../components/pagination/Pagination";
+import { CustomImage } from "../components/custom-image/CustomImage";
 
 const filter = [
   { id: 1, name: "Semen", payload: "Siman" },
@@ -61,8 +62,8 @@ const TaskList = () => {
   };
 
   const handleSearch = async (query: string) => {
-    if(query.length > 0){
-      const res = await getTaskListData(0, "",query);
+    if (query.length > 0) {
+      const res = await getTaskListData(0, "", query);
       if (res?.status === 200) {
         setPatients(res?.data);
       }
@@ -195,7 +196,7 @@ const TaskList = () => {
                               {innerTask?.taskStatus}
                             </div>
                             <div className="flex-1 text-center">
-                              {innerTask?.profilePicture?.length > 0 ? (
+                              {/* {innerTask?.profilePicture?.length > 0 ? (
                                 <img
                                   src={`http://192.168.15.49:5000/uploads/logistic/${innerTask?.profilePicture}`}
                                   width={50}
@@ -207,7 +208,12 @@ const TaskList = () => {
                                   alt="default-img"
                                   width={50}
                                 />
-                              )}
+                              )} */}
+
+                              <CustomImage
+                                src={innerTask?.profilePicture}
+                                alt="profile-picture"
+                              />
                             </div>
 
                             <div
@@ -274,7 +280,11 @@ const TaskList = () => {
                 </div> */}
                   {/* Repeat for more patients */}
                 </div>
-                <Pagination paginateData={patients} setPaginateData={setPatients} apiFunction={getTaskListData}/>
+                <Pagination
+                  paginateData={patients}
+                  setPaginateData={setPatients}
+                  apiFunction={getTaskListData}
+                />
                 {/* <div className="flex justify-end items-center gap-4 py-4 px-4 bg-slate-200">
                   <div
                     className={`rounded-full py-2 px-2 cursor-pointer ${
