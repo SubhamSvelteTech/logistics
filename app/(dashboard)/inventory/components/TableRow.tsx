@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { FormField } from "@/Interfaces/Utils/Inventory";
 import defaultProfile from "@Images/workorder/default-profile.png";
 import InnerRow from "./InnerRow";
+import { CustomImage } from "@/app/components/custom-image/CustomImage";
 
 const TableRow = ({
   item,
@@ -23,14 +24,6 @@ const TableRow = ({
   const formFields: any = [
     { id: 1, ques: "", title: "Sort By:", options: ["A-Z", "Z-A"] },
   ];
-
-  // const sortedItems = useMemo(() => {
-  //   if (sortOrder === "asc") {
-  //     return items.slice().sort((a, b) => a.name.localeCompare(b.name));
-  //   } else {
-  //     return items.slice().sort((a, b) => b.name.localeCompare(a.name));
-  //   }
-  // }, [items, sortOrder]);
 
   return (
     <>
@@ -53,26 +46,33 @@ const TableRow = ({
           {isValidPath ? item?.itemNumber : item?.mobile}
         </td>
         <td className="px-6 py-4">
-          {isValidPath ? (item?.location ? item?.location : "N/A") : item?.city}
+          {/* {isValidPath ? (item?.location ? item?.location : "N/A") : item?.city   } */}
+          {isValidPath
+            ? item?.location
+              ? item?.location?.charAt(0).toUpperCase() +
+                item?.location?.slice(1)
+              : "N/A"
+            : item?.city?.charAt(0).toUpperCase() + item?.city?.slice(1)}
         </td>
-        {isValidPath && <td className="px-6 py-4">{item?.quantityOnHand}</td>}
+
+        <td className="px-6 py-4">
+          {isValidPath
+            ? item?.quantityOnHand
+            : item?.sumOfTotalAssignedQuantity}
+        </td>
+
         <td className="px-6 py-4">
           <div className="inline-block bg-[#C4C4C4] p-2">
-            <Image
-              width={20}
-              height={20}
-              src={
-                // isValidPath
-                //   ? process.env.NEXT_PUBLIC_API_URL_FOR_IMG + item?.image
-                //   : item?.profilePicture !== "NULL"
-                //   ? process.env.NEXT_PUBLIC_API_URL_FOR_IMG +
-                //     item?.profilePicture
-                //   : injectionIcon
-
-                isValidPath ? injectionIcon : defaultProfile
-              }
-              alt="injection-icon"
-            />
+            {item?.image ? (
+              <Image
+                width={20}
+                height={20}
+                src={injectionIcon}
+                alt="injection-icon"
+              />
+            ) : (
+              <CustomImage src={item?.profilePicture} alt="medicine-image" />
+            )}
           </div>
         </td>
       </tr>
@@ -83,7 +83,7 @@ const TableRow = ({
           <tr className="bg-white border border-[#DDDDDD]">
             <td colSpan={6} className="px-6 py-5">
               <div className="bg-gray-100 dark:bg-gray-700 flex items-start flex-col  xl:flex-row xl:items-stretch">
-                <div className="w-full basis-6/12 xl:border-r-2 xl:border-[#0E8080]">
+                {/* <div className="w-full basis-6/12 xl:border-r-2 xl:border-[#0E8080]">
                   <div className="flex items-start justify-between">
                     <div className="basis-4/12">
                       <div className="inline-block p-10 bg-[#C4C4C4] border-2 border-[#0E8080]">
@@ -158,8 +158,8 @@ const TableRow = ({
                       </div>
                     </div>
                   </div>
-                </div>
-                <div className="w-full basis-6/12 pl-0 xl:pl-7 py-3 xl:py-0  xl:p-3">
+                </div> */}
+                <div className="w-full basis-12/12 pl-0 xl:pl-7 py-3 xl:py-0  xl:p-3">
                   <div className="flex items-start justify-between">
                     <div className="basis-9/12">
                       <strong>

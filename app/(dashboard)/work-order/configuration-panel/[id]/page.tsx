@@ -1,12 +1,12 @@
-import ConfigurationPanel from '../../../../pages/configurationPanel'
-import React from 'react'
+import ConfigurationPanel from "../../../../pages/configurationPanel";
+import React from "react";
 
 const page = () => {
   return (
     <>
-    <ConfigurationPanel/>
+      <ConfigurationPanel />
     </>
-  )
-}
+  );
+};
 
-export default page
+export default page;

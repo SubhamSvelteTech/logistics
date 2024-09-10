@@ -1,13 +1,13 @@
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 import { authOptions } from "@Conf/auth";
-import Login from "./pages/login";
 import Header from "./common/Header";
+import { Login } from "@mui/icons-material";
 
 export default async function Home() {
   const session: any = await getServerSession(authOptions);
   if (session) {
-    redirect('/dashboard');
+    redirect("/dashboard");
   }
 
   return (
@@ -15,7 +15,7 @@ export default async function Home() {
       {session == null && (
         <div className="flex flex-col h-screen">
           <Header />
-          <Login /> 
+          <Login />
         </div>
       )}
     </>
