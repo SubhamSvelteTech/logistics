@@ -35,7 +35,7 @@ axiosInstance.interceptors.response.use(
       Toaster("error", error.response.data.message);
     } else if (error.request) {
       // No response was received from the server
-      Toaster("error", error?.response?.data?.message);
+      Toaster("error",`${error?.response?.data?.message}`);
     } else {
       // Something happened while setting up the request
       Toaster("error", `Request error: ${error.message}`);

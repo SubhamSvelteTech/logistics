@@ -6,15 +6,40 @@ import Rating from "./Rating";
 import { useRouter } from "next/navigation";
 import { useChartData } from "@/services/utils/hooks/useChartData";
 import { getChartData } from "@/app/common/HelperFunctions";
+import useFCM from "@/utils/hooks/useFCM";
+import axiosInstance from "@/services/utils/hooks/useApi";
+import { SEND_FCM_TOKEN } from "@/app/constants/apiEndpoints";
 
 const Dashboard = () => {
   const [chartData, setChartData] = useState<any>();
   const router = useRouter();
   // const { data: chartData } = useChartData();
+  let { fcmToken }: any = useFCM();
   const getChartDataFromApi = async () => {
     const res = await getChartData();
     setChartData(res);
   };
+
+
+  const sendFCMToken = async () => {
+    if (fcmToken) {
+      let payload = {
+        deviceType: "WEB",
+        fcmToken: fcmToken,
+      };
+     const response = await axiosInstance.post(SEND_FCM_TOKEN, payload);
+     if(response.status === 200){
+      console.log(response,"response...")
+     }
+    }
+  };
+
+  useEffect(() => {
+    if (fcmToken?.length > 0) {
+      console.log(fcmToken,"fcmTOken")
+      sendFCMToken();
+    }
+  }, [fcmToken]);
   useEffect(() => {
     getChartDataFromApi();
   }, []);

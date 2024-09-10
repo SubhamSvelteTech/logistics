@@ -7,13 +7,13 @@ import { getMessaging, onMessage } from "firebase/messaging";
 
 // Your web app's Firebase configuration
 const firebaseConfig:any = {
-    apiKey: "AIzaSyBbC4I5qDADSvnmtQ2Y3rPr3qsnDJ39BiE",
-    authDomain: "ivf-logistics.firebaseapp.com",
-    projectId: "ivf-logistics",
-    storageBucket: "ivf-logistics.appspot.com",
-    messagingSenderId: "783151391800",
-    appId: "1:783151391800:web:2beecb7123b28b3c12f2cd",
-    measurementId: "G-54LL61QL38"
+  apiKey: "AIzaSyBoQnaK4tDUvYB0E5l_wUZLKWp13ZLEGGg",
+  authDomain: "ivf-home.firebaseapp.com",
+  projectId: "ivf-home",
+  storageBucket: "ivf-home.appspot.com",
+  messagingSenderId: "358597683476",
+  appId: "1:358597683476:web:91cc94e502f07836bc7a01",
+  measurementId: "G-M7X6C83MG1",
 };
 
 // Initialize Firebase
