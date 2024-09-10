@@ -1,71 +1,44 @@
 "use client";
-import React, { useEffect, useRef, useState, useCallback } from "react";
+import React, {useState} from "react";
 import BreadCrumb from "../components/breadcrumb/BreadCrumb";
 import WorkOrderCard from "../(dashboard)/work-order/WorkOrderComp/WorkOrderCard";
-import Image from "next/image";
 import { getPatientList } from "../common/HelperFunctions";
-import DefaultImg from "@Images/workorder/default-profile.png";
 import Loader from "../components/loader/Loader";
 import SearchBar from "../components/searchbar/SearchBar";
 import { CustomImage } from "../components/custom-image/CustomImage";
+import useInfiniteScroll from "@/services/utils/hooks/useInfiniteScroll";
+
 
 const WorkOrder = () => {
   const [patients, setPatients] = useState<any>([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [page, setPage] = useState(0);
   const [hasMore, setHasMore] = useState(true);
-  const observerRef = useRef<any>();
-
-  // Function to fetch user details
-  const getUserDetails = async () => {
-    if (!hasMore || isLoading) return;
-
-    setIsLoading(true);
-    const res = await getPatientList(page, "");
-
-    if (res?.status === 200) {
-      const newPatients = res?.data?.data;
-      const nextPageAvailable = !!res?.data?.next;
-
-      setPatients((prevPatients: any) => [...prevPatients, ...newPatients]);
-      setHasMore(nextPageAvailable);
-
-      if (nextPageAvailable) {
-        setPage((prevPage) => prevPage + 1);
-      }
-    }
-
-    setIsLoading(false);
-  };
-
-  const lastPatientElementRef = useCallback(
-    (node: any) => {
-      if (isLoading) return;
-      if (observerRef.current) observerRef.current.disconnect();
-
-      observerRef.current = new IntersectionObserver((entries) => {
-        if (entries[0].isIntersecting && hasMore) {
-          getUserDetails();
-        }
-      });
-
-      if (node) observerRef.current.observe(node);
-    },
-    [isLoading, hasMore]
-  );
-
-  useEffect(() => {
-    getUserDetails();
-  }, []);
 
   const handleSearch = async (query: string) => {
-    if (query.length > 0) {
-      const res = await getPatientList(0, query);
-      if (res?.status === 200) {
-        setPatients(res?.data?.data);
-      }
+    const res = await getPatientList(0, query);
+    if (res?.status === 200) {
+      setPatients(res?.data?.data);
     }
   };
+
+  const fetchData = async (page: any) => {
+    try {
+      const response = await getPatientList(page, "");
+      console.log(response, "response");
+      setPatients((prevData: any) => [...prevData, ...response?.data?.data]);
+      if (!response?.data?.next) {
+        setHasMore(false);
+      }
+    } catch (error) {
+      console.error("Failed to fetch data:", error);
+      // setHasMore(false);
+    }
+  };
+
+  const [loaderRef] = useInfiniteScroll({
+    fetchDataFn: fetchData,
+    hasMoreData: hasMore,
+  });
 
   return (
     <>
@@ -79,7 +52,7 @@ const WorkOrder = () => {
           </div>
           {patients?.map((item: any, index: number) => (
             <div
-              ref={patients.length === index + 1 ? lastPatientElementRef : null}
+              // ref={patients.length === index + 1 ? lastPatientElementRef : null}
               className="flex border rounded-lg flex-nowrap mb-4 overflow-x-auto mt-4"
               key={`workorder-${index}`}
             >
@@ -134,6 +107,7 @@ const WorkOrder = () => {
               ))}
             </div>
           ))}
+          {hasMore && <div ref={loaderRef}>Loading more...</div>}
         </div>
       )}
       {/* <PrescriptionModal /> */}

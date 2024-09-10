@@ -5,28 +5,31 @@ import { getCookie, setCookie } from "cookies-next";
 import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { addAssignTo } from "@/Redux/Slices/assignToSlice";
+import { CustomImage } from "@/app/components/custom-image/CustomImage";
 
 const WorkOrderQueueCard = ({ selectedWorkOrder }: any) => {
   const { workOrder } = selectedWorkOrder;
-  const dispatch = useDispatch()
+  console.log(workOrder, "workOrder");
+  const dispatch = useDispatch();
 
   const [currentTaskId, setCurrentTaskId] = useState<string | undefined>(
     getCookie("taskId") as string | undefined
   );
 
-  useEffect(()=>{
+  useEffect(() => {
     const tasklist = workOrder?.tasklist || [];
-    const currentTask = tasklist.find((task:any) => task.taskId === currentTaskId);
-    console.log(currentTask,'bfbfds',workOrder.tasklist,currentTaskId)
+    const currentTask = tasklist.find(
+      (task: any) => task.taskId === currentTaskId
+    );
+    console.log(currentTask, "bfbfds", workOrder.tasklist, currentTaskId);
     const payload = {
       taskId: currentTaskId,
-      workType:currentTask?.workType?.toUpperCase()
-    }    
-    dispatch(addAssignTo({...payload}))
+      workType: currentTask?.workType?.toUpperCase(),
+    };
+    dispatch(addAssignTo({ ...payload }));
+  }, [workOrder?.tasklist]);
 
-  },[workOrder?.tasklist])
-
-  console.log(workOrder?.tasklist,'vdsfdsv')
+  console.log(workOrder?.tasklist, "vdsfdsv");
 
   return (
     <div className="border col-span-2 gap-2 items-center rounded p-2 md:mt-0 mt-4">
@@ -38,20 +41,36 @@ const WorkOrderQueueCard = ({ selectedWorkOrder }: any) => {
           >
             <span className="font-bold text-sm">{item?.workType}</span>
             <div className="flex items-center mt-2 gap-4">
-              <Image
+              {/* <Image
                 className="h-[40px] w-[40px] rounded-full"
                 src={DefaultImg}
                 alt=""
-              />
+              /> */}
+              {workOrder?.profilePicture && (
+                <CustomImage
+                  src={item?.profilePicture}
+                  alt="profile-picture"
+                />
+              )}
               <button
                 disabled={item?.taskId !== currentTaskId}
                 className={`${
                   item?.taskId === currentTaskId
                     ? "bg-[#FFC700]"
-                    : item?.taskStatus === "CLOSED" ? "bg-[#72BE27] text-white" : item?.taskStatus === "BOOKED" ? "bg-teal text-white" : "bg-gray text-white"
+                    : item?.taskStatus === "CLOSED"
+                    ? "bg-[#72BE27] text-white"
+                    : item?.taskStatus === "BOOKED"
+                    ? "bg-teal text-white"
+                    : "bg-gray text-white"
                 } text-[#474747] px-2 py-1 font-bold rounded text-[10px]`}
               >
-                {item?.taskId === currentTaskId ? "Processing..." : item?.taskStatus === "CLOSED" ? "Closed" : item?.taskStatus === "BOOKED" ? "Assigned" : "Assign"}
+                {item?.taskId === currentTaskId
+                  ? "Processing..."
+                  : item?.taskStatus === "CLOSED"
+                  ? "Closed"
+                  : item?.taskStatus === "BOOKED"
+                  ? "Assigned"
+                  : "Assign"}
               </button>
             </div>
           </div>

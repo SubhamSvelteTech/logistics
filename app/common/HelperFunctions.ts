@@ -3,6 +3,7 @@ import {
   FETCH_ADDRESS,
   FETCH_ASSIGNED_TO,
   GET_INVENTORY,
+  GET_WORKERS,
   LOGISTIC_DASHBOARD_CHART,
   TASK_LIST,
   WORK_ORDER_ALL_PATIENT,
@@ -71,6 +72,13 @@ export const downloadPDFFile = async (response: any) => {
 
 export const searchAllInventory = async(query:string) => {
   const res = await axiosInstance.get(`${GET_INVENTORY}?page=0&pageSize=10&${query?.length > 0 ? "query="+query : ""}`)
+  if(res?.status === 200){
+    return res?.data
+  }
+}
+
+export const getInventoryData = async(page?:any)=> {
+  const res = await axiosInstance.get(`${GET_WORKERS}?page=${page}&pageSize=10`);
   if(res?.status === 200){
     return res?.data
   }

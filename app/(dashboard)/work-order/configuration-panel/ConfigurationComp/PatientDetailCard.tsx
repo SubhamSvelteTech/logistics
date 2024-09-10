@@ -7,16 +7,17 @@ import CalenderIcon from "@Icons/calender-icon.svg";
 import { openModal } from "@/Redux/Slices/modalSlice";
 import { useDispatch } from "react-redux";
 import DefaultImg from "@Images/workorder/default-profile.png";
+import { CustomImage } from "@/app/components/custom-image/CustomImage";
 
 const PatientDetailCard = ({ selectedWorkOrder }: any) => {
   const { workOrder } = selectedWorkOrder;
-  console.log(workOrder, "selectedWorkOrder");
+  console.log(workOrder?.profilePicture,'dsfds')
   const dispatch = useDispatch();
   return (
     <div className="col-span-1 shadowBox p-2 rounded">
       <div className="flex gap-2">
         <div>
-          {workOrder?.profilePicture?.length > 0 ? (
+          {/* {workOrder?.profilePicture?.length > 0 ? (
             <img
               src={`http://192.168.15.49:5000/uploads/logistic/${workOrder?.profilePicture}`}
               width={50}
@@ -24,14 +25,17 @@ const PatientDetailCard = ({ selectedWorkOrder }: any) => {
             />
           ) : (
             <Image src={DefaultImg} alt="default-img" width={50} />
-          )}
+          )} */}
+
+         {workOrder?.profilePicture && <CustomImage src={workOrder?.profilePicture} alt="profile-picture" />}
         </div>
         <div>
           <p className="font-bold text-[12px]">{workOrder?.fullName}</p>
           <div className="flex items-center gap-1 mt-1">
             <Image src={LocationIcon} alt="" />
             <p className="font-light text-[10px]">
-              {workOrder?.city}{workOrder?.city && ","} {workOrder?.country}
+              {workOrder?.city}
+              {workOrder?.city && ","} {workOrder?.country}
             </p>
           </div>
         </div>

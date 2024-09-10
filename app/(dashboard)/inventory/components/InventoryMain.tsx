@@ -26,7 +26,7 @@ const InventoryMain = () => {
   }, [isInventoryData]);
 
   const getInventory = async () => {
-    const res = await axiosInstance.get(`${GET_INVENTORY}?page=0&pageSize=10`);
+    const res = await axiosInstance.get(`${GET_INVENTORY}?page=1&pageSize=10`);
     if (res?.status === 200) {
       setInventory([...res?.data?.data]);
     }
