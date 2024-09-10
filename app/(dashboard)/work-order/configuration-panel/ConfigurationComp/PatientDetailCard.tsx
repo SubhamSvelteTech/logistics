@@ -31,7 +31,7 @@ const PatientDetailCard = ({ selectedWorkOrder }: any) => {
 
     const res = await axiosInstance?.post(SEND_CALLING,payload)
     if(res.status === 200){
-      window.open(`/call/${res?.data?.data?.livekitToken}`, "_blank", "noopener");
+      window.open(`/call/${res?.data?.data?.webLivekitToken}`, "_blank", "noopener");
     }
   }
 
