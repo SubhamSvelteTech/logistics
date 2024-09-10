@@ -7,6 +7,8 @@ import "react-phone-input-2/lib/style.css";
 import useFCM from "@/utils/hooks/useFCM";
 import { useEffect } from "react";
 import { usePathname } from "next/navigation";
+import axiosInstance from "@/services/utils/hooks/useApi";
+import { SEND_FCM_TOKEN } from "./constants/apiEndpoints";
 const inter = Inter({ subsets: ["latin"] });
 // export const metadata = {
 //   title: "Logisitics",
@@ -21,12 +23,28 @@ export default function RootLayout({
   const pathname = usePathname();
   let { fcmToken }: any = useFCM();
 
-  useEffect(() => {
-    if (fcmToken?.length > 0) {
-      console.log(fcmToken,"fcmTOken")
-      // sendFCMToken();
+  console.log(pathname,"pathname")
+
+
+  const sendFCMToken = async () => {
+    if (fcmToken) {
+      let payload = {
+        device_name: "WEB",
+        fcm_token: fcmToken,
+      };
+     const response = await axiosInstance.post(SEND_FCM_TOKEN, payload);
+     if(response.status === 200){
+      console.log(response,"response...")
+     }
     }
-  }, [fcmToken]);
+  };
+
+  // useEffect(() => {
+  //   if (fcmToken?.length > 0 && pathname !== "/") {
+  //     console.log(fcmToken,"fcmTOken")
+  //     sendFCMToken();
+  //   }
+  // }, [fcmToken]);
   return (
     <html lang="en">
       <head>
