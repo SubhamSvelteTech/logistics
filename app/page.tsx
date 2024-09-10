@@ -1,7 +1,7 @@
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 import { authOptions } from "@Conf/auth";
-import Login from "./pages/Login";
+import Login from "./pages/login";
 import Header from "./common/Header";
 
 export default async function Home() {
