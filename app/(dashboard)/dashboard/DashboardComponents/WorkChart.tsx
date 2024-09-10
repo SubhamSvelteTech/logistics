@@ -20,8 +20,20 @@ ChartJS.register(
   Legend
 );
 
-const dataSe = [12,12,11,11,11,11,2,2,21,2,1,6,3,32,4,12,12,11,11,11,11,2,2,21,2,1,6,3,32,4]
-const dataMonth = ["Jan","Feb","Mar","Apr","May","Jun"]
+const dataMonth = [
+  "Jan",
+  "Feb",
+  "Mar",
+  "Apr",
+  "May",
+  "Jun",
+  "Jul",
+  "Aug",
+  "Sep",
+  "Oct",
+  "Nov",
+  "Dec",
+];
 
 const WorkChart = ({ dashboardData }: any) => {
   const [chartData, setChartData] = useState({
@@ -30,14 +42,12 @@ const WorkChart = ({ dashboardData }: any) => {
   });
 
   useEffect(() => {
-    const labels:any = dataMonth || [];
-    const datasets =
-      dashboardData?.datasets?.map((dataset: any) => ({
-        label: dataset.label,
-        data: dataSe,
-        backgroundColor: dataset.backgroundColor,
-        borderColor: dataset.borderColor,
-      })) || [];
+    const labels: any = dataMonth || [];
+    const datasets = dashboardData?.datasets?.map((dataset: any) => ({
+      label: dataset.label,
+      backgroundColor: dataset.backgroundColor,
+      data: dataset.data,
+    }));
 
     setChartData({
       labels,
@@ -48,7 +58,7 @@ const WorkChart = ({ dashboardData }: any) => {
   const options: any = {
     responsive: true,
     interaction: {
-      mode: "nearest",
+      mode: "index",
       intersect: false,
     },
     plugins: {
@@ -57,6 +67,8 @@ const WorkChart = ({ dashboardData }: any) => {
       },
       tooltip: {
         enabled: true,
+        mode: "index",
+        intersect: false,
       },
       title: {
         display: true,

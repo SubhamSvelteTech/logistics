@@ -1,15 +1,42 @@
-import React from "react";
+"use client";
+import React, { useEffect, useState } from "react";
+import useDebounce from "@/services/utils/hooks/useDebounce";
 
-const SearchBar = () => {
+interface SearchProps {
+  onSearch: (query: string) => void;
+  placeholder?: string;
+  className?: string;
+  debounceDelay?: number;
+}
+
+const SearchBar = ({ onSearch, debounceDelay = 1500 }: SearchProps) => {
+  const [query, setQuery] = useState("");
+  const debouncedQuery = useDebounce(query, debounceDelay);
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newQuery = e.target.value;
+    setQuery(newQuery);
+  };
+
+  useEffect(() => {
+    if (debouncedQuery.trim().length > 0) {
+      onSearch(debouncedQuery);
+    } else {
+      onSearch(""); // Handle case for empty input if needed
+    }
+  }, [debouncedQuery]);
+
   return (
-    <div className="mb-3 xl:w-96 xs:w-[10rem]">
-      <div className="relative mb-4 flex w-full xxs:flex-wrap items-stretch">
+    <div className="xl:w-96 xs:w-[10rem] col-span-3">
+      <div className="relative flex w-full xxs:flex-wrap items-stretch">
         <input
           type="search"
+          value={query}
           className="relative m-0 block flex-auto rounded border border-solid border-neutral-300 bg-transparent bg-clip-padding px-3 text-xs font-normal leading-[1.6] text-neutral-700 outline-none transition duration-200 ease-in-out focus:z-[3] focus:border-primary focus:text-neutral-700 focus:shadow-[inset_0_0_0_1px_rgb(59,113,202)] focus:outline-none dark:border-neutral-600 dark:text-neutral-200 dark:placeholder:text-neutral-200 dark:focus:border-primary"
           placeholder="Search"
           aria-label="Search"
           aria-describedby="button-addon2"
+          onChange={handleInputChange}
         />
 
         {/* <!--Search icon--> */}

@@ -1,28 +1,28 @@
 "use client";
 import React, { useEffect, useRef, useState } from "react";
-import GLLOGO from "../../public/icons/gl-logo.svg";
+import GLLOGO from "@Images/logo_f_h.svg";
 import Image from "next/image";
-import { PiShoppingCartFill } from "react-icons/pi";
-import { MdOutlineNotificationsNone } from "react-icons/md";
 import Link from "next/link";
 import { signOut, useSession } from "next-auth/react";
-import JanetImg from "@Images/workorder/janet.svg";
-import { usePathname } from "next/navigation";
-import axiosInstance from "@/services/utils/hooks/useApi";
-import { SIGNOUT } from "../constants/apiEndpoints";
+import JanetImg from "@Images/workorder/default-profile.png";
+import { usePathname, useRouter } from "next/navigation";
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { data: session, status } = useSession();
   const pathname = usePathname();
-  const dropdownRef =  useRef<HTMLDivElement | null>(null);
+  const router = useRouter();
+  const dropdownRef = useRef<HTMLDivElement | null>(null);
 
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
   };
 
   const handleClickOutside = (event: MouseEvent) => {
-    if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+    if (
+      dropdownRef.current &&
+      !dropdownRef.current.contains(event.target as Node)
+    ) {
       setIsOpen(false);
     }
   };
@@ -34,25 +34,26 @@ const Header = () => {
     };
   }, []);
 
-  const handleSignout = async() => {
-    const payload = {
-      refreshToken: session?.user?.refreshToken
-    }
-    const res = await axiosInstance.post(SIGNOUT,payload);
-    if(res?.status === 200){
-      signOut();
-    }
-  }
+  const handleSignout = async () => {
+    // const payload = {
+    //   refreshToken: session?.user?.refreshToken
+    // }
+    // const res = await axiosInstance.post(SIGNOUT,payload);
+    // if(res?.status === 200){
+    // }
+    signOut();
+  };
+
   return (
     <div className="bg-teal w-full p-4 fixed top-0 left-0 right-0 z-10">
       <div className="flex justify-between items-center">
-        <Link href="/">
-          <Image src={GLLOGO} width={200} height={100} alt="gl-logo" priority />
+        <Link href="/dashboard">
+          <Image src={GLLOGO} width={160} height={100} alt="gl-logo" priority />
         </Link>
         {session && pathname.length > 1 && (
           <div className="flex items-center justify-center">
-            <PiShoppingCartFill className="p-1 w-[35px] h-[30px] text-white" />
-            <MdOutlineNotificationsNone className="p-1  w-[35px] h-[30px] text-white" />
+            {/* <PiShoppingCartFill className="p-1 w-[35px] h-[30px] text-white" /> */}
+            {/* <MdOutlineNotificationsNone className="p-1  w-[35px] h-[30px] text-white" /> */}
             <div>
               <button
                 id="dropdownUserAvatarButton"
@@ -70,14 +71,14 @@ const Header = () => {
 
               {isOpen && (
                 <div
-                ref={dropdownRef}
+                  ref={dropdownRef}
                   id="dropdownAvatar"
                   className="z-10 absolute right-0 mt-2 bg-white divide-y divide-gray-100 rounded-lg shadow-2xl w-44 dark:bg-gray-700 dark:divide-gray-600"
                 >
                   <div className="px-4 py-3 text-sm text-gray-900 dark:text-white">
-                    <div>Bonnie Green</div>
+                    {/* <div>Bonnie Green</div> */}
                     <div className="font-medium truncate">
-                      name@flowbite.com
+                      {session?.user?.name}
                     </div>
                   </div>
                   <ul
@@ -85,28 +86,12 @@ const Header = () => {
                     aria-labelledby="dropdownUserAvatarButton"
                   >
                     <li>
-                      <a
-                        href="#"
+                      <button
+                        onClick={() => router.push("/dashboard")}
                         className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
                       >
                         Dashboard
-                      </a>
-                    </li>
-                    <li>
-                      <a
-                        href="#"
-                        className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                      >
-                        Settings
-                      </a>
-                    </li>
-                    <li>
-                      <a
-                        href="#"
-                        className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                      >
-                        Earnings
-                      </a>
+                      </button>
                     </li>
                   </ul>
                   <div className="py-2">

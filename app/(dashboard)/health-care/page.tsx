@@ -1,9 +1,8 @@
-import React from 'react'
+import React from "react";
+import HealthCare from "./HealthCare";
 
-const page = () => {
-  return (
-    <div>page</div>
-  )
-}
+const Page = () => {
+  return <HealthCare />;
+};
 
-export default page
+export default Page;

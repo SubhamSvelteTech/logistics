@@ -1,9 +1,8 @@
-import React from 'react'
+import React from "react";
+import InventoryMain from "./components/InventoryMain";
 
-const page = () => {
-  return (
-    <div>page</div>
-  )
-}
+const Page = () => {
+  return <InventoryMain />;
+};
 
-export default page
+export default Page;
