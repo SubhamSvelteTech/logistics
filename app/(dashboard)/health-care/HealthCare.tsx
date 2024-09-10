@@ -15,7 +15,7 @@ const HealthCare = () => {
     "Name",
     "Phone No.",
     "Location",
-    // "Total Allotted Assets",
+    "Total Allotted Assets",
     "Profile",
   ];
 
