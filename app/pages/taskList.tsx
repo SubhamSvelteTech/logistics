@@ -13,7 +13,10 @@ import ClockIcon from "@Icons/clock-icon.svg";
 import Link from "next/link";
 import TaskSidebar from "../(dashboard)/task-list/TaskSidebar/TaskSidebar";
 import { getCookie, setCookie } from "cookies-next";
+import ChevronLeft from "../components/icons/ChevronLeft";
+import ChevronRight from "../components/icons/ChevronRight";
 import { addWorkOrderTask } from "@/Redux/Slices/selectedWorkOrderSlice";
+import Pagination from "../components/pagination/Pagination";
 import useInfiniteScroll from "@/services/utils/hooks/useInfiniteScroll";
 import { CustomImage } from "../components/custom-image/CustomImage";
 
@@ -31,6 +34,15 @@ const TaskList = () => {
   const [selectedFilter, setSelectedFilter] = useState<string | null>("");
   const dispatch = useDispatch();
   const [hasMore, setHasMore] = useState(true);
+
+  // const taskListdata = async () => {
+  //   const res = await getTaskListData(0);
+  //   setPatients(res?.data);
+  // };
+
+  // useEffect(() => {
+  //   taskListdata();
+  // }, []);
 
   const handleTaskClick = (data: any, id: any) => {
     setCookie("taskId", id?.taskId);
@@ -52,11 +64,13 @@ const TaskList = () => {
   };
 
   const handleSearch = async (query: string) => {
-    const res = await getTaskListData(0, "", query);
-    if (res?.status === 200) {
-      setPatients(res?.data?.data);
-    }
+    if (query.length > 0) {
+      const res = await getTaskListData(0, "", query);
+      if (res?.status === 200) {
+        setPatients(res?.data?.data);
+      }
   };
+}
 
   const fetchData = async (page: any) => {
     try {
@@ -106,6 +120,28 @@ const TaskList = () => {
                   </button>
                 ))}
               </div>
+
+              {/* <h2 className="text-xl font-bold mt-8 mb-4">Tomorrow</h2>
+            <div className="space-y-2">
+              <button className="w-full text-left bg-white border text-sm py-2 px-4 rounded">
+                General Blood Test
+              </button>
+              <button className="w-full text-left bg-white border text-sm py-2 px-4 rounded">
+                Hormonal Testing
+              </button>
+              <button className="w-full text-left bg-white border text-sm py-2 px-4 rounded">
+                FSH analysis
+              </button>
+              <button className="w-full text-left bg-white border text-sm py-2 px-4 rounded">
+                General Blood Test
+              </button>
+              <button className="w-full text-left bg-white border text-sm py-2 px-4 rounded">
+                Hormonal Testing
+              </button>
+              <button className="w-full text-left bg-white border text-sm py-2 px-4 rounded">
+                FSH analysis
+              </button>
+            </div> */}
             </div>
 
             {/* Main Content */}
@@ -181,11 +217,26 @@ const TaskList = () => {
                               {innerTask?.taskStatus}
                             </div>
                             <div className="flex-1 text-center">
+                              {/* {innerTask?.profilePicture?.length > 0 ? (
+                                <img
+                                  src={`http://192.168.15.49:5000/uploads/logistic/${innerTask?.profilePicture}`}
+                                  width={50}
+                                  height={50}
+                                />
+                              ) : (
+                                <Image
+                                  src={DefaultImg}
+                                  alt="default-img"
+                                  width={50}
+                                />
+                              )} */}
+
                               <CustomImage
                                 src={innerTask?.profilePicture}
                                 alt="profile-picture"
                               />
                             </div>
+
                             <div
                               className={`absolute right-0 top-0 px-4 py-1 rounded-tr rounded-bl ${
                                 status === "pending" && "p-1"
@@ -214,8 +265,62 @@ const TaskList = () => {
                       }
                     );
                   })}
-                  {hasMore && <div ref={loaderRef}>Loading more...</div>}
+
+                  {/* <div className="flex items-center p-2 border rounded mt-2">
+                  <div className="flex-1 flex items-center space-x-4">
+                    <Image
+                      src={DefaultImg}
+                      alt="patient-img"
+                      width={50}
+                      className="rounded"
+                    />
+                    <div>
+                      <h3 className="text-xs font-semibold">Janet Whiteman</h3>
+                      <p className="text-xs text-gray">IVF</p>
+                    </div>
+                  </div>
+                  <div className="flex-1 text-center">
+                    <button className="text-teal-600">
+                      <Image src={ViewIcon} alt="view-icon" />
+                    </button>
+                    <button className="text-teal-600 ml-4">
+                      <Image src={DownloadIcon} alt="icon" />
+                    </button>
+                  </div>
+                  <div className="flex-1 text-center text-yellow-500 font-bold">
+                    Pending
+                  </div>
+                  <div className="flex-1 text-center">
+                    <Image
+                      src={DefaultImg}
+                      alt="patient-img"
+                      width={50}
+                      className="rounded"
+                    />
+                  </div>
+                </div> */}
+                  {/* Repeat for more patients */}
+                {hasMore && <div ref={loaderRef}>Loading more...</div>}
                 </div>
+                
+                {/* <div className="flex justify-end items-center gap-4 py-4 px-4 bg-slate-200">
+                  <div
+                    className={`rounded-full py-2 px-2 cursor-pointer ${
+                      patients?.previous ? "bg-teal" : "bg-gray"
+                    }`}
+                    onClick={handlePrev}
+                  >
+                    <ChevronLeft />
+                  </div>
+                  <div
+                    className={`${
+                      patients?.next ? "bg-teal" : "bg-gray"
+                    } cursor-pointer rounded-full py-2 px-2`}
+                    onClick={handleNext}
+                  >
+                    <ChevronRight />
+                  </div>
+                </div> */}
               </div>
             </div>
           </div>
@@ -224,6 +329,6 @@ const TaskList = () => {
       </div>
     </>
   );
-};
+}
 
 export default TaskList;

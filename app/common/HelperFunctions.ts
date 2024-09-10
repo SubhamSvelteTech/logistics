@@ -47,7 +47,7 @@ export const getChartData = async () => {
 };
 
 export const getTaskListData = async (page?:any,testType?:any,search?:any) => {
-  const res = await axiosInstance.get(`${TASK_LIST}page=${page}&pageSize=10${testType?.length > 0 ? "&testType="+testType : ''}${search?.length > 0 ? "&search="+search : ''}`);
+  const res = await axiosInstance.get(`${TASK_LIST}?page=${page}&pageSize=10${testType?.length > 0 ? "&testType="+testType : ''}${search?.length > 0 ? "&search="+search : ''}`);
   if (res?.status === 200) {
     return res?.data;
   } else {

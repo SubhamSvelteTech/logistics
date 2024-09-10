@@ -1,9 +1,10 @@
-
-import TaskList from "../../pages/taskList";
-import React from "react";
+import TaskList from '@/app/pages/TaskList'
+import React from 'react'
 
 const page = () => {
-  return <TaskList />;
-};
+  return (
+    <TaskList/>
+  )
+}
 
-export default page;
+export default page
