@@ -15,10 +15,13 @@ const WorkOrder = () => {
   const [hasMore, setHasMore] = useState(true);
 
   const handleSearch = async (query: string) => {
-    const res = await getPatientList(0, query);
-    if (res?.status === 200) {
-      setPatients(res?.data?.data);
+    if(query?.length > 0){
+      const res = await getPatientList(0, query);
+      if (res?.status === 200) {
+        setPatients(res?.data?.data);
+      }
     }
+ 
   };
 
   const fetchData = async (page: any) => {
@@ -31,7 +34,7 @@ const WorkOrder = () => {
       }
     } catch (error) {
       console.error("Failed to fetch data:", error);
-      // setHasMore(false);
+      setHasMore(false);
     }
   };
 
