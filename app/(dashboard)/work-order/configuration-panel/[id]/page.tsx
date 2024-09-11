@@ -1,4 +1,4 @@
-import ConfigurationPanel from "@/app/pages/ConfigurationPanel";
+import ConfigurationPanel from "../../../../pages/configurationPanel";
 import React from "react";
 
 const page = () => {
