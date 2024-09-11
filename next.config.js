@@ -4,7 +4,7 @@ const nextConfig = {
     NEXTAUTH_URL: process.env.NEXTAUTH_URL,
   },
   images: {
-    domains: ["3.109.50.224", "homeivf-patient.s3.amazonaws.com"],
+    domains: ["logistics.be.homeivf.in", "homeivf-patient.s3.amazonaws.com"],
   },
   reactStrictMode: true,
   // typescript: {
