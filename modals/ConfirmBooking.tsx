@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import DefaultImg from "@Images/workorder/default-profile.png";
 import { usePathname } from "next/navigation";
 import injectionIcon from "@Icons/injection.svg";
+import { CustomImage } from "@/app/components/custom-image/CustomImage";
 
 const ConfirmBooking = ({
   handleSubmit,
@@ -60,20 +61,10 @@ const ConfirmBooking = ({
         )}
 
         <div className="px-4 py-4 flex items-center gap-4">
-          {confirmModalData?.patientImage !== null ? (
-            <Image
-              src={
-                pathanme === "/inventory"
-                  ? injectionIcon
-                  : `${process.env.NEXT_PUBLIC_API_URL_FOR_IMG}/uploads/logistic/${confirmModalData?.patientImage}`
-              }
-              width={80}
-              height={80}
-              alt=""
-            />
-          ) : (
-            <Image src={DefaultImg} alt="default-img" width={80} />
-          )}
+        <CustomImage
+            src={confirmModalData?.patientImage}
+            alt="medicine-image"
+          />
           <div>
             <p className="text-sm font-bold py-1">
               {confirmModalData?.fullName}
@@ -90,22 +81,10 @@ const ConfirmBooking = ({
         <hr />
 
         <div className="px-4 py-4 flex items-center gap-4">
-          {confirmModalData?.workerImage !== null ? (
-            <img
-              src={
-                pathanme === "/inventory"
-                  ? `${
-                      process.env.NEXT_PUBLIC_API_URL_FOR_IMG +
-                      confirmModalData?.workerImage
-                    }`
-                  : `${process.env.NEXT_PUBLIC_API_URL_FOR_IMG}/uploads/logistic/${confirmModalData?.workerImage}`
-              }
-              width={80}
-              height={80}
-            />
-          ) : (
-            <Image src={DefaultImg} alt="default-img" width={80} />
-          )}
+        <CustomImage
+            src={confirmModalData?.workerImage}
+            alt="medicine-image"
+          />
 
           <div>
             <p className="text-sm font-bold py-1"></p>
