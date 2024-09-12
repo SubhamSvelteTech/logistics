@@ -23,8 +23,8 @@ const PatientDetailCard = ({ selectedWorkOrder }: any) => {
     // }
 
     let payload = {
-      title:"Call From Logistics Manager",
-      patientId:patientId
+      receiverId:patientId,
+      receiverType:"Patient"
     }
 
     
