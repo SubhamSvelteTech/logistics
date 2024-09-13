@@ -96,7 +96,7 @@ const WorkOrderCard = ({ data, image, status, assigned, item }: any) => {
               {assigned === "BOOKED"
                 ? "ASSIGNED"
                 : assigned === "CLOSED"
-                ? data?.workType === "INJECTABLE" ? "COMPLETED" : "DELIVERED"
+                ? data?.workType === "BLOOD TEST" ? "COMPLETED" : "DELIVERED"
                 : "ASSIGN"}
             </button>
           </div>
