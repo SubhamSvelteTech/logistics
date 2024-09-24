@@ -41,7 +41,6 @@ const Header = () => {
     if(res?.status === 200){
       signOut();
     }
-
   };
 
   return (

@@ -11,6 +11,7 @@ import DeliveredIcon from "@/app/components/icons/DeliveredIcon";
 import { CustomImage } from "@/app/components/custom-image/CustomImage";
 import CallIcon from "@Icons/call-icon.svg"
 
+
 const WorkOrderCard = ({ data, image, status, assigned, item }: any) => {
   const router = useRouter();
   const dispatch = useDispatch();
@@ -65,6 +66,24 @@ const WorkOrderCard = ({ data, image, status, assigned, item }: any) => {
               <p className="text-gray-900 font-semibold text-[12px]">
                 {data?.fullName}
               </p>
+              {assigned !== "OPEN" && (
+                <>
+                  <p className="text-[10px]">
+                    <span className="text-teal font-semibold">
+                      Assigned At -
+                    </span>
+                    {data?.assignedDate?.split("T")[0]}
+                  </p>
+                  {assigned === "CLOSED" && (
+                    <p className="text-[10px]">
+                      <span className="text-teal font-semibold">
+                        Closed At -
+                      </span>
+                      {data?.updatedAt?.split("T")[0]}
+                    </p>
+                  )}
+                </>
+              )}
               {/* <p className="text-gray-600 text-[12px]">{data?.role}</p>
               {assigned === "BOOKED" && (
                 <div className="flex">
@@ -107,7 +126,9 @@ const WorkOrderCard = ({ data, image, status, assigned, item }: any) => {
               {assigned === "BOOKED"
                 ? "ASSIGNED"
                 : assigned === "CLOSED"
-                ? data?.workType === "BLOOD TEST" ? "COMPLETED" : "DELIVERED"
+                ? data?.workType === "BLOOD TEST"
+                  ? "COMPLETED"
+                  : "DELIVERED"
                 : "ASSIGN"}
             </button>
           </div>
