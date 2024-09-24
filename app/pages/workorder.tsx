@@ -14,7 +14,7 @@ import useNotificationPermission from "@/services/utils/hooks/useNotificationPer
 const WorkOrder = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [paginateData, setPaginateData] = useState<any>();
-  const permission = useNotificationPermission();
+  // const permission = useNotificationPermission();
 
   const handleSearch = async (query: string) => {
     const res = await getPatientList(0, query);
@@ -28,7 +28,6 @@ const WorkOrder = () => {
     try {
       const response = await getPatientList(page, "");
       if (response?.status === 200) {
-        console.log(response, "vcxvds");
         setPaginateData(response.data);
       } else {
         console.error("API error:", response);
@@ -94,24 +93,23 @@ const WorkOrder = () => {
     };
   }, []);
 
-  const requestPermission = async () => {
-    try {
-      const result = await Notification.requestPermission();
-      console.log('Notification permission result:', result);
+  // const requestPermission = async () => {
+  //   try {
+  //     const result = await Notification.requestPermission();
+  //     console.log('Notification permission result:', result);
 
-      if (result === 'granted') {
-        new Notification('Notifications Enabled', {
-          body: 'You will now receive notifications from this site!',
-          icon: '/path/to/icon.png', // Optional: path to an icon
-        });
-      } else if (result === 'denied') {
-        console.log('Notifications are denied.');
-      }
-    } catch (error) {
-      console.error('Error requesting notification permission:', error);
-    }
-  };
-
+  //     if (result === 'granted') {
+  //       new Notification('Notifications Enabled', {
+  //         body: 'You will now receive notifications from this site!',
+  //         icon: '/path/to/icon.png', // Optional: path to an icon
+  //       });
+  //     } else if (result === 'denied') {
+  //       console.log('Notifications are denied.');
+  //     }
+  //   } catch (error) {
+  //     console.error('Error requesting notification permission:', error);
+  //   }
+  // };
 
   return (
     <>
@@ -188,14 +186,14 @@ const WorkOrder = () => {
         </div>
       )}
 
-<div>
+      {/* <div>
       <h2>Notification Permission Status: {permission}</h2>
       {(permission === 'default' || permission === 'denied') && (
         <button onClick={requestPermission}>
           Enable Notifications
         </button>
       )}
-    </div>
+    </div> */}
       {/* <PrescriptionModal /> */}
       {/* {hasMore && <div ref={loaderRef}>Loading more...</div>} */}
     </>
