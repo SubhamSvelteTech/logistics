@@ -44,6 +44,7 @@ const CalenderWithSlots = () => {
             {slots?.data?.[0]?.alotedTime.length > 0 ? (
               <div className="grid grid-cols-2 gap-2 w-full overflow-y-scroll h-[11rem]">
               {slots?.data?.[0]?.alotedTime?.map((item: any, index: number) => (
+                item?.slotStatus === "AVAILABLE" &&
                 <div key={`slots/${index + 1}`}>
                   <button
                     onClick={(e) => handleSlots(e, item?.startTime, item?._id)}

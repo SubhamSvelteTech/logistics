@@ -9,6 +9,7 @@ import { setCookie } from "cookies-next";
 import DeliverIcon from "@Icons/deliver-icon.svg";
 import DeliveredIcon from "@/app/components/icons/DeliveredIcon";
 import { CustomImage } from "@/app/components/custom-image/CustomImage";
+import AddIcon from "@Icons/add-circle.svg";
 
 const WorkOrderCard = ({ data, image, status, assigned, item }: any) => {
   const router = useRouter();
@@ -64,6 +65,24 @@ const WorkOrderCard = ({ data, image, status, assigned, item }: any) => {
               <p className="text-gray-900 font-semibold text-[12px]">
                 {data?.fullName}
               </p>
+              {assigned !== "OPEN" && (
+                <>
+                  <p className="text-[10px]">
+                    <span className="text-teal font-semibold">
+                      Assigned At -
+                    </span>
+                    {data?.assignedDate?.split("T")[0]}
+                  </p>
+                  {assigned === "CLOSED" && (
+                    <p className="text-[10px]">
+                      <span className="text-teal font-semibold">
+                        Closed At -
+                      </span>
+                      {data?.updatedAt?.split("T")[0]}
+                    </p>
+                  )}
+                </>
+              )}
               {/* <p className="text-gray-600 text-[12px]">{data?.role}</p>
               {assigned === "BOOKED" && (
                 <div className="flex">
@@ -81,7 +100,14 @@ const WorkOrderCard = ({ data, image, status, assigned, item }: any) => {
               )} */}
             </div>
           </div>
-          <div className="flex justify-end gap-2">
+          <div className="flex justify-end gap-2 items-center">
+            {/* {assigned === "BOOKED" && (
+              <>
+                <span className="relative cursor-pointer">
+                  <Image src={AddIcon} alt="add-circle" />
+                </span>
+              </>
+            )} */}
             <button
               onClick={() => handleAssign(data?.taskId)}
               disabled={assigned === "BOOKED" || assigned === "CLOSED"}
@@ -96,7 +122,9 @@ const WorkOrderCard = ({ data, image, status, assigned, item }: any) => {
               {assigned === "BOOKED"
                 ? "ASSIGNED"
                 : assigned === "CLOSED"
-                ? data?.workType === "BLOOD TEST" ? "COMPLETED" : "DELIVERED"
+                ? data?.workType === "BLOOD TEST"
+                  ? "COMPLETED"
+                  : "DELIVERED"
                 : "ASSIGN"}
             </button>
           </div>

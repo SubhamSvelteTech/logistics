@@ -18,16 +18,21 @@ const SearchBar = ({ onSearch, debounceDelay = 1500 }: SearchProps) => {
     setQuery(newQuery);
   };
 
-  useEffect(() => {
-    if (debouncedQuery.trim().length > 0) {
-      onSearch(debouncedQuery);
-    } else {
-      onSearch(""); // Handle case for empty input if needed
-    }
-  }, [debouncedQuery]);
+  // useEffect(() => {
+  //   if (debouncedQuery.trim().length > 0) {
+  //     onSearch(debouncedQuery);
+  //   } else {
+  //     onSearch(""); // Handle case for empty input if needed
+  //   }
+  // }, [debouncedQuery]);
+
+  // const handleSubmit = async() => {
+  //   alert('fdfd')
+  // }
 
   return (
     <div className="xl:w-96 xs:w-[10rem] col-span-3">
+      <form>
       <div className="relative flex w-full xxs:flex-wrap items-stretch">
         <input
           type="search"
@@ -40,7 +45,9 @@ const SearchBar = ({ onSearch, debounceDelay = 1500 }: SearchProps) => {
         />
 
         {/* <!--Search icon--> */}
-        <span
+        <button
+        type="button"
+        onClick={()=>onSearch(query)}
           className="input-group-text flex items-center whitespace-nowrap rounded-r px-3 py-1.5 text-center text-base font-normal text-white bg-[#17242A]"
           id="basic-addon2"
         >
@@ -56,8 +63,9 @@ const SearchBar = ({ onSearch, debounceDelay = 1500 }: SearchProps) => {
               clipRule="evenodd"
             />
           </svg>
-        </span>
+        </button>
       </div>
+      </form>
     </div>
   );
 };
