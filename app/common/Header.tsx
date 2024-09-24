@@ -6,6 +6,8 @@ import Link from "next/link";
 import { signOut, useSession } from "next-auth/react";
 import JanetImg from "@Images/workorder/default-profile.png";
 import { usePathname, useRouter } from "next/navigation";
+import axiosInstance from "@/services/utils/hooks/useApi";
+import { SIGNOUT } from "../constants/apiEndpoints";
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -35,13 +37,14 @@ const Header = () => {
   }, []);
 
   const handleSignout = async () => {
-    // const payload = {
-    //   refreshToken: session?.user?.refreshToken
-    // }
-    // const res = await axiosInstance.post(SIGNOUT,payload);
-    // if(res?.status === 200){
-    // }
-    signOut();
+    const payload = {
+      refreshToken: session?.user?.refreshToken
+    }
+    const res = await axiosInstance.post(SIGNOUT,payload);
+    if(res?.status === 200){
+      signOut();
+    }
+
   };
 
   return (
