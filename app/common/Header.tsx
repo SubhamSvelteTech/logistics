@@ -37,10 +37,7 @@ const Header = () => {
   }, []);
 
   const handleSignout = async () => {
-    const payload = {
-      refreshToken: session?.user?.refreshToken
-    }
-    const res = await axiosInstance.post(SIGNOUT,payload);
+    const res = await axiosInstance.post(SIGNOUT);
     if(res?.status === 200){
       signOut();
     }
