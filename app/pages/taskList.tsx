@@ -13,10 +13,7 @@ import ClockIcon from "@Icons/clock-icon.svg";
 import Link from "next/link";
 import TaskSidebar from "../(dashboard)/task-list/TaskSidebar/TaskSidebar";
 import { getCookie, setCookie } from "cookies-next";
-import ChevronLeft from "../components/icons/ChevronLeft";
-import ChevronRight from "../components/icons/ChevronRight";
 import { addWorkOrderTask } from "@/Redux/Slices/selectedWorkOrderSlice";
-import Pagination from "../components/pagination/Pagination";
 import useInfiniteScroll from "@/services/utils/hooks/useInfiniteScroll";
 import { CustomImage } from "../components/custom-image/CustomImage";
 
@@ -64,18 +61,15 @@ const TaskList = () => {
   };
 
   const handleSearch = async (query: string) => {
-    if (query.length > 0) {
-      const res = await getTaskListData(0, "", query);
-      if (res?.status === 200) {
-        setPatients(res?.data?.data);
-      }
+    const res = await getTaskListData(0, "", query);
+    if (res?.status === 200) {
+      setPatients(res?.data?.data);
+    }
   };
-}
 
   const fetchData = async (page: any) => {
     try {
       const response = await getTaskListData(page, "");
-      console.log(response, "response");
       setPatients((prevData: any) => [...prevData, ...response?.data?.data]);
       if (!response?.data?.next) {
         setHasMore(false);
@@ -188,7 +182,7 @@ const TaskList = () => {
                               <div className="flex-1 text-center">
                                 <Link
                                   target="blank"
-                                  href={taskData?.prescription_pdf?.[0]}
+                                  href={taskData?.prescription_pdf?.[0] || ""}
                                   className="text-teal-600 inline-block"
                                 >
                                   <Image src={ViewIcon} alt="view-icon" />
@@ -300,9 +294,9 @@ const TaskList = () => {
                   </div>
                 </div> */}
                   {/* Repeat for more patients */}
-                {hasMore && <div ref={loaderRef}>Loading more...</div>}
+                  {hasMore && <div ref={loaderRef}>Loading more...</div>}
                 </div>
-                
+
                 {/* <div className="flex justify-end items-center gap-4 py-4 px-4 bg-slate-200">
                   <div
                     className={`rounded-full py-2 px-2 cursor-pointer ${
@@ -329,6 +323,6 @@ const TaskList = () => {
       </div>
     </>
   );
-}
+};
 
 export default TaskList;
