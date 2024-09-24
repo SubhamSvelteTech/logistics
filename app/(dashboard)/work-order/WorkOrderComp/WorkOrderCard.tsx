@@ -9,6 +9,7 @@ import { setCookie } from "cookies-next";
 import DeliverIcon from "@Icons/deliver-icon.svg";
 import DeliveredIcon from "@/app/components/icons/DeliveredIcon";
 import { CustomImage } from "@/app/components/custom-image/CustomImage";
+import CallIcon from "@Icons/call-icon.svg"
 
 const WorkOrderCard = ({ data, image, status, assigned, item }: any) => {
   const router = useRouter();
@@ -81,7 +82,17 @@ const WorkOrderCard = ({ data, image, status, assigned, item }: any) => {
               )} */}
             </div>
           </div>
-          <div className="flex justify-end gap-2">
+          <div className="flex items-center justify-end gap-2">
+          {assigned === "BOOKED" && (
+              <>
+                <button
+                  className="bg-teal h-[22px] w-[22px] rounded-full flex justify-center items-center"
+                  // onClick={() => sendCallNotification(workOrder?._id)}
+                >
+                  <Image src={CallIcon} alt="" className="w-[10px]" />
+                </button>
+              </>
+            )}
             <button
               onClick={() => handleAssign(data?.taskId)}
               disabled={assigned === "BOOKED" || assigned === "CLOSED"}
