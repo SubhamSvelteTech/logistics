@@ -83,7 +83,7 @@ const ConfigurationPanel = () => {
     <>
       <div className="flex flex-col md:flex-row gap-2">
         {/* <div className="bg-white rounded-lg py-6 px-4 md:w-3/4"> */}
-        <div className="bg-white rounded-lg py-6 px-4">
+        <div className="bg-white rounded-lg py-6 px-4  md:w-3/4">
           <BreadCrumb title="Configuration Panel" />
 
           <div className="grid lg:grid-cols-4 grid-cols-1 mt-6 md:gap-4">
@@ -102,7 +102,7 @@ const ConfigurationPanel = () => {
         </div>
         {/* status */}
         {/* on enable status add md:w-[3/4] tp parent div */}
-        {/* <Status selectedWorkOrder={selectedWorkOrder}/> */}
+        <Status selectedWorkOrder={selectedWorkOrder}/>
       </div>
 
       {/* modal */}

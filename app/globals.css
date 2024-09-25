@@ -173,6 +173,12 @@ body {
   display: none !important;
 }
 
+.lk-button {
+  display: none !important;
+}
+.lk-disconnect-button {
+  display: none !important;
+}
 /* Remove arrow from input type number */
 /* #total-assets input[type="number"]::-webkit-inner-spin-button,
 #total-assets
