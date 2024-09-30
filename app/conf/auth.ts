@@ -13,7 +13,7 @@ export const authOptions: NextAuthOptions = {
       async authorize(credentials: any) {
         try {
           const response = await axios.post(
-            "http://192.168.15.49:5000/api/v1/logisticUser/login",
+            `${process.env.NEXT_PUBLIC_API_URL}/v1/logisticUser/login`,
             {
               email: credentials?.email,
               password: credentials?.password,

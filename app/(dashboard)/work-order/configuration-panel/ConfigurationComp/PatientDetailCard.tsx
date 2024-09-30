@@ -23,15 +23,15 @@ const PatientDetailCard = ({ selectedWorkOrder }: any) => {
     // }
 
     let payload = {
-      title:"Call From Logistics Manager",
-      patientId:patientId
+      receiverId:patientId,
+      receiverType:"Patient"
     }
 
     
 
     const res = await axiosInstance?.post(SEND_CALLING,payload)
     if(res.status === 200){
-      window.open(`/call/${res?.data?.data?.livekitToken}`, "_blank", "noopener");
+      window.open(`/call/${res?.data?.data?.webLivekitToken}`, "_blank", "noopener");
     }
   }
 

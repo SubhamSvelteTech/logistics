@@ -45,12 +45,12 @@ const LivekitComponent = () => {
               else {
                 router.push("/login");
               }
+              return () => setAllowed(false)
         },[session?.user?.accessToken?.length]);
       
 
         // return () => setLiveToken("");
-    
-       
+  
     if(loading){
         return(
             <div>
@@ -67,24 +67,26 @@ const LivekitComponent = () => {
             data-lk-theme="default"
             style={{ height: "100vh" }}
             video={false}
-            // onDisconnected={() => {
-            //   role !== "Patient"
-            //     ? setIsShowModal(true)
-            //     : router.push("/dashboard");
-            // }}
+            onDisconnected={() => {
+              router.push("/work-order")
+              // role !== "Patient"
+              //   ? setIsShowModal(true)
+              //   : router.push("/dashboard");
+            }}
             onConnected={() => {
             //   setIsConnected(true);
-              const buttons: any = document.getElementsByClassName("lk-button");
-              for (let item of buttons) {
-                if (item?.getAttribute("data-lk-source") === "camera" || item?.getAttribute("data-lk-source") === "screen_share") {
-                    item.style.display = "none"
-                    console.log(item,"item...")
-                
-                }
-              }
+              const buttons: any = document.getElementsByClassName("lk-button-group");
+              const disConnectButton = document.getElementsByClassName("lk-disconnect-button")
+              console.log(buttons,"button...")
+              let item = buttons[0]
+              console.log(item.getElementsByTagName("button"))
+              let microPhoneButton  =item.getElementsByTagName("button")[0]
+                microPhoneButton.setAttribute('style', 'display:block !important');
+                disConnectButton[0].setAttribute('style','display:block !important')
             }}
+        
           >
-            <VideoConference id="livekitVideo" />
+            <VideoConference  id="livekitVideo" />
           </LiveKitRoom>
         )
     }

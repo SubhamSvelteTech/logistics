@@ -1,75 +1,99 @@
 "use client";
-import React, { useEffect, useRef, useState, useCallback } from "react";
+import React, { useEffect, useState } from "react";
 import BreadCrumb from "../components/breadcrumb/BreadCrumb";
 import WorkOrderCard from "../(dashboard)/work-order/WorkOrderComp/WorkOrderCard";
-import Image from "next/image";
 import { getPatientList } from "../common/HelperFunctions";
-import DefaultImg from "@Images/workorder/default-profile.png";
 import Loader from "../components/loader/Loader";
 import SearchBar from "../components/searchbar/SearchBar";
 import { CustomImage } from "../components/custom-image/CustomImage";
+import { NEWPATIENT_EVENT } from "../constants/apiEndpoints";
+import Toaster from "@/services/utils/toaster/Toaster";
+import Pagination from "../components/pagination/Pagination";
 
 const WorkOrder = () => {
-  const [patients, setPatients] = useState<any>([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [page, setPage] = useState(0);
-  const [hasMore, setHasMore] = useState(true);
-  const observerRef = useRef<any>();
-
-  // Function to fetch user details
-  const getUserDetails = async () => {
-    if (!hasMore || isLoading) return;
-
-    setIsLoading(true);
-    const res = await getPatientList(page, "");
-
-    if (res?.status === 200) {
-      const newPatients = res?.data?.data;
-      const nextPageAvailable = !!res?.data?.next;
-
-      setPatients((prevPatients: any) => [...prevPatients, ...newPatients]);
-      setHasMore(nextPageAvailable);
-
-      if (nextPageAvailable) {
-        setPage((prevPage) => prevPage + 1);
-      }
-    }
-
-    setIsLoading(false);
-  };
-
-  const lastPatientElementRef = useCallback(
-    (node: any) => {
-      if (isLoading) return;
-      if (observerRef.current) observerRef.current.disconnect();
-
-      observerRef.current = new IntersectionObserver((entries) => {
-        if (entries[0].isIntersecting && hasMore) {
-          getUserDetails();
-        }
-      });
-
-      if (node) observerRef.current.observe(node);
-    },
-    [isLoading, hasMore]
-  );
-
-  useEffect(() => {
-    getUserDetails();
-  }, []);
+  const [isLoading, setIsLoading] = useState(true);
+  const [paginateData, setPaginateData] = useState<any>();
 
   const handleSearch = async (query: string) => {
-    if (query.length > 0) {
-      const res = await getPatientList(0, query);
-      if (res?.status === 200) {
-        setPatients(res?.data?.data);
-      }
+    const res = await getPatientList(0, query);
+    if (res?.status === 200) {
+      setPaginateData(res?.data);
     }
   };
+
+  const fetchData = async (page: any) => {
+    setIsLoading(true); // Start loading state
+    try {
+      const response = await getPatientList(page, "");
+      if (response?.status === 200) {
+        setPaginateData(response.data);
+      } else {
+        console.error("API error:", response);
+        // Handle non-200 responses if necessary
+      }
+    } catch (error) {
+      console.error("Network error:", error);
+      // Optionally set an error state here or show a message to the user
+    } finally {
+      setIsLoading(false); // Ensure loading state is reset
+    }
+  };
+
+  useEffect(() => {
+    fetchData(0);
+    const eventSource = new EventSource(
+      `${process.env.NEXT_PUBLIC_API_URL + NEWPATIENT_EVENT}`
+    );
+
+    // Handle NEWPATIENT event
+    eventSource.addEventListener("NEWPATIENT", (event: MessageEvent) => {
+      const newEvent = JSON.parse(event.data);
+      // setPatients((prevEvents: any) => [newEvent?.data, ...prevEvents]);
+      fetchData(0);
+      Toaster(
+        "success",
+        `New Patient with name ${newEvent?.data?.fullName} Added!`
+      );
+    });
+
+    // Handle NEWPATIENTTASK event
+    eventSource.addEventListener("NEWPATIENTTASK", (event: MessageEvent) => {
+      const newEvent = JSON.parse(event.data);
+      // setPatients((prevEvents: any) => [newEvent?.data, ...prevEvents]);
+      fetchData(0);
+      Toaster(
+        "success",
+        `New Task for ${newEvent?.data?.patientname} Updated!`
+      );
+    });
+
+    // Handle CLOSEDASSIGNEDTASK event
+    eventSource.addEventListener(
+      "CLOSEDASSIGNEDTASK",
+      (event: MessageEvent) => {
+        const closedEvent = JSON.parse(event.data);
+        fetchData(0);
+        Toaster(
+          "success",
+          `Task for patient ${closedEvent?.data?.patientId?.fullName} has been closed.`
+        );
+      }
+    );
+
+    // Error handling for SSE connection
+    eventSource.onerror = () => {
+      console.error("SSE connection error");
+      eventSource.close();
+    };
+
+    return () => {
+      eventSource.close();
+    };
+  }, []);
 
   return (
     <>
-      {isLoading && patients.length === 0 ? (
+      {isLoading ? (
         <Loader />
       ) : (
         <div className="bg-white rounded-lg py-6 px-8 over">
@@ -77,9 +101,9 @@ const WorkOrder = () => {
           <div className="mt-4">
             <SearchBar onSearch={handleSearch} />
           </div>
-          {patients?.map((item: any, index: number) => (
+          {paginateData?.data?.map((item: any, index: number) => (
             <div
-              ref={patients.length === index + 1 ? lastPatientElementRef : null}
+              // ref={patients.length === index + 1 ? lastPatientElementRef : null}
               className="flex border rounded-lg flex-nowrap mb-4 overflow-x-auto mt-4"
               key={`workorder-${index}`}
             >
@@ -134,9 +158,15 @@ const WorkOrder = () => {
               ))}
             </div>
           ))}
+          <Pagination
+            paginateData={paginateData}
+            setPaginateData={setPaginateData}
+            apiFunction={getPatientList}
+          />
         </div>
       )}
       {/* <PrescriptionModal /> */}
+      {/* {hasMore && <div ref={loaderRef}>Loading more...</div>} */}
     </>
   );
 };

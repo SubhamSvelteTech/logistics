@@ -13,10 +13,8 @@ import ClockIcon from "@Icons/clock-icon.svg";
 import Link from "next/link";
 import TaskSidebar from "../(dashboard)/task-list/TaskSidebar/TaskSidebar";
 import { getCookie, setCookie } from "cookies-next";
-import ChevronLeft from "../components/icons/ChevronLeft";
-import ChevronRight from "../components/icons/ChevronRight";
 import { addWorkOrderTask } from "@/Redux/Slices/selectedWorkOrderSlice";
-import Pagination from "../components/pagination/Pagination";
+import useInfiniteScroll from "@/services/utils/hooks/useInfiniteScroll";
 import { CustomImage } from "../components/custom-image/CustomImage";
 
 const filter = [
@@ -27,20 +25,21 @@ const filter = [
 ];
 
 const TaskList = () => {
-  const [patients, setPatients] = useState<any>();
+  const [patients, setPatients] = useState<any[]>([]);
   const taskId = getCookie("taskId");
   const [taskdata, setTaskdata] = useState<any>();
   const [selectedFilter, setSelectedFilter] = useState<string | null>("");
   const dispatch = useDispatch();
+  const [hasMore, setHasMore] = useState(true);
 
-  const taskListdata = async () => {
-    const res = await getTaskListData(0);
-    setPatients(res?.data);
-  };
+  // const taskListdata = async () => {
+  //   const res = await getTaskListData(0);
+  //   setPatients(res?.data);
+  // };
 
-  useEffect(() => {
-    taskListdata();
-  }, []);
+  // useEffect(() => {
+  //   taskListdata();
+  // }, []);
 
   const handleTaskClick = (data: any, id: any) => {
     setCookie("taskId", id?.taskId);
@@ -49,7 +48,7 @@ const TaskList = () => {
   };
 
   useEffect(() => {
-    dispatch(addWorkOrderTask(patients?.data?.[0]));
+    dispatch(addWorkOrderTask(patients?.[0]));
     setTaskdata(patients?.[0]?.tasklist?.[0]);
   }, [patients]);
 
@@ -57,18 +56,34 @@ const TaskList = () => {
     setSelectedFilter(name);
     const res = await getTaskListData(0, name);
     if (res?.status === 200) {
-      setPatients(res?.data);
+      setPatients(res?.data?.data);
     }
   };
 
   const handleSearch = async (query: string) => {
-    if (query.length > 0) {
-      const res = await getTaskListData(0, "", query);
-      if (res?.status === 200) {
-        setPatients(res?.data);
-      }
+    const res = await getTaskListData(0, "", query);
+    if (res?.status === 200) {
+      setPatients(res?.data?.data);
     }
   };
+
+  const fetchData = async (page: any) => {
+    try {
+      const response = await getTaskListData(page, "");
+      setPatients((prevData: any) => [...prevData, ...response?.data?.data]);
+      if (!response?.data?.next) {
+        setHasMore(false);
+      }
+    } catch (error) {
+      console.error("Failed to fetch data:", error);
+      // setHasMore(false);
+    }
+  };
+
+  const [loaderRef] = useInfiniteScroll({
+    fetchDataFn: fetchData,
+    hasMoreData: hasMore,
+  });
 
   return (
     <>
@@ -133,9 +148,9 @@ const TaskList = () => {
                   <span className="font-bold">Health Workers</span>
                 </div>
 
-                <div className=" px-2 py-2 overflow-y-auto h-[250px]">
+                <div className=" px-2 py-2 overflow-y-auto h-[350px]">
                   {/* Patient Row */}
-                  {patients?.data?.map((taskData: any, index: number) => {
+                  {patients?.map((taskData: any, index: number) => {
                     return taskData?.tasklist?.map(
                       (innerTask: any, index: number) => {
                         return (
@@ -167,7 +182,7 @@ const TaskList = () => {
                               <div className="flex-1 text-center">
                                 <Link
                                   target="blank"
-                                  href={taskData?.prescription_pdf?.[0]}
+                                  href={taskData?.prescription_pdf?.[0] || ""}
                                   className="text-teal-600 inline-block"
                                 >
                                   <Image src={ViewIcon} alt="view-icon" />
@@ -279,12 +294,9 @@ const TaskList = () => {
                   </div>
                 </div> */}
                   {/* Repeat for more patients */}
+                  {hasMore && <div ref={loaderRef}>Loading more...</div>}
                 </div>
-                <Pagination
-                  paginateData={patients}
-                  setPaginateData={setPatients}
-                  apiFunction={getTaskListData}
-                />
+
                 {/* <div className="flex justify-end items-center gap-4 py-4 px-4 bg-slate-200">
                   <div
                     className={`rounded-full py-2 px-2 cursor-pointer ${

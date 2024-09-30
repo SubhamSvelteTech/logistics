@@ -1,54 +1,54 @@
-import { useState, useRef, useCallback, useEffect } from "react";
-import { useSelector } from "react-redux";
-import axiosInstance from "./useApi";
+import { useState, useEffect, useRef } from 'react';
 
-const useInfiniteScroll = (setPatients: any, patients: any, endPoint?: any) => {
-  const { selectedWorkOrder } = useSelector((state: any) => state);
-
-  const [isLoading, setIsLoading] = useState(false);
-  const [page, setPage] = useState(0);
-  const [hasMore, setHasMore] = useState(true);
-  const observerRef = useRef<any>();
-
-  const getUserDetails = async () => {
-    if (!hasMore || isLoading) return;
-
-    setIsLoading(true);
-    const res = await axiosInstance.get(`${endPoint + page}&pageSize=10`);
-
-    if (res?.status === 200) {
-      const newPatients = res?.data?.data?.data;
-      const nextPageAvailable = !!res?.data?.data?.next;
-      setPatients((prevPatients: any) => [...prevPatients, ...newPatients]);
-      setHasMore(nextPageAvailable);
-      if (nextPageAvailable) {
-        setPage((prevPage) => prevPage + 1);
-      }
-    }
-    setIsLoading(false);
-  };
-
-  const lastPatientElementRef = useCallback(
-    (node: any) => {
-      if (isLoading) return;
-      if (observerRef.current) observerRef.current.disconnect();
-
-      observerRef.current = new IntersectionObserver((entries) => {
-        if (entries[0].isIntersecting && hasMore) {
-          getUserDetails();
-        }
-      });
-
-      if (node) observerRef.current.observe(node);
-    },
-    [isLoading, hasMore]
-  );
+const useInfiniteScroll = ({ fetchDataFn, hasMoreData, threshold = 0.8 }:any) => {
+  const [page, setPage] = useState(0); // Start from page 0
+  const [loading, setLoading] = useState(false); // Flag to manage loading state
+  const loaderRef = useRef(null);
+  const initialLoad = useRef(true); // To track initial load
 
   useEffect(() => {
-    getUserDetails();
-  }, [selectedWorkOrder]);
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const target = entries[0];
+        if (target.isIntersecting && hasMoreData && !loading && !initialLoad.current) {
+          setPage((prev) => prev + 1); // Increment page only if more data is available
+        }
+      },
+      {
+        root: null,
+        rootMargin: '20px',
+        threshold: threshold,
+      }
+    );
 
-  return { patients, isLoading, lastPatientElementRef };
+    if (loaderRef.current) {
+      observer.observe(loaderRef.current);
+    }
+
+    return () => {
+      if (loaderRef.current) observer.unobserve(loaderRef.current);
+    };
+  }, [hasMoreData, threshold, loading]);
+
+  useEffect(() => {
+    const fetchPageData = async () => {
+      if (!loading) {
+        setLoading(true);
+        await fetchDataFn(page);
+        setLoading(false);
+      }
+    };
+
+    if (initialLoad.current) {
+      fetchPageData().finally(() => {
+        initialLoad.current = false;
+      });
+    } else {
+      fetchPageData();
+    }
+  }, [page]);
+
+  return [loaderRef];
 };
 
 export default useInfiniteScroll;

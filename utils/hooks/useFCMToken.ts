@@ -40,6 +40,10 @@ const useFCMToken = () => {
   }, []);
 
   useEffect(() => {
+    if(permission === "denied") {
+      alert("Please Allow notifications!")
+      return
+    }
     if ("Notification" in window && permission === "granted") {
       getFcmToken();
     }
